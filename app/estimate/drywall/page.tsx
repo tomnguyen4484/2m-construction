@@ -4,23 +4,20 @@ import Link from 'next/link';
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
 
-export default function FenceEstimator() {
-  const [ftype, setFtype] = useState("wood");
-  const [length, setLength] = useState("");
-  const [height, setHeight] = useState("6");
-  const [gates, setGates] = useState("1");
+export default function DrywallEstimator() {
+  const [dtype, setDtype] = useState("repair");
+  const [sqft, setSqft] = useState("");
   const [showContact, setShowContact] = useState(false);
   const [form, setForm] = useState({ name: '', phone: '', email: '' });
   const [sent, setSent] = useState(false);
 
-  const MAT: Record<string,number> = { wood:8, vinyl:18, chain:6 };
-  const LAB: Record<string,number> = { wood:12, vinyl:12, chain:10 };
-  const mat  = (Number(length)||0) * Number(height) * (MAT[ftype]||8);
-  const lab  = (Number(length)||0) * (LAB[ftype]||12);
-  const gate = (Number(gates)||0) * 350;
-  const total = mat + lab + gate;
+  const RATE: Record<string,number> = { repair:4, install:3.5, finish:2 };
+  const sf  = Number(sqft)||0;
+  const mat = dtype==='finish' ? sf*0.5 : sf*1.5;
+  const lab = sf * (RATE[dtype]||3.5);
+  const total = mat + lab;
 
-  const hasResult = length !== '' && Number(length) > 0;
+  const hasResult = sqft !== '' && Number(sqft) > 0;
 
   if (sent) return (
     <div style={{ maxWidth:'680px', margin:'0 auto', padding:'60px 16px', textAlign:'center' }}>
@@ -37,60 +34,35 @@ export default function FenceEstimator() {
         ← All Services
       </Link>
       <h1 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', margin:'0 0 4px' }}>
-        🪵 Fence Estimator
+        🧱 Drywall Estimator
       </h1>
       <p style={{ color:'#64748B', fontSize:'13px', margin:'0 0 24px' }}>
         Prices based on current market rates in Huntsville, AL
       </p>
 
       <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:600, color:'#374151', marginBottom:'8px' }}>Fence Type</label>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:600, color:'#374151', marginBottom:'8px' }}>Job Type</label>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'8px' }}>
-          <button onClick={() => setFtype('wood')}
-            style={{ padding:'11px 8px', borderRadius:'10px', fontSize:'13px', fontWeight:600, border: ftype === 'wood' ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0', background: ftype === 'wood' ? '#EFF6FF' : '#fff', color: ftype === 'wood' ? '#1A3A5C' : '#64748B', cursor:'pointer' }}>
-            Wood
+          <button onClick={() => setDtype('repair')}
+            style={{ padding:'11px 8px', borderRadius:'10px', fontSize:'13px', fontWeight:600, border: dtype === 'repair' ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0', background: dtype === 'repair' ? '#EFF6FF' : '#fff', color: dtype === 'repair' ? '#1A3A5C' : '#64748B', cursor:'pointer' }}>
+            Repair
           </button>
-          <button onClick={() => setFtype('vinyl')}
-            style={{ padding:'11px 8px', borderRadius:'10px', fontSize:'13px', fontWeight:600, border: ftype === 'vinyl' ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0', background: ftype === 'vinyl' ? '#EFF6FF' : '#fff', color: ftype === 'vinyl' ? '#1A3A5C' : '#64748B', cursor:'pointer' }}>
-            Vinyl
+          <button onClick={() => setDtype('install')}
+            style={{ padding:'11px 8px', borderRadius:'10px', fontSize:'13px', fontWeight:600, border: dtype === 'install' ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0', background: dtype === 'install' ? '#EFF6FF' : '#fff', color: dtype === 'install' ? '#1A3A5C' : '#64748B', cursor:'pointer' }}>
+            Install New
           </button>
-          <button onClick={() => setFtype('chain')}
-            style={{ padding:'11px 8px', borderRadius:'10px', fontSize:'13px', fontWeight:600, border: ftype === 'chain' ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0', background: ftype === 'chain' ? '#EFF6FF' : '#fff', color: ftype === 'chain' ? '#1A3A5C' : '#64748B', cursor:'pointer' }}>
-            Chain Link
+          <button onClick={() => setDtype('finish')}
+            style={{ padding:'11px 8px', borderRadius:'10px', fontSize:'13px', fontWeight:600, border: dtype === 'finish' ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0', background: dtype === 'finish' ? '#EFF6FF' : '#fff', color: dtype === 'finish' ? '#1A3A5C' : '#64748B', cursor:'pointer' }}>
+            Finish Only
           </button>
         </div>
       </div>
 
       <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:600, color:'#374151', marginBottom:'8px' }}>Length (linear feet)</label>
-        <input type="number" inputMode="numeric" value={length} onChange={e => setLength(e.target.value)}
+        <label style={{ display:'block', fontSize:'13px', fontWeight:600, color:'#374151', marginBottom:'8px' }}>Square Footage</label>
+        <input type="number" inputMode="numeric" value={sqft} onChange={e => setSqft(e.target.value)}
           style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', outline:'none', boxSizing:'border-box' as const }}
-          placeholder="e.g. 150" />
-      </div>
-
-      <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:600, color:'#374151', marginBottom:'8px' }}>Height</label>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'8px' }}>
-          <button onClick={() => setHeight('4')}
-            style={{ padding:'11px 8px', borderRadius:'10px', fontSize:'13px', fontWeight:600, border: height === '4' ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0', background: height === '4' ? '#EFF6FF' : '#fff', color: height === '4' ? '#1A3A5C' : '#64748B', cursor:'pointer' }}>
-            4 ft
-          </button>
-          <button onClick={() => setHeight('6')}
-            style={{ padding:'11px 8px', borderRadius:'10px', fontSize:'13px', fontWeight:600, border: height === '6' ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0', background: height === '6' ? '#EFF6FF' : '#fff', color: height === '6' ? '#1A3A5C' : '#64748B', cursor:'pointer' }}>
-            6 ft
-          </button>
-          <button onClick={() => setHeight('8')}
-            style={{ padding:'11px 8px', borderRadius:'10px', fontSize:'13px', fontWeight:600, border: height === '8' ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0', background: height === '8' ? '#EFF6FF' : '#fff', color: height === '8' ? '#1A3A5C' : '#64748B', cursor:'pointer' }}>
-            8 ft
-          </button>
-        </div>
-      </div>
-
-      <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:600, color:'#374151', marginBottom:'8px' }}>Number of Gates</label>
-        <input type="number" inputMode="numeric" value={gates} onChange={e => setGates(e.target.value)}
-          style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', outline:'none', boxSizing:'border-box' as const }}
-          placeholder="1" />
+          placeholder="e.g. 500" />
       </div>
 
       {hasResult && (
@@ -100,7 +72,6 @@ export default function FenceEstimator() {
           </h2>
           <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}><span style={{color:'rgba(255,255,255,0.7)'}}>Materials</span><span>{fmt(mat)}</span></div>
           <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}><span style={{color:'rgba(255,255,255,0.7)'}}>Labor</span><span>{fmt(lab)}</span></div>
-          <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}><span style={{color:'rgba(255,255,255,0.7)'}}>Gates ({gates}x)</span><span>{fmt(gate)}</span></div>
           <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
             <span>Total Estimate</span>
             <span style={{ color:'#F5C518' }}>{fmt(total)}</span>
