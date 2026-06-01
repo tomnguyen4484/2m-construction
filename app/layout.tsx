@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
 import Footer from '@/components/Footer';
-
-const geist = Geist({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: '2M Construction | Huntsville AL',
@@ -15,9 +12,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={geist.className} style={{ background: '#F9FAFB', color: '#111827' }}>
+      <body>
         <Header />
-        <main className="pt-14 pb-16 min-h-screen">
+        <main style={{ paddingTop: '56px', paddingBottom: '64px', minHeight: '100vh' }}>
           {children}
         </main>
         <Footer />

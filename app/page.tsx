@@ -1,65 +1,102 @@
 import Link from 'next/link';
 
 const services = [
-  { name: 'Fence',    slug: 'fence',    icon: '🪵', desc: 'Wood, vinyl and chain-link fencing' },
-  { name: 'Deck',     slug: 'deck',     icon: '🏗️', desc: 'Custom deck design and build' },
-  { name: 'Painting', slug: 'painting', icon: '🎨', desc: 'Interior and exterior painting' },
-  { name: 'Flooring', slug: 'flooring', icon: '🏠', desc: 'Hardwood, tile and vinyl floors' },
-  { name: 'Bathroom', slug: 'bathroom', icon: '🚿', desc: 'Full bathroom remodeling' },
-  { name: 'Kitchen',  slug: 'kitchen',  icon: '🍳', desc: 'Kitchen renovation and cabinets' },
-  { name: 'Drywall',  slug: 'drywall',  icon: '🧱', desc: 'Drywall repair and installation' },
-  { name: 'Roofing',  slug: 'roofing',  icon: '🏘️', desc: 'Roof repair and replacement' },
-  { name: 'Concrete', slug: 'concrete', icon: '⬜', desc: 'Driveways, patios and sidewalks' },
-  { name: 'Handyman', slug: 'handyman', icon: '🔧', desc: 'General repairs and maintenance' },
+  { name: 'Fence',    slug: 'fence',    icon: '🪵', desc: 'Wood, vinyl & chain-link' },
+  { name: 'Deck',     slug: 'deck',     icon: '🏗️', desc: 'Custom deck build' },
+  { name: 'Painting', slug: 'painting', icon: '🎨', desc: 'Interior & exterior' },
+  { name: 'Flooring', slug: 'flooring', icon: '🏠', desc: 'Hardwood, tile & vinyl' },
+  { name: 'Bathroom', slug: 'bathroom', icon: '🚿', desc: 'Full remodel' },
+  { name: 'Kitchen',  slug: 'kitchen',  icon: '🍳', desc: 'Renovation & cabinets' },
+  { name: 'Drywall',  slug: 'drywall',  icon: '🧱', desc: 'Repair & installation' },
+  { name: 'Roofing',  slug: 'roofing',  icon: '🏘️', desc: 'Repair & replacement' },
+  { name: 'Concrete', slug: 'concrete', icon: '⬜', desc: 'Driveways & patios' },
+  { name: 'Handyman', slug: 'handyman', icon: '🔧', desc: 'General repairs' },
+];
+
+const trust = [
+  { icon: '⭐', label: '5-Star Rated', sub: 'Google & BBB verified' },
+  { icon: '📍', label: 'Local Company', sub: 'Serving Huntsville since 2010' },
+  { icon: '🛡️', label: 'Licensed & Insured', sub: 'AL Contractor License' },
 ];
 
 export default function HomePage() {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
+    <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '24px 16px' }}>
+
       {/* Hero */}
-      <div className="bg-[#1A3A5C] rounded-2xl p-8 mb-8 text-white flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold mb-2">Get Your Free Estimate</h1>
-          <p className="text-gray-300 text-sm md:text-base">
-            Serving Huntsville, Madison, Athens and surrounding areas
-          </p>
+      <div style={{
+        background: 'linear-gradient(135deg, #1A3A5C 0%, #0F2542 100%)',
+        borderRadius: '16px', padding: '40px 32px', marginBottom: '32px',
+        display: 'flex', flexDirection: 'column', gap: '16px'
+      }}>
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: '6px',
+          background: 'rgba(255,255,255,0.1)', borderRadius: '20px',
+          padding: '4px 12px', width: 'fit-content'
+        }}>
+          <span style={{ fontSize: '12px', color: '#93C5FD' }}>📍 Huntsville · Madison · Athens · Decatur</span>
         </div>
-        <Link href="/estimate"
-          className="inline-block bg-[#EA580C] text-white font-semibold px-8 py-3 rounded-xl text-sm md:text-base whitespace-nowrap">
-          Calculate My Price
-        </Link>
+        <h1 style={{ color: '#FFFFFF', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 800, margin: 0, lineHeight: 1.2 }}>
+          Get Your Free<br />Construction Estimate
+        </h1>
+        <p style={{ color: '#94A3B8', fontSize: '15px', margin: 0 }}>
+          Fill in your project details — see a price breakdown in seconds. No sign-up required.
+        </p>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <Link href="/estimate" style={{
+            background: '#FFFFFF', color: '#1A3A5C', fontWeight: 700,
+            padding: '12px 24px', borderRadius: '10px', fontSize: '15px',
+            display: 'inline-block'
+          }}>
+            Calculate My Price →
+          </Link>
+          <a href="tel:+12565551234" style={{
+            border: '1.5px solid rgba(255,255,255,0.3)', color: '#FFFFFF',
+            padding: '12px 24px', borderRadius: '10px', fontSize: '15px',
+            display: 'inline-block'
+          }}>
+            Call Us Now
+          </a>
+        </div>
       </div>
 
-      {/* Services */}
-      <h2 className="text-lg font-bold text-gray-800 mb-4">Our Services</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
-        {services.map((s) => (
-          <Link key={s.slug} href={'/estimate/' + s.slug}
-            className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:border-[#EA580C] hover:shadow-md transition-all">
-            <div className="text-2xl mb-2">{s.icon}</div>
-            <div className="font-semibold text-gray-800 text-sm">{s.name}</div>
-            <div className="text-gray-500 text-xs mt-0.5">{s.desc}</div>
-          </Link>
+      {/* Trust bar */}
+      <div style={{
+        display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '12px', marginBottom: '32px'
+      }}>
+        {trust.map(t => (
+          <div key={t.label} style={{
+            background: '#FFFFFF', border: '1px solid #E2E8F0',
+            borderRadius: '12px', padding: '16px', textAlign: 'center'
+          }}>
+            <div style={{ fontSize: '22px', marginBottom: '4px' }}>{t.icon}</div>
+            <div style={{ fontWeight: 600, fontSize: '13px', color: '#1E293B' }}>{t.label}</div>
+            <div style={{ fontSize: '11px', color: '#64748B', marginTop: '2px' }}>{t.sub}</div>
+          </div>
         ))}
       </div>
 
-      {/* Why Us — desktop only */}
-      <div className="hidden md:grid grid-cols-3 gap-6 mt-10">
-        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm text-center">
-          <div className="text-3xl mb-3">⚡</div>
-          <h3 className="font-bold text-gray-800 mb-1">Instant Estimates</h3>
-          <p className="text-gray-500 text-sm">Get a price in under 60 seconds — no waiting</p>
-        </div>
-        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm text-center">
-          <div className="text-3xl mb-3">📍</div>
-          <h3 className="font-bold text-gray-800 mb-1">Local Pricing</h3>
-          <p className="text-gray-500 text-sm">Prices reflect real material costs in your area</p>
-        </div>
-        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm text-center">
-          <div className="text-3xl mb-3">🤝</div>
-          <h3 className="font-bold text-gray-800 mb-1">No Commitment</h3>
-          <p className="text-gray-500 text-sm">Get your estimate free — contact us only if you want</p>
-        </div>
+      {/* Services */}
+      <h2 style={{ fontWeight: 700, fontSize: '18px', color: '#1E293B', marginBottom: '16px' }}>
+        Our Services
+      </h2>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+        gap: '12px'
+      }}>
+        {services.map((s) => (
+          <Link key={s.slug} href={'/estimate/' + s.slug} style={{
+            background: '#FFFFFF', border: '1px solid #E2E8F0',
+            borderRadius: '12px', padding: '16px', display: 'block',
+            transition: 'all 0.15s'
+          }}>
+            <div style={{ fontSize: '26px', marginBottom: '8px' }}>{s.icon}</div>
+            <div style={{ fontWeight: 600, color: '#1E293B', fontSize: '14px' }}>{s.name}</div>
+            <div style={{ color: '#64748B', fontSize: '12px', marginTop: '3px' }}>{s.desc}</div>
+          </Link>
+        ))}
       </div>
     </div>
   );

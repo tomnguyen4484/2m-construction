@@ -4,23 +4,30 @@ import { usePathname } from 'next/navigation';
 
 const tabs = [
   { label: 'Home',     href: '/',        icon: '🏠' },
-  { label: 'Estimate', href: '/estimate', icon: '🔨' },
+  { label: 'Estimate', href: '/estimate', icon: '📋' },
   { label: 'Contact',  href: '/contact',  icon: '📞' },
 ];
 
 export default function BottomNav() {
   const pathname = usePathname();
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 h-16 flex items-center">
+    <nav style={{
+      position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 50,
+      background: '#FFFFFF', borderTop: '1px solid #E2E8F0',
+      height: '60px', display: 'flex', alignItems: 'stretch'
+    }}>
       {tabs.map((tab) => {
-        const active = pathname === tab.href;
+        const active = pathname === tab.href || (tab.href !== '/' && pathname.startsWith(tab.href));
         return (
-          <Link
-            key={tab.href}
-            href={tab.href}
-            className={`flex-1 flex flex-col items-center justify-center gap-0.5 h-full text-xs font-medium transition-colors ${active ? 'text-[#EA580C]' : 'text-gray-500'}`}
-          >
-            <span className="text-xl leading-none">{tab.icon}</span>
+          <Link key={tab.href} href={tab.href} style={{
+            flex: 1, display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center', gap: '2px',
+            color: active ? '#1A3A5C' : '#94A3B8',
+            fontWeight: active ? 600 : 400, fontSize: '11px',
+            borderTop: active ? '2px solid #1A3A5C' : '2px solid transparent',
+            background: active ? '#F0F7FF' : 'transparent'
+          }}>
+            <span style={{ fontSize: '20px', lineHeight: 1 }}>{tab.icon}</span>
             <span>{tab.label}</span>
           </Link>
         );
