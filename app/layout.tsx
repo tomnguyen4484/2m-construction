@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={geist.className + ' bg-gray-50'}>
+      <body className={geist.className} style={{ background: '#F9FAFB', color: '#111827' }}>
         <Header />
         <main className="pt-14 pb-16 min-h-screen">
           {children}
