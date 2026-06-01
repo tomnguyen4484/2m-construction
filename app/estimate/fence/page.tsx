@@ -2,16 +2,18 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-const PRICE = {
+type FenceType = 'wood' | 'vinyl' | 'chain';
+
+const PRICE: Record<FenceType, { material: number; labor: number }> = {
   wood:  { material: 8,  labor: 12 },
   vinyl: { material: 18, labor: 12 },
   chain: { material: 6,  labor: 10 },
 };
 
-function fmt(n) { return '$' + n.toLocaleString(); }
+function fmt(n: number): string { return '$' + n.toLocaleString(); }
 
 export default function FenceEstimator() {
-  const [type, setType]     = useState('wood');
+  const [type, setType]     = useState<FenceType>('wood');
   const [length, setLength] = useState('');
   const [height, setHeight] = useState('6');
   const [gates, setGates]   = useState('1');
@@ -30,7 +32,7 @@ export default function FenceEstimator() {
 
   if (sent) return (
     <div className="max-w-lg mx-auto px-4 py-12 text-center">
-      <div className="text-5xl mb-4">checkmark</div>
+      <div className="text-5xl mb-4">✅</div>
       <h2 className="text-xl font-bold text-gray-800 mb-2">Request Sent!</h2>
       <p className="text-gray-500 mb-6">We will call you back within 24 hours.</p>
       <Link href="/" className="text-[#EA580C] font-semibold">Back to Home</Link>
@@ -46,11 +48,11 @@ export default function FenceEstimator() {
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-2">Fence Type</label>
         <div className="grid grid-cols-3 gap-2">
-          {[['wood','Wood'],['vinyl','Vinyl'],['chain','Chain Link']].map(([v,l]) => (
+          {(['wood','vinyl','chain'] as FenceType[]).map((v) => (
             <button key={v} onClick={() => setType(v)}
               className={'py-3 rounded-xl text-sm font-medium border-2 transition-colors ' +
                 (type === v ? 'border-[#EA580C] bg-orange-50 text-[#EA580C]' : 'border-gray-200 text-gray-600')}>
-              {l}
+              {v === 'wood' ? 'Wood' : v === 'vinyl' ? 'Vinyl' : 'Chain Link'}
             </button>
           ))}
         </div>
