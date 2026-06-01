@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 
 export default function Header() {
   return (
@@ -9,11 +9,11 @@ export default function Header() {
         </div>
         <span className="text-white font-bold text-lg">2M Construction</span>
       </Link>
-      
+      <a
         href="tel:+12565551234"
         className="text-[#EA580C] font-semibold text-sm border border-[#EA580C] px-3 py-1 rounded-full"
       >
-        📞 Call Us
+        Call Us
       </a>
     </header>
   );

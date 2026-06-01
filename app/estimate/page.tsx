@@ -1,15 +1,15 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 
 const services = [
-  { name: 'Fence', slug: 'fence', icon: '🪵', desc: 'Wood, vinyl & chain-link' },
-  { name: 'Deck', slug: 'deck', icon: '🏗️', desc: 'Custom deck build' },
-  { name: 'Painting', slug: 'painting', icon: '🎨', desc: 'Interior & exterior' },
-  { name: 'Flooring', slug: 'flooring', icon: '🪵', desc: 'Hardwood, tile & vinyl' },
+  { name: 'Fence',    slug: 'fence',    icon: '🪵', desc: 'Wood, vinyl and chain-link' },
+  { name: 'Deck',     slug: 'deck',     icon: '🏗️', desc: 'Custom deck build' },
+  { name: 'Painting', slug: 'painting', icon: '🎨', desc: 'Interior and exterior' },
+  { name: 'Flooring', slug: 'flooring', icon: '🏠', desc: 'Hardwood, tile and vinyl' },
   { name: 'Bathroom', slug: 'bathroom', icon: '🚿', desc: 'Full remodel' },
-  { name: 'Kitchen', slug: 'kitchen', icon: '🍳', desc: 'Renovation & cabinets' },
-  { name: 'Drywall', slug: 'drywall', icon: '🧱', desc: 'Repair & installation' },
-  { name: 'Roofing', slug: 'roofing', icon: '🏠', desc: 'Repair & replacement' },
-  { name: 'Concrete', slug: 'concrete', icon: '⬜', desc: 'Driveways & patios' },
+  { name: 'Kitchen',  slug: 'kitchen',  icon: '🍳', desc: 'Renovation and cabinets' },
+  { name: 'Drywall',  slug: 'drywall',  icon: '🧱', desc: 'Repair and installation' },
+  { name: 'Roofing',  slug: 'roofing',  icon: '🏘️', desc: 'Repair and replacement' },
+  { name: 'Concrete', slug: 'concrete', icon: '⬜', desc: 'Driveways and patios' },
   { name: 'Handyman', slug: 'handyman', icon: '🔧', desc: 'General repairs' },
 ];
 
@@ -22,8 +22,8 @@ export default function EstimatePage() {
         {services.map((s) => (
           <Link
             key={s.slug}
-            href={`/estimate/${s.slug}`}
-            className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 active:bg-gray-50"
+            href={'/estimate/' + s.slug}
+            className="bg-white rounded-xl p-4 shadow-sm border border-gray-100"
           >
             <div className="text-2xl mb-1">{s.icon}</div>
             <div className="font-semibold text-gray-800 text-sm">{s.name}</div>
