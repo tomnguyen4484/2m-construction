@@ -8,14 +8,16 @@ const PRICE = {
   chain: { material: 6,  labor: 10 },
 };
 
+function fmt(n) { return '$' + n.toLocaleString(); }
+
 export default function FenceEstimator() {
-  const [type, setType]         = useState('wood');
-  const [length, setLength]     = useState('');
-  const [height, setHeight]     = useState('6');
-  const [gates, setGates]       = useState('1');
+  const [type, setType]     = useState('wood');
+  const [length, setLength] = useState('');
+  const [height, setHeight] = useState('6');
+  const [gates, setGates]   = useState('1');
   const [showContact, setShowContact] = useState(false);
-  const [form, setForm]         = useState({ name: '', phone: '', email: '' });
-  const [sent, setSent]         = useState(false);
+  const [form, setForm]     = useState({ name: '', phone: '', email: '' });
+  const [sent, setSent]     = useState(false);
 
   const ft       = Number(length) || 0;
   const gt       = Number(gates)  || 0;
@@ -28,7 +30,7 @@ export default function FenceEstimator() {
 
   if (sent) return (
     <div className="max-w-lg mx-auto px-4 py-12 text-center">
-      <div className="text-5xl mb-4">✅</div>
+      <div className="text-5xl mb-4">checkmark</div>
       <h2 className="text-xl font-bold text-gray-800 mb-2">Request Sent!</h2>
       <p className="text-gray-500 mb-6">We will call you back within 24 hours.</p>
       <Link href="/" className="text-[#EA580C] font-semibold">Back to Home</Link>
@@ -46,7 +48,8 @@ export default function FenceEstimator() {
         <div className="grid grid-cols-3 gap-2">
           {[['wood','Wood'],['vinyl','Vinyl'],['chain','Chain Link']].map(([v,l]) => (
             <button key={v} onClick={() => setType(v)}
-              className={'py-3 rounded-xl text-sm font-medium border-2 transition-colors ' + (type === v ? 'border-[#EA580C] bg-orange-50 text-[#EA580C]' : 'border-gray-200 text-gray-600')}>
+              className={'py-3 rounded-xl text-sm font-medium border-2 transition-colors ' +
+                (type === v ? 'border-[#EA580C] bg-orange-50 text-[#EA580C]' : 'border-gray-200 text-gray-600')}>
               {l}
             </button>
           ))}
@@ -65,7 +68,8 @@ export default function FenceEstimator() {
         <div className="grid grid-cols-3 gap-2">
           {['4','6','8'].map(h => (
             <button key={h} onClick={() => setHeight(h)}
-              className={'py-3 rounded-xl text-sm font-medium border-2 transition-colors ' + (height === h ? 'border-[#EA580C] bg-orange-50 text-[#EA580C]' : 'border-gray-200 text-gray-600')}>
+              className={'py-3 rounded-xl text-sm font-medium border-2 transition-colors ' +
+                (height === h ? 'border-[#EA580C] bg-orange-50 text-[#EA580C]' : 'border-gray-200 text-gray-600')}>
               {h} ft
             </button>
           ))}
@@ -85,19 +89,19 @@ export default function FenceEstimator() {
           <div className="space-y-2 text-sm mb-4">
             <div className="flex justify-between">
               <span className="text-gray-300">Materials</span>
-              <span>{material.toLocaleString(){'}'}</span>
+              <span>{fmt(material)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-300">Labor</span>
-              <span>{labor.toLocaleString(){'}'}</span>
+              <span>{fmt(labor)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-300">Gates ({'{'}gates{'}'}x)</span>
-              <span>{gateCost.toLocaleString(){'}'}</span>
+              <span className="text-gray-300">Gates ({gates}x)</span>
+              <span>{fmt(gateCost)}</span>
             </div>
             <div className="border-t border-gray-600 pt-2 flex justify-between font-bold text-base">
               <span>Total Estimate</span>
-              <span className="text-[#EA580C]">{total.toLocaleString(){'}'}</span>
+              <span className="text-[#EA580C]">{fmt(total)}</span>
             </div>
           </div>
           <p className="text-xs text-gray-400">Final price may vary based on site conditions</p>
