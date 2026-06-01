@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const services = [
   { name: 'Fence',    slug: 'fence',    icon: '🪵', desc: 'Wood, vinyl & chain-link' },
@@ -26,36 +27,39 @@ export default function HomePage() {
       {/* Hero */}
       <div style={{
         background: 'linear-gradient(135deg, #1A3A5C 0%, #0F2542 100%)',
-        borderRadius: '16px', padding: '40px 32px', marginBottom: '32px',
-        display: 'flex', flexDirection: 'column', gap: '16px'
+        borderRadius: '16px', padding: '40px 32px', marginBottom: '28px',
+        display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative', overflow: 'hidden'
       }}>
+        <div style={{ position: 'absolute', right: '24px', top: '50%', transform: 'translateY(-50%)', opacity: 0.15 }}>
+          <Image src="/logo.png" alt="" width={180} height={180} style={{ objectFit: 'contain' }} />
+        </div>
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: '6px',
-          background: 'rgba(255,255,255,0.1)', borderRadius: '20px',
-          padding: '4px 12px', width: 'fit-content'
+          background: 'rgba(245,197,24,0.15)', border: '1px solid rgba(245,197,24,0.3)',
+          borderRadius: '20px', padding: '4px 12px', width: 'fit-content'
         }}>
-          <span style={{ fontSize: '12px', color: '#93C5FD' }}>📍 Huntsville · Madison · Athens · Decatur</span>
+          <span style={{ fontSize: '12px', color: '#F5C518' }}>📍 Huntsville · Madison · Athens · Decatur</span>
         </div>
         <h1 style={{ color: '#FFFFFF', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 800, margin: 0, lineHeight: 1.2 }}>
           Get Your Free<br />Construction Estimate
         </h1>
-        <p style={{ color: '#94A3B8', fontSize: '15px', margin: 0 }}>
+        <p style={{ color: '#94A3B8', fontSize: '15px', margin: 0, maxWidth: '480px' }}>
           Fill in your project details — see a price breakdown in seconds. No sign-up required.
         </p>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <Link href="/estimate" style={{
-            background: '#FFFFFF', color: '#1A3A5C', fontWeight: 700,
-            padding: '12px 24px', borderRadius: '10px', fontSize: '15px',
-            display: 'inline-block'
+            background: '#F5C518', color: '#1A3A5C', fontWeight: 800,
+            padding: '13px 28px', borderRadius: '10px', fontSize: '15px',
+            display: 'inline-block', letterSpacing: '0.2px'
           }}>
             Calculate My Price →
           </Link>
           <a href="tel:+12565551234" style={{
             border: '1.5px solid rgba(255,255,255,0.3)', color: '#FFFFFF',
-            padding: '12px 24px', borderRadius: '10px', fontSize: '15px',
+            padding: '13px 24px', borderRadius: '10px', fontSize: '15px',
             display: 'inline-block'
           }}>
-            Call Us Now
+            📞 Call Us Now
           </a>
         </div>
       </div>
@@ -63,7 +67,7 @@ export default function HomePage() {
       {/* Trust bar */}
       <div style={{
         display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '12px', marginBottom: '32px'
+        gap: '12px', marginBottom: '28px'
       }}>
         {trust.map(t => (
           <div key={t.label} style={{
@@ -89,8 +93,7 @@ export default function HomePage() {
         {services.map((s) => (
           <Link key={s.slug} href={'/estimate/' + s.slug} style={{
             background: '#FFFFFF', border: '1px solid #E2E8F0',
-            borderRadius: '12px', padding: '16px', display: 'block',
-            transition: 'all 0.15s'
+            borderRadius: '12px', padding: '16px', display: 'block'
           }}>
             <div style={{ fontSize: '26px', marginBottom: '8px' }}>{s.icon}</div>
             <div style={{ fontWeight: 600, color: '#1E293B', fontSize: '14px' }}>{s.name}</div>

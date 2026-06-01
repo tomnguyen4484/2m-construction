@@ -23,9 +23,9 @@ export default function BottomNav() {
             flex: 1, display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center', gap: '2px',
             color: active ? '#1A3A5C' : '#94A3B8',
-            fontWeight: active ? 600 : 400, fontSize: '11px',
-            borderTop: active ? '2px solid #1A3A5C' : '2px solid transparent',
-            background: active ? '#F0F7FF' : 'transparent'
+            fontWeight: active ? 700 : 400, fontSize: '11px',
+            borderTop: active ? '3px solid #F5C518' : '3px solid transparent',
+            background: active ? '#FEFCE8' : 'transparent'
           }}>
             <span style={{ fontSize: '20px', lineHeight: 1 }}>{tab.icon}</span>
             <span>{tab.label}</span>
