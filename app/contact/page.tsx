@@ -2,45 +2,71 @@
 import { useState } from 'react';
 
 export default function ContactPage() {
-  const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ name: '', phone: '', email: '', message: '' });
+  const [sent, setSent]     = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError]   = useState('');
+  const [form, setForm]     = useState({ name: '', phone: '', email: '', message: '' });
 
   function handle(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.name || !form.phone) { setError('Please fill in name and phone.'); return; }
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, note: form.message, service: 'General Inquiry' }),
+      });
+      if (res.ok) { setSent(true); }
+      else { setError('Something went wrong. Please call us directly.'); }
+    } catch {
+      setError('Something went wrong. Please call us directly.');
+    }
+    setLoading(false);
+  }
+
   if (sent) return (
-    <div className="max-w-lg mx-auto px-4 py-12 text-center">
-      <div className="text-5xl mb-4">✅</div>
-      <h2 className="text-xl font-bold text-gray-800 mb-2">Message Sent!</h2>
-      <p className="text-gray-500">We will call you back within 24 hours.</p>
+    <div style={{ maxWidth:'600px', margin:'0 auto', padding:'60px 16px', textAlign:'center' }}>
+      <div style={{ fontSize:'56px', marginBottom:'16px' }}>✅</div>
+      <h2 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', marginBottom:'8px' }}>Message Sent!</h2>
+      <p style={{ color:'#64748B', marginBottom:'8px' }}>We received your request and will call you back within 24 hours.</p>
+      <p style={{ color:'#64748B', fontSize:'14px' }}>A confirmation has been sent to <strong>info@2mhuntsville.com</strong></p>
     </div>
   );
 
   return (
-    <div className="max-w-lg mx-auto px-4 py-6">
-      <h1 className="text-xl font-bold text-gray-800 mb-1">Contact Us</h1>
-      <p className="text-gray-500 text-sm mb-5">We will get back to you within 24 hours</p>
-      <form onSubmit={(e) => { e.preventDefault(); setSent(true); }} className="space-y-4">
+    <div style={{ maxWidth:'600px', margin:'0 auto', padding:'24px 16px' }}>
+      <h1 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', margin:'0 0 4px' }}>Contact Us</h1>
+      <p style={{ color:'#64748B', fontSize:'14px', margin:'0 0 24px' }}>We will call you back within 24 hours</p>
+
+      <form onSubmit={submit} style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
         <input name="name" required value={form.name} onChange={handle}
-          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-[#EA580C]"
+          style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', boxSizing:'border-box' as const }}
           placeholder="Full name *" />
         <input name="phone" type="tel" required value={form.phone} onChange={handle}
-          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-[#EA580C]"
+          style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', boxSizing:'border-box' as const }}
           placeholder="Phone number *" />
         <input name="email" type="email" value={form.email} onChange={handle}
-          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-[#EA580C]"
+          style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', boxSizing:'border-box' as const }}
           placeholder="Email (optional)" />
         <textarea name="message" value={form.message} onChange={handle} rows={4}
-          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base focus:outline-none focus:border-[#EA580C]"
+          style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', boxSizing:'border-box' as const, resize:'none' as const }}
           placeholder="Describe your project..." />
-        <button type="submit"
-          className="w-full bg-[#EA580C] text-white font-semibold py-4 rounded-xl text-base">
-          Send Message
+
+        {error && <p style={{ color:'#DC2626', fontSize:'13px', margin:0 }}>{error}</p>}
+
+        <button type="submit" disabled={loading}
+          style={{ width:'100%', background: loading ? '#94A3B8' : '#F5C518', color:'#1A3A5C', fontWeight:800, fontSize:'16px', padding:'14px', borderRadius:'12px', border:'none', cursor: loading ? 'not-allowed' : 'pointer' }}>
+          {loading ? 'Sending...' : 'Send Message'}
         </button>
         <a href="tel:+12565551234"
-          className="block w-full text-center border-2 border-[#1A3A5C] text-[#1A3A5C] font-semibold py-4 rounded-xl text-base">
-          Call (256) 555-1234
+          style={{ display:'block', width:'100%', textAlign:'center', border:'2px solid #1A3A5C', color:'#1A3A5C', fontWeight:700, fontSize:'15px', padding:'13px', borderRadius:'12px', boxSizing:'border-box' as const }}>
+          📞 Call (256) 555-1234
         </a>
       </form>
     </div>
