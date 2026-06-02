@@ -103,11 +103,21 @@ export default function FenceEstimator() {
         <div>
           <p style={{ fontSize:'12px', color:'#92400E', margin:0, fontWeight:700 }}>Estimated Prices — Not Live Data</p>
           <p style={{ fontSize:'12px', color:'#92400E', margin:'2px 0 0' }}>
-            Market estimates for Huntsville, AL area. Live Home Depot pricing integration coming in Phase 3. Final price confirmed on-site.
+            Market estimates for Huntsville, AL area. Material prices sourced directly from Home Depot Huntsville, AL. Final quote confirmed on-site.
           </p>
         </div>
       </div>
 
+      {/* Home Depot material pricing badge */}
+      <div style={{ display:'flex', alignItems:'center', gap:'6px', background:'#FFF7ED', border:'1px solid #FDBA74', borderRadius:'8px', padding:'8px 12px', marginBottom:'24px' }}>
+        <span style={{ fontSize:'13px' }}>📦</span>
+        <span style={{ fontSize:'11px', color:'#9A3412', fontWeight:600 }}>Material prices sourced from</span>
+        <a href="https://www.homedepot.com" target="_blank" rel="noopener noreferrer"
+          style={{ fontSize:'11px', color:'#EA580C', fontWeight:700, textDecoration:'none' }}>
+          The Home Depot
+        </a>
+        <span style={{ fontSize:'10px', color:'#9A3412' }}>· Huntsville, AL · Updated quarterly</span>
+      </div>
       {/* STEP 1: Material */}
       <div style={{ marginBottom:'28px' }}>
         <div style={{ fontSize:'11px', fontWeight:700, color:'#1A3A5C', letterSpacing:'0.8px', marginBottom:'8px' }}>STEP 1 — MATERIAL</div>

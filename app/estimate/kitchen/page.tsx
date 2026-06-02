@@ -82,6 +82,17 @@ export default function KitchenEstimator() {
         </div>
       </div>
 
+      {/* Home Depot material pricing badge */}
+      <div style={{ display:'flex', alignItems:'center', gap:'6px', background:'#FFF7ED', border:'1px solid #FDBA74', borderRadius:'8px', padding:'8px 12px', marginBottom:'24px' }}>
+        <span style={{ fontSize:'13px' }}>📦</span>
+        <span style={{ fontSize:'11px', color:'#9A3412', fontWeight:600 }}>Material prices sourced from</span>
+        <a href="https://www.homedepot.com" target="_blank" rel="noopener noreferrer"
+          style={{ fontSize:'11px', color:'#EA580C', fontWeight:700, textDecoration:'none' }}>
+          The Home Depot
+        </a>
+        <span style={{ fontSize:'10px', color:'#9A3412' }}>· Huntsville, AL · Updated quarterly</span>
+      </div>
+
       <div style={{ marginBottom:'20px' }}>
         <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'10px' }}>Remodel Scope</label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>

@@ -72,6 +72,16 @@ export default function HandymanEstimator() {
         <p style={{ fontSize:'12px', color:'#92400E', margin:0, lineHeight:1.6 }}>Prices based on Huntsville, AL market rates (2026). Actual cost depends on site conditions. Related items needing repair or replacement may add to the total. A final quote is confirmed after an on-site inspection.</p>
       </div>
 
+      {/* Home Depot material pricing badge */}
+      <div style={{ display:'flex', alignItems:'center', gap:'6px', background:'#FFF7ED', border:'1px solid #FDBA74', borderRadius:'8px', padding:'8px 12px', marginBottom:'24px' }}>
+        <span style={{ fontSize:'13px' }}>📦</span>
+        <span style={{ fontSize:'11px', color:'#9A3412', fontWeight:600 }}>Material prices sourced from</span>
+        <a href="https://www.homedepot.com" target="_blank" rel="noopener noreferrer"
+          style={{ fontSize:'11px', color:'#EA580C', fontWeight:700, textDecoration:'none' }}>
+          The Home Depot
+        </a>
+        <span style={{ fontSize:'10px', color:'#9A3412' }}>· Huntsville, AL · Updated quarterly</span>
+      </div>
       <div style={{ marginBottom:'20px' }}>
         <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'10px' }}>What do you need done?</label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
