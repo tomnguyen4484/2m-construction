@@ -1,0 +1,41 @@
+name: Update Home Depot Material Prices
+
+on:
+  schedule:
+    # Runs 1st day of every 3rd month at 6:00 AM UTC (Jan, Apr, Jul, Oct)
+    - cron: '0 6 1 */3 *'
+  workflow_dispatch:
+    # Allow manual trigger from GitHub Actions tab
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run price scraper
+        run: node scripts/scrape-hd-prices.mjs
+        continue-on-error: true  # If scraping fails, keep existing prices
+
+      - name: Check for price changes
+        id: check_changes
+        run: |
+          git diff --quiet data/hd-prices.json || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit updated prices
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config user.name  "Price Bot"
+          git config user.email "bot@2mhuntsville.com"
+          git add data/hd-prices.json
+          git commit -m "chore: update Home Depot material prices (quarterly)"
+          git push

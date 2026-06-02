@@ -1,0 +1,99 @@
+{
+  "lastUpdated": "2026-06-02",
+  "nextUpdate": "2026-09-01",
+  "storeLocation": "Huntsville, AL",
+  "storeId": "6892",
+  "note": "Material reference prices only. Labor not included. Prices vary by project scope.",
+  "products": {
+    "pt_decking_5x6x8": {
+      "name": "5/4 x 6 x 8 ft PT Decking Board (WeatherShield)",
+      "sku": "206968441",
+      "url": "https://www.homedepot.com/p/206968441",
+      "price": 6.58,
+      "unit": "board",
+      "coverage_sqft": 3.67,
+      "price_per_sqft": 1.79
+    },
+    "pt_decking_5x6x16": {
+      "name": "5/4 x 6 x 16 ft PT Decking Board (WeatherShield)",
+      "sku": "206968440",
+      "url": "https://www.homedepot.com/p/206968440",
+      "price": 13.08,
+      "unit": "board",
+      "coverage_sqft": 7.33,
+      "price_per_sqft": 1.78
+    },
+    "shingles_oc_duration_30": {
+      "name": "Owens Corning Duration Architectural Shingles (32.8 sq ft/bundle)",
+      "sku": "205655962",
+      "url": "https://www.homedepot.com/p/205655962",
+      "price": 40.97,
+      "unit": "bundle",
+      "coverage_sqft": 33.3,
+      "price_per_sqft": 1.23
+    },
+    "drywall_4x8_half": {
+      "name": "USG 4 x 8 x 1/2 in. Drywall Sheet",
+      "sku": "100318436",
+      "url": "https://www.homedepot.com/p/100318436",
+      "price": 13.48,
+      "unit": "sheet",
+      "coverage_sqft": 32,
+      "price_per_sqft": 0.42
+    },
+    "quikrete_80lb": {
+      "name": "QUIKRETE 80 lb. Concrete Mix",
+      "sku": "100318550",
+      "url": "https://www.homedepot.com/p/100318550",
+      "price": 6.48,
+      "unit": "bag",
+      "coverage_cuft": 0.45,
+      "price_per_bag": 6.48
+    },
+    "lvp_lifeproof": {
+      "name": "LifeProof LVP Flooring (avg)",
+      "sku": "varies",
+      "url": "https://www.homedepot.com/b/Flooring-Vinyl-Flooring-Vinyl-Plank-Flooring/Lifeproof/N-5yc1vZbzjzZnv7",
+      "price": 2.49,
+      "unit": "sqft",
+      "coverage_sqft": 1,
+      "price_per_sqft": 2.49
+    },
+    "laminate_pergo": {
+      "name": "Pergo Laminate Flooring (avg)",
+      "sku": "varies",
+      "url": "https://www.homedepot.com/b/Flooring-Laminate-Flooring/Pergo/N-5yc1vZar07Za7w",
+      "price": 1.79,
+      "unit": "sqft",
+      "coverage_sqft": 1,
+      "price_per_sqft": 1.79
+    },
+    "pine_fence_1x6x8": {
+      "name": "1 x 6 x 8 ft Pressure-Treated Pine Fence Board",
+      "sku": "100014169",
+      "url": "https://www.homedepot.com/p/100014169",
+      "price": 5.97,
+      "unit": "board",
+      "coverage_lf": 0.5,
+      "price_per_lf": 11.94
+    },
+    "vinyl_fence_panel_6x8": {
+      "name": "Vinyl Fence Privacy Panel 6 x 8 ft",
+      "sku": "varies",
+      "url": "https://www.homedepot.com/b/Fencing-Vinyl-Fencing/N-5yc1vZar2gZ1z0tfkw",
+      "price": 89.97,
+      "unit": "panel",
+      "coverage_lf": 8,
+      "price_per_lf": 11.25
+    },
+    "paint_sw_promar_1gal": {
+      "name": "Sherwin-Williams ProMar 200 Interior Paint (1 gal)",
+      "sku": "varies",
+      "url": "https://www.homedepot.com/b/Paint-Interior-Paint/Sherwin-Williams/N-5yc1vZar2dZbsfZ1z17x9n",
+      "price": 42.98,
+      "unit": "gallon",
+      "coverage_sqft": 400,
+      "price_per_sqft": 0.11
+    }
+  }
+}
