@@ -67,8 +67,8 @@ export default function DrywallEstimator() {
       <h1 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', margin:'0 0 4px' }}>🧱 Drywall Estimator</h1>
 
       <div style={{ background:'#FFF9E6', border:'1px solid #F5C518', borderRadius:'10px', padding:'12px 14px', marginBottom:'24px' }}>
-        <p style={{ fontSize:'12px', color:'#92400E', margin:'0 0 4px', fontWeight:700 }}>⚠️ Giá Tham Khảo — Chưa Phải Giá Cuối Cùng</p>
-        <p style={{ fontSize:'12px', color:'#92400E', margin:0, lineHeight:1.6 }}>Giá dựa theo thị trường Huntsville, AL (2026). Giá thực tế phụ thuộc hiện trạng công trình. Các hạng mục liên quan cần sửa chữa hoặc thay thế sẽ phát sinh thêm chi phí. Báo giá chính xác sau khảo sát tại chỗ.</p>
+        <p style={{ fontSize:'12px', color:'#92400E', margin:'0 0 4px', fontWeight:700 }}>⚠️ Estimated Prices — Not a Final Quote</p>
+        <p style={{ fontSize:'12px', color:'#92400E', margin:0, lineHeight:1.6 }}>Prices based on Huntsville, AL market rates (2026). Actual cost depends on site conditions. Related items needing repair or replacement may add to the total. A final quote is confirmed after an on-site inspection.</p>
       </div>
 
       <div style={{ marginBottom:'20px' }}>
@@ -149,7 +149,7 @@ export default function DrywallEstimator() {
           <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
             <span>Total Estimate</span><span style={{ color:'#F5C518' }}>{fmt(total)}</span>
           </div>
-          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Giá tham khảo. Chưa bao gồm phát sinh nếu có vấn đề phát hiện trong quá trình thi công.</p>
+          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Estimate only. Does not include costs for issues discovered during construction.</p>
         </div>
       )}
 

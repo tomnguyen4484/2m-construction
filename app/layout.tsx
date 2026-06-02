@@ -86,7 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body style={{ margin: 0, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', background: '#0F2542', color: '#E2E8F0', paddingTop: '60px', paddingBottom: '64px' }}>
-        {/* Watermark logo cố định toàn trang */}
+        {/* Fixed full-page watermark logo */}
         <div style={{
           position: 'fixed',
           top: '50%',

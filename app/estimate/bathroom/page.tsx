@@ -74,8 +74,8 @@ export default function BathroomEstimator() {
       <p style={{ color:'#64748B', fontSize:'13px', margin:'0 0 16px' }}>Huntsville, AL market rates 2026</p>
 
       <div style={{ background:'#FFF9E6', border:'1px solid #F5C518', borderRadius:'10px', padding:'12px 14px', marginBottom:'24px' }}>
-        <p style={{ fontSize:'12px', color:'#92400E', margin:'0 0 4px', fontWeight:700 }}>⚠️ Giá Tham Khảo — Chưa Phải Giá Cuối Cùng</p>
-        <p style={{ fontSize:'12px', color:'#92400E', margin:0, lineHeight:1.6 }}>Giá dựa theo thị trường Huntsville, AL (2026). Giá thực tế phụ thuộc hiện trạng công trình. Các hạng mục liên quan cần sửa chữa hoặc thay thế sẽ phát sinh thêm chi phí. Báo giá chính xác sau khảo sát tại chỗ.</p>
+        <p style={{ fontSize:'12px', color:'#92400E', margin:'0 0 4px', fontWeight:700 }}>⚠️ Estimated Prices — Not a Final Quote</p>
+        <p style={{ fontSize:'12px', color:'#92400E', margin:0, lineHeight:1.6 }}>Prices based on Huntsville, AL market rates (2026). Actual cost depends on site conditions. Related items needing repair or replacement may add to the total. A final quote is confirmed after an on-site inspection.</p>
       </div>
 
       {/* Scope */}
@@ -184,7 +184,7 @@ export default function BathroomEstimator() {
           <span>Total Estimate</span><span style={{ color:'#F5C518' }}>{fmt(total)}</span>
         </div>
         <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>
-          * Giá tham khảo. Chưa bao gồm phát sinh nếu có vấn đề ở plumbing/subfloor hiện tại.
+          * Estimate only. Does not include additional costs if plumbing or subfloor issues are found.
         </p>
       </div>
 
