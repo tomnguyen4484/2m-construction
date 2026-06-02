@@ -2,10 +2,8 @@ name: Update Home Depot Material Prices
 
 on:
   schedule:
-    # Runs 1st day of every 3rd month at 6:00 AM UTC (Jan, Apr, Jul, Oct)
     - cron: '0 6 1 */3 *'
   workflow_dispatch:
-    # Allow manual trigger from GitHub Actions tab
 
 jobs:
   update-prices:
@@ -24,7 +22,9 @@ jobs:
 
       - name: Run price scraper
         run: node scripts/scrape-hd-prices.mjs
-        continue-on-error: true  # If scraping fails, keep existing prices
+        continue-on-error: true
+        env:
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
 
       - name: Check for price changes
         id: check_changes
