@@ -86,10 +86,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body style={{ margin: 0, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', background: '#F8FAFC', color: '#1E293B', paddingTop: '60px', paddingBottom: '64px' }}>
-        <Header />
-        {children}
-        <Footer />
-        <BottomNav />
+        {/* Watermark logo cố định toàn trang */}
+        <div style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '92vw',
+          height: '92vw',
+          maxWidth: '500px',
+          maxHeight: '500px',
+          opacity: 0.045,
+          pointerEvents: 'none',
+          zIndex: 0,
+          backgroundImage: 'url(/logo.png)',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundSize: 'contain',
+        }} />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <Header />
+          {children}
+          <Footer />
+          <BottomNav />
+        </div>
       </body>
     </html>
   );
