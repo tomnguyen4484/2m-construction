@@ -66,12 +66,9 @@ export default function DrywallEstimator() {
       <Link href="/estimate" style={{ fontSize:'13px', color:'#64748B', marginBottom:'16px', display:'block' }}>← All Services</Link>
       <h1 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', margin:'0 0 4px' }}>🧱 Drywall Estimator</h1>
 
-      <div style={{ background:'#FFF9E6', border:'1px solid #F5C518', borderRadius:'10px', padding:'10px 14px', marginBottom:'24px', display:'flex', gap:'8px' }}>
-        <span>⚠️</span>
-        <div>
-          <p style={{ fontSize:'12px', color:'#92400E', margin:0, fontWeight:600 }}>Estimated Prices — Not Live Data</p>
-          <p style={{ fontSize:'12px', color:'#92400E', margin:'2px 0 0' }}>Market estimates for Huntsville, AL. Final quote confirmed on-site.</p>
-        </div>
+      <div style={{ background:'#FFF9E6', border:'1px solid #F5C518', borderRadius:'10px', padding:'12px 14px', marginBottom:'24px' }}>
+        <p style={{ fontSize:'12px', color:'#92400E', margin:'0 0 4px', fontWeight:700 }}>⚠️ Giá Tham Khảo — Chưa Phải Giá Cuối Cùng</p>
+        <p style={{ fontSize:'12px', color:'#92400E', margin:0, lineHeight:1.6 }}>Giá dựa theo thị trường Huntsville, AL (2026). Giá thực tế phụ thuộc hiện trạng công trình. Các hạng mục liên quan cần sửa chữa hoặc thay thế sẽ phát sinh thêm chi phí. Báo giá chính xác sau khảo sát tại chỗ.</p>
       </div>
 
       <div style={{ marginBottom:'20px' }}>
@@ -152,7 +149,7 @@ export default function DrywallEstimator() {
           <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
             <span>Total Estimate</span><span style={{ color:'#F5C518' }}>{fmt(total)}</span>
           </div>
-          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Final price may vary based on ceiling height and condition of existing walls.</p>
+          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Giá tham khảo. Chưa bao gồm phát sinh nếu có vấn đề phát hiện trong quá trình thi công.</p>
         </div>
       )}
 
