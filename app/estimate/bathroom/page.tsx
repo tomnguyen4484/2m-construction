@@ -21,7 +21,7 @@ const SIZES: Record<BathSize, { label: string; mult: number; sqft: string }> = {
 
 const VANITIES: Record<VanityType, { label: string; cost: number; desc: string }> = {
   keep:         { label: 'Keep Existing Vanity',   cost: 0,     desc: 'Reface or paint existing' },
-  stock_single: { label: 'Stock – Single Sink',    cost: 850,   desc: '30"–48", Home Depot/Lowe's' },
+  stock_single: { label: 'Stock – Single Sink',    cost: 850,   desc: '30-48 in, Home Depot / Lowes' },
   stock_double: { label: 'Stock – Double Sink',    cost: 1400,  desc: '60"–72", two sinks' },
   semi_custom:  { label: 'Semi-Custom',            cost: 2800,  desc: 'More sizes & finish options' },
   custom:       { label: 'Custom Built-In',        cost: 5500,  desc: 'Built to spec, unlimited options' },
