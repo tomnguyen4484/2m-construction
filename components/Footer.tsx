@@ -1,44 +1,52 @@
+import Link from 'next/link';
+
 export default function Footer() {
   return (
-    <footer style={{
-      background: '#0F2542', color: '#FFFFFF',
-      padding: '40px 16px 32px', marginBottom: '60px'
-    }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '32px', marginBottom: '32px' }}>
+    <footer style={{ background:'#1A3A5C', color:'#94A3B8', padding:'32px 16px 24px', marginTop:'40px' }}>
+      <div style={{ maxWidth:'1100px', margin:'0 auto' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(160px,1fr))', gap:'24px', marginBottom:'24px' }}>
+
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-              <div style={{
-                width: '36px', height: '36px', background: '#FFFFFF',
-                borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center'
-              }}>
-                <span style={{ color: '#1A3A5C', fontWeight: 800, fontSize: '14px' }}>2M</span>
-              </div>
-              <span style={{ fontWeight: 700, fontSize: '16px' }}>2M Construction</span>
-            </div>
-            <p style={{ color: '#94A3B8', fontSize: '13px', lineHeight: 1.6 }}>
-              Professional construction and remodeling services in Huntsville, AL and surrounding areas.
+            <div style={{ color:'#fff', fontWeight:700, fontSize:'14px', marginBottom:'12px' }}>2M Construction</div>
+            <p style={{ fontSize:'12px', lineHeight:1.7, margin:0 }}>
+              Licensed & insured contractor serving North Alabama since 2010.
+            </p>
+            <p style={{ fontSize:'12px', marginTop:'8px', margin:'8px 0 0' }}>
+              📞 <a href="tel:+12565551234" style={{ color:'#F5C518' }}>(256) 555-1234</a>
             </p>
           </div>
+
           <div>
-            <h4 style={{ fontWeight: 600, marginBottom: '12px', fontSize: '14px', color: '#CBD5E1' }}>Services</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {['Fence','Deck','Painting','Flooring','Bathroom','Kitchen'].map(s => (
-                <a key={s} href={'/estimate/'+s.toLowerCase()} style={{ color: '#94A3B8', fontSize: '13px' }}>{s}</a>
-              ))}
-            </div>
+            <div style={{ color:'#fff', fontWeight:700, fontSize:'13px', marginBottom:'12px' }}>Services</div>
+            {['fence','deck','painting','flooring','bathroom','kitchen','drywall','roofing','concrete','handyman'].map(s => (
+              <div key={s} style={{ marginBottom:'6px' }}>
+                <Link href={'/estimate/' + s} style={{ color:'#94A3B8', fontSize:'12px', textTransform:'capitalize' }}>{s}</Link>
+              </div>
+            ))}
           </div>
+
           <div>
-            <h4 style={{ fontWeight: 600, marginBottom: '12px', fontSize: '14px', color: '#CBD5E1' }}>Contact</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', color: '#94A3B8', fontSize: '13px' }}>
-              <span>(256) 555-1234</span>
-              <span>info@2mconstruction.com</span>
-              <span>Huntsville, AL</span>
-            </div>
+            <div style={{ color:'#fff', fontWeight:700, fontSize:'13px', marginBottom:'12px' }}>Service Areas</div>
+            {[['huntsville','Huntsville'],['madison','Madison'],['athens','Athens'],['decatur','Decatur'],['harvest','Harvest'],['hampton-cove','Hampton Cove']].map(([slug,name]) => (
+              <div key={slug} style={{ marginBottom:'6px' }}>
+                <Link href={'/service-area/' + slug} style={{ color:'#94A3B8', fontSize:'12px' }}>{name}, AL</Link>
+              </div>
+            ))}
           </div>
+
+          <div>
+            <div style={{ color:'#fff', fontWeight:700, fontSize:'13px', marginBottom:'12px' }}>Company</div>
+            <div style={{ marginBottom:'6px' }}><Link href="/" style={{ color:'#94A3B8', fontSize:'12px' }}>Home</Link></div>
+            <div style={{ marginBottom:'6px' }}><Link href="/estimate" style={{ color:'#94A3B8', fontSize:'12px' }}>Free Estimates</Link></div>
+            <div style={{ marginBottom:'6px' }}><Link href="/contact" style={{ color:'#94A3B8', fontSize:'12px' }}>Contact Us</Link></div>
+            <div style={{ marginBottom:'6px' }}><Link href="/service-area" style={{ color:'#94A3B8', fontSize:'12px' }}>Service Areas</Link></div>
+          </div>
+
         </div>
-        <div style={{ borderTop: '1px solid #1E3A5F', paddingTop: '20px', color: '#475569', fontSize: '12px', textAlign: 'center' }}>
-          2026 2M Construction. All rights reserved.
+
+        <div style={{ borderTop:'1px solid rgba(255,255,255,0.1)', paddingTop:'16px', display:'flex', justifyContent:'space-between', flexWrap:'wrap', gap:'8px' }}>
+          <p style={{ fontSize:'11px', margin:0 }}>© {new Date().getFullYear()} 2M Construction LLC. All rights reserved.</p>
+          <p style={{ fontSize:'11px', margin:0 }}>Huntsville · Madison · Athens · Decatur, Alabama</p>
         </div>
       </div>
     </footer>
