@@ -85,7 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           })}}
         />
       </head>
-      <body style={{ margin: 0, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', background: '#F8FAFC', color: '#1E293B', paddingTop: '60px', paddingBottom: '64px' }}>
+      <body style={{ margin: 0, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', background: '#0F2542', color: '#E2E8F0', paddingTop: '60px', paddingBottom: '64px' }}>
         {/* Watermark logo cố định toàn trang */}
         <div style={{
           position: 'fixed',
@@ -96,7 +96,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           height: '92vw',
           maxWidth: '500px',
           maxHeight: '500px',
-          opacity: 0.045,
+          opacity: 0.12,
           pointerEvents: 'none',
           zIndex: 0,
           backgroundImage: 'url(/logo.png)',
