@@ -1,14 +1,39 @@
 import { NextResponse } from 'next/server';
+import { createHmac } from 'crypto';
 
-const SENDGRID_KEY  = process.env.SENDGRID_API_KEY ?? '';
-const ADMIN_EMAIL   = process.env.ADMIN_EMAIL ?? 'tuannguyen44526@gmail.com';
-const FROM_EMAIL    = 'info@2mhuntsville.com';
+const SENDGRID_KEY = process.env.SENDGRID_API_KEY ?? '';
+const ADMIN_EMAIL  = process.env.ADMIN_EMAIL ?? 'tuannguyen44526@gmail.com';
+const FROM_EMAIL   = 'info@2mhuntsville.com';
+const SECRET       = process.env.OTP_SECRET ?? 'otp-secret-2m-2024';
 
-let pendingOtp: { code: string; expires: number } | null = null;
+// Stateless OTP: sign(code + expires) with HMAC — no in-memory state needed
+function signOtp(code: string, expires: number): string {
+  return createHmac('sha256', SECRET).update(`${code}:${expires}`).digest('hex').slice(0, 16);
+}
+
+function makeToken(code: string): string {
+  const expires = Date.now() + 10 * 60 * 1000;
+  const sig = signOtp(code, expires);
+  return Buffer.from(`${code}:${expires}:${sig}`).toString('base64url');
+}
+
+function verifyToken(token: string, code: string): boolean {
+  try {
+    const decoded = Buffer.from(token, 'base64url').toString();
+    const [storedCode, expiresStr, sig] = decoded.split(':');
+    const expires = parseInt(expiresStr);
+    if (Date.now() > expires) return false;
+    if (storedCode !== code) return false;
+    const expected = signOtp(storedCode, expires);
+    return sig === expected;
+  } catch {
+    return false;
+  }
+}
 
 export async function POST(req: Request) {
-  const { action, code, password } = await req.json() as {
-    action: string; code?: string; password?: string;
+  const { action, code, password, token } = await req.json() as {
+    action: string; code?: string; password?: string; token?: string;
   };
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? 'admin2m2024';
 
@@ -18,7 +43,7 @@ export async function POST(req: Request) {
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    pendingOtp = { code: otp, expires: Date.now() + 10 * 60 * 1000 }; // 10 min
+    const otpToken = makeToken(otp);
 
     const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
       method: 'POST',
@@ -56,19 +81,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Email failed' }, { status: 500 });
     }
 
-    return NextResponse.json({ ok: true });
+    // Return token to client — client sends it back with code
+    return NextResponse.json({ ok: true, token: otpToken });
   }
 
   if (action === 'verify_otp') {
-    if (!pendingOtp) return NextResponse.json({ error: 'No OTP pending' }, { status: 400 });
-    if (Date.now() > pendingOtp.expires) {
-      pendingOtp = null;
-      return NextResponse.json({ error: 'Code expired' }, { status: 401 });
+    if (!token || !code) {
+      return NextResponse.json({ error: 'Missing token or code' }, { status: 400 });
     }
-    if (code !== pendingOtp.code) {
-      return NextResponse.json({ error: 'Invalid code' }, { status: 401 });
+    if (!verifyToken(token, code)) {
+      return NextResponse.json({ error: 'Invalid or expired code' }, { status: 401 });
     }
-    pendingOtp = null;
     return NextResponse.json({ ok: true, token: Buffer.from(ADMIN_PASSWORD).toString('base64') });
   }
 
