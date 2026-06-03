@@ -61,8 +61,17 @@ export default function AdminPage() {
   }
 
   async function loadData(t: string) {
-    const res = await fetch('/api/admin/config', { headers: { 'x-admin-token': t } });
-    if (res.ok) setData(await res.json());
+    try {
+      const res = await fetch('/api/admin/config', { headers: { 'x-admin-token': t } });
+      if (res.ok) {
+        setData(await res.json());
+      } else {
+        // Show dashboard even if config load fails
+        setData({ siteConfig: {}, hdPrices: { products: {}, lastUpdated: 'N/A' } });
+      }
+    } catch {
+      setData({ siteConfig: {}, hdPrices: { products: {}, lastUpdated: 'N/A' } });
+    }
   }
 
   async function handleSave() {
