@@ -83,7 +83,7 @@ export default function AboutPage() {
           }}>
             {[
               { title: 'Licensed & Insured', desc: 'Fully licensed contractor operating in Alabama. Every job is covered — protecting you and your property.' },
-              { title: 'Honest Pricing', desc: 'No hidden fees. We provide detailed estimates upfront so you know exactly what you're paying for.' },
+              { title: 'Honest Pricing', desc: 'No hidden fees. We provide detailed estimates upfront so you know exactly what you are paying for.' },
               { title: 'Quality Craftsmanship', desc: 'We use quality materials and proven techniques. Every project is built to last.' },
               { title: 'Clear Communication', desc: 'We keep you informed from estimate to completion. No surprises, no runaround.' },
             ].map((v) => (
