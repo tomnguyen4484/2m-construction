@@ -86,7 +86,7 @@ export default function AdminPage() {
           <div style={{ fontSize:'32px', marginBottom:'8px' }}>🔐</div>
           <h1 style={{ color:'#FFFFFF', fontSize:'20px', fontWeight:700, margin:0 }}>Admin Login</h1>
           <p style={{ color:'#64748B', fontSize:'13px', margin:'6px 0 0' }}>
-            {step === 'password' ? 'Enter your password' : 'Enter the 6-digit SMS code'}
+            {step === 'password' ? 'Enter your password' : 'Enter the 6-digit code sent to your email'}
           </p>
         </div>
 
