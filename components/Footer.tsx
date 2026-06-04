@@ -9,9 +9,9 @@ export default function Footer() {
           <div>
             <div style={{ color:'#fff', fontWeight:700, fontSize:'14px', marginBottom:'12px' }}>2M Construction</div>
             <p style={{ fontSize:'12px', lineHeight:1.7, margin:0 }}>
-              Licensed & insured contractor serving North Alabama since 2010.
+              Licensed & insured contractor serving North Alabama.
             </p>
-            <p style={{ fontSize:'12px', marginTop:'8px', margin:'8px 0 0' }}>
+            <p style={{ fontSize:'12px', margin:'8px 0 0' }}>
               📞 <a href="tel:+12565551234" style={{ color:'#F5C518' }}>(256) 555-1234</a>
             </p>
           </div>

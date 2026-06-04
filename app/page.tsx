@@ -16,7 +16,7 @@ const services = [
 
 const trust = [
   { icon: '⭐', label: '5-Star Rated', sub: 'Google & BBB verified' },
-  { icon: '📍', label: 'Local Company', sub: 'Serving Huntsville since 2010' },
+  { icon: '📍', label: 'Local Company', sub: 'Serving Huntsville since 2026' },
   { icon: '🛡️', label: 'Licensed & Insured', sub: 'AL Contractor License' },
 ];
 
