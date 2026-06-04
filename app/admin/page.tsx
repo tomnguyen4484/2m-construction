@@ -37,7 +37,7 @@ export default function AdminPage() {
       body: JSON.stringify({ action: 'send_otp', password }),
     });
     setLoading(false);
-    if (res.ok) { const d = await res.json(); setOtpToken(d.token ?? ''); setPendingToken(data.pendingToken ?? '');
+    if (res.ok) { const d = await res.json(); setOtpToken(d.pendingToken ?? ''); setPendingToken(d.pendingToken ?? '');
         setStep('otp'); }
     else { const d = await res.json(); setAuthErr(d.error ?? 'Error'); }
   }
