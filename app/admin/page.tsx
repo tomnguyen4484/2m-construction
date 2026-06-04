@@ -18,6 +18,7 @@ export default function AdminPage() {
   const [step, setStep]         = useState<AuthStep>('password');
   const [password, setPassword] = useState('');
   const [otp, setOtp]           = useState('');
+  const [pendingToken, setPendingToken] = useState('');
   const [token, setToken]       = useState('');
   const [authErr, setAuthErr]   = useState('');
   const [loading, setLoading]   = useState(false);
@@ -36,7 +37,8 @@ export default function AdminPage() {
       body: JSON.stringify({ action: 'send_otp', password }),
     });
     setLoading(false);
-    if (res.ok) { const d = await res.json(); setOtpToken(d.token ?? ''); setStep('otp'); }
+    if (res.ok) { const d = await res.json(); setOtpToken(d.token ?? ''); setPendingToken(data.pendingToken ?? '');
+        setStep('otp'); }
     else { const d = await res.json(); setAuthErr(d.error ?? 'Error'); }
   }
 
@@ -46,7 +48,7 @@ export default function AdminPage() {
     const res = await fetch('/api/admin/otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'verify_otp', code: otp, token: otpToken }),
+      body: JSON.stringify({ action: 'verify_otp', code: otp, pendingToken, token: otpToken }),
     });
     setLoading(false);
     if (res.ok) {
