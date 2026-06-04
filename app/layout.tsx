@@ -123,12 +123,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
       
         {/* Google Analytics 4 */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-EY3HMXITKE" strategy="afterInteractive" />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-EY3HHXZTKE" strategy="afterInteractive" />
         <Script id="ga4-init" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'G-EY3HMXITKE', { page_path: window.location.pathname });
+          gtag('config', 'G-EY3HHXZTKE', { page_path: window.location.pathname });
         `}</Script>
       </body>
     </html>
