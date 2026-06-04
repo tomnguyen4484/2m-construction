@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+
+# Block admin routes
 Disallow: /admin
 Disallow: /api/
 

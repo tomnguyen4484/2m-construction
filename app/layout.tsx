@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import type { Metadata } from 'next';
 import './globals.css';
 import Header from '../components/Header';
@@ -5,33 +6,43 @@ import BottomNav from '../components/BottomNav';
 import Footer from '../components/Footer';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://2mhuntsville.com'),
+  metadataBase: new URL('https://www.2mhuntsville.com'),
   title: {
-    default: '2M Construction – Free Estimates | Huntsville, AL',
+    default: '2M Construction | Contractor Huntsville, AL',
     template: '%s | 2M Construction Huntsville',
   },
-  description: 'Get instant construction estimates for fencing, decks, roofing, painting, flooring & more in Huntsville, AL. Licensed & insured. Call (256) 555-1234.',
-  keywords: ['construction Huntsville AL', 'fence installation Huntsville', 'deck builder Huntsville', 'roofing contractor Huntsville', 'painting contractor Huntsville', 'flooring Huntsville', 'bathroom remodel Huntsville', 'kitchen remodel Huntsville', '2M Construction'],
+  description: 'Licensed contractor in Huntsville, AL. Specializing in fencing, decks, roofing, painting, flooring, bathroom & kitchen remodeling. Free estimates.',
+  keywords: ['contractor Huntsville AL', 'fence installation Huntsville', 'deck builder Huntsville', 'roofing contractor Huntsville', 'bathroom remodel Huntsville', 'kitchen remodel Huntsville', 'painting contractor Huntsville', 'flooring Huntsville AL', '2M Construction'],
   authors: [{ name: '2M Construction' }],
   creator: '2M Construction',
+  publisher: '2M Construction',
+  formatDetection: { telephone: true, email: true },
+  alternates: { canonical: 'https://www.2mhuntsville.com' },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://2mhuntsville.com',
+    url: 'https://www.2mhuntsville.com',
     siteName: '2M Construction',
-    title: '2M Construction – Free Estimates | Huntsville, AL',
-    description: 'Instant construction estimates for Huntsville, Madison, Athens & Decatur. Fencing, decks, roofing, painting, flooring & more.',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: '2M Construction Huntsville' }],
+    title: '2M Construction | Contractor Huntsville, AL',
+    description: 'Licensed contractor in Huntsville, AL. Fencing, decks, roofing, painting, remodeling. Free estimates.',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: '2M Construction Huntsville AL' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '2M Construction – Free Estimates | Huntsville, AL',
-    description: 'Instant construction estimates in Huntsville, AL. Licensed & insured.',
-    images: ['/og-image.png'],
+    title: '2M Construction | Contractor Huntsville, AL',
+    description: 'Licensed contractor in Huntsville, AL. Free estimates.',
+    images: ['/og-image.jpg'],
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
-  alternates: { canonical: 'https://2mhuntsville.com' },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+  },
+  verification: {
+    google: 'REPLACE_WITH_GSC_VERIFICATION_CODE',
+  },
 };
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -110,6 +121,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <BottomNav />
         </div>
+      
+        {/* Google Analytics 4 */}
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-EY3HMXITKE" strategy="afterInteractive" />
+        <Script id="ga4-init" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-EY3HMXITKE', { page_path: window.location.pathname });
+        `}</Script>
       </body>
     </html>
   );
