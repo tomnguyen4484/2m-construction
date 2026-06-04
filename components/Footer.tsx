@@ -36,10 +36,20 @@ export default function Footer() {
 
           <div>
             <div style={{ color:'#fff', fontWeight:700, fontSize:'13px', marginBottom:'12px' }}>Company</div>
-            <div style={{ marginBottom:'6px' }}><Link href="/" style={{ color:'#94A3B8', fontSize:'12px' }}>Home</Link></div>
-            <div style={{ marginBottom:'6px' }}><Link href="/estimate" style={{ color:'#94A3B8', fontSize:'12px' }}>Free Estimates</Link></div>
-            <div style={{ marginBottom:'6px' }}><Link href="/contact" style={{ color:'#94A3B8', fontSize:'12px' }}>Contact Us</Link></div>
-            <div style={{ marginBottom:'6px' }}><Link href="/service-area" style={{ color:'#94A3B8', fontSize:'12px' }}>Service Areas</Link></div>
+            {[
+              ['Home', '/'],
+              ['About Us', '/about'],
+              ['Services', '/services'],
+              ['Free Estimates', '/estimate'],
+              ['Portfolio', '/portfolio'],
+              ['Reviews', '/reviews'],
+              ['Blog', '/blog'],
+              ['Contact Us', '/contact'],
+            ].map(([label, href]) => (
+              <div key={href} style={{ marginBottom:'6px' }}>
+                <Link href={href} style={{ color:'#94A3B8', fontSize:'12px' }}>{label}</Link>
+              </div>
+            ))}
           </div>
 
         </div>
