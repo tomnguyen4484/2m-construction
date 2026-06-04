@@ -75,7 +75,7 @@ export default function DecaturServiceArea() {
         <h3 style={{ fontWeight:700, fontSize:'16px', color:'#1E293B', margin:'0 0 12px' }}>Why Choose 2M Construction in Decatur?</h3>
         <ul style={{ margin:0, paddingLeft:'20px', color:'#475569', fontSize:'14px', lineHeight:2 }}>
           <li>Licensed & insured Alabama contractor</li>
-          <li>Serving Decatur and Morgan County since 2010</li>
+          <li>Serving Decatur and Morgan County since 2026</li>
           <li>Free on-site estimates — no obligation</li>
           <li>Quality materials, competitive pricing</li>
           <li>5-star rated on Google</li>

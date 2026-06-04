@@ -59,7 +59,7 @@ export default function HomePage() {
             padding: '13px 24px', borderRadius: '10px', fontSize: '15px',
             display: 'inline-block'
           }}>
-            📞 Call Us Now
+             Call Us Now
           </a>
         </div>
       </div>
