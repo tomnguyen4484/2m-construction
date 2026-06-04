@@ -39,7 +39,7 @@ export default function Header() {
 
         {/* Nav links — luôn hiển thị */}
         <nav style={{ display: 'flex', gap: isMobile ? '14px' : '20px', alignItems: 'center' }}>
-          {[['Home', '/'], ['About', '/about'], ['Estimates', '/estimate'], ['Contact', '/contact']].map(([l, h]) => (
+          {[['Home', '/'], ['About', '/about'], ['Services', '/services'], ['Estimates', '/estimate'], ['Contact', '/contact']].map(([l, h]) => (
             <Link key={h} href={h} style={{
               color: '#CBD5E1', fontSize: isMobile ? '13px' : '14px',
               fontWeight: 500, textDecoration: 'none'
