@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Customer Reviews — 2M Construction | Huntsville, AL',
-  description: 'Read reviews from satisfied customers of 2M Construction in Huntsville, AL. Licensed & insured contractor.',
+  description: 'Read 5-star reviews from satisfied customers of 2M Construction in Huntsville, AL. Fencing, roofing, remodeling and more.',
   openGraph: {
     title: 'Customer Reviews — 2M Construction | Huntsville, AL',
-    description: 'Read reviews from satisfied customers of 2M Construction in Huntsville, AL. Licensed & insured contractor.',
+    description: '5-star rated contractor in Huntsville, AL. See what our customers say.',
     url: 'https://www.2mhuntsville.com/reviews',
     siteName: '2M Construction',
     locale: 'en_US',
