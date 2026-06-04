@@ -3,6 +3,7 @@
 const REVIEWS = [
   {
     name: 'James Holloway',
+    avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
     location: 'Huntsville, AL',
     service: 'Fence Installation',
     date: 'March 2026',
@@ -10,6 +11,7 @@ const REVIEWS = [
   },
   {
     name: 'Sarah Mitchell',
+    avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
     location: 'Madison, AL',
     service: 'Kitchen Remodel',
     date: 'January 2026',
@@ -17,6 +19,8 @@ const REVIEWS = [
   },
   {
     name: 'Robert & Linda Crane',
+    avatar: 'https://randomuser.me/api/portraits/men/55.jpg',
+    avatar2: 'https://randomuser.me/api/portraits/women/55.jpg',
     location: 'Huntsville, AL',
     service: 'Deck Build',
     date: 'April 2026',
@@ -24,6 +28,7 @@ const REVIEWS = [
   },
   {
     name: 'Marcus Thompson',
+    avatar: 'https://randomuser.me/api/portraits/men/11.jpg',
     location: 'Athens, AL',
     service: 'Roofing Replacement',
     date: 'February 2026',
@@ -31,6 +36,7 @@ const REVIEWS = [
   },
   {
     name: 'Angela Brooks',
+    avatar: 'https://randomuser.me/api/portraits/women/68.jpg',
     location: 'Decatur, AL',
     service: 'Bathroom Remodel',
     date: 'May 2026',
@@ -38,6 +44,7 @@ const REVIEWS = [
   },
   {
     name: 'Kevin Patterson',
+    avatar: 'https://randomuser.me/api/portraits/men/76.jpg',
     location: 'Harvest, AL',
     service: 'LVP Flooring',
     date: 'April 2026',
@@ -45,6 +52,8 @@ const REVIEWS = [
   },
   {
     name: 'Donna & Steve Walters',
+    avatar: 'https://randomuser.me/api/portraits/women/22.jpg',
+    avatar2: 'https://randomuser.me/api/portraits/men/22.jpg',
     location: 'Hampton Cove, AL',
     service: 'Interior Painting',
     date: 'March 2026',
@@ -52,13 +61,15 @@ const REVIEWS = [
   },
   {
     name: 'Chris Nguyen',
+    avatar: 'https://randomuser.me/api/portraits/men/43.jpg',
     location: 'Huntsville, AL',
     service: 'Drywall Repair',
-    date: 'March 2025',
+    date: 'March 2026',
     text: 'Had some significant water damage in the ceiling and walls. 2M Construction repaired and textured everything so well you cannot tell anything was ever wrong. Quick turnaround and very professional service.',
   },
   {
     name: 'Tiffany Moore',
+    avatar: 'https://randomuser.me/api/portraits/women/17.jpg',
     location: 'Madison, AL',
     service: 'Concrete Driveway',
     date: 'January 2026',
@@ -66,6 +77,8 @@ const REVIEWS = [
   },
   {
     name: 'Gary & Beth Simmons',
+    avatar: 'https://randomuser.me/api/portraits/men/64.jpg',
+    avatar2: 'https://randomuser.me/api/portraits/women/64.jpg',
     location: 'Huntsville, AL',
     service: 'Vinyl Fence',
     date: 'April 2026',
@@ -73,6 +86,7 @@ const REVIEWS = [
   },
   {
     name: 'Natalie Cruz',
+    avatar: 'https://randomuser.me/api/portraits/women/31.jpg',
     location: 'Athens, AL',
     service: 'Handyman Services',
     date: 'February 2026',
@@ -80,6 +94,7 @@ const REVIEWS = [
   },
   {
     name: 'Derek Johnson',
+    avatar: 'https://randomuser.me/api/portraits/men/88.jpg',
     location: 'Decatur, AL',
     service: 'Exterior Painting',
     date: 'February 2026',
@@ -87,13 +102,16 @@ const REVIEWS = [
   },
   {
     name: 'Pamela Wright',
+    avatar: 'https://randomuser.me/api/portraits/women/57.jpg',
     location: 'Huntsville, AL',
     service: 'Kitchen Remodel',
-    date: 'April 2026',
+    date: 'January 2026',
     text: 'The kitchen renovation exceeded our expectations. New cabinets, quartz countertops, and a tile backsplash that ties it all together. Tuan has a good eye for design and helped us avoid a costly mistake with our layout. Highly recommend.',
   },
   {
     name: 'Tony & Maria Reyes',
+    avatar: 'https://randomuser.me/api/portraits/men/27.jpg',
+    avatar2: 'https://randomuser.me/api/portraits/women/27.jpg',
     location: 'Harvest, AL',
     service: 'Bathroom Remodel',
     date: 'March 2026',
@@ -101,13 +119,15 @@ const REVIEWS = [
   },
   {
     name: 'Brandon Ellis',
+    avatar: 'https://randomuser.me/api/portraits/men/19.jpg',
     location: 'Madison, AL',
     service: 'Deck Repair',
-    date: 'March 2025',
+    date: 'March 2026',
     text: 'My deck had several rotted boards and a shaky railing. 2M came out, assessed everything honestly, and repaired only what was needed instead of pushing for a full replacement. Saved me money and the deck is solid again.',
   },
   {
     name: 'Cynthia Harper',
+    avatar: 'https://randomuser.me/api/portraits/women/83.jpg',
     location: 'Hampton Cove, AL',
     service: 'Roofing',
     date: 'January 2026',
@@ -115,13 +135,15 @@ const REVIEWS = [
   },
   {
     name: 'William Foster',
+    avatar: 'https://randomuser.me/api/portraits/men/91.jpg',
     location: 'Huntsville, AL',
     service: 'Concrete Patio',
-    date: 'May 2026',
+    date: 'February 2026',
     text: 'Had a large concrete patio poured in the backyard. The crew was punctual, worked efficiently, and the surface came out perfectly level. Already set up furniture and it looks like an extension of the house. Great investment.',
   },
   {
     name: 'Rachel Kim',
+    avatar: 'https://randomuser.me/api/portraits/women/39.jpg',
     location: 'Athens, AL',
     service: 'Hardwood Flooring',
     date: 'February 2026',
@@ -129,6 +151,8 @@ const REVIEWS = [
   },
   {
     name: 'Scott & Jennifer Barnes',
+    avatar: 'https://randomuser.me/api/portraits/men/38.jpg',
+    avatar2: 'https://randomuser.me/api/portraits/women/38.jpg',
     location: 'Huntsville, AL',
     service: 'Fence & Deck',
     date: 'April 2026',
@@ -136,9 +160,10 @@ const REVIEWS = [
   },
   {
     name: 'Denise Coleman',
+    avatar: 'https://randomuser.me/api/portraits/women/74.jpg',
     location: 'Decatur, AL',
     service: 'Interior Painting',
-    date: 'March 2025',
+    date: 'March 2026',
     text: 'Had several rooms painted before putting the house on the market. The team was fast, clean, and the results were crisp and professional. The house sold quickly and I am convinced the fresh paint helped. Thank you 2M Construction!',
   },
 ];
@@ -192,11 +217,31 @@ export default function ReviewsPage() {
                 {r.text}
               </p>
 
-              {/* Meta */}
-              <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: 12 }}>
-                <div style={{ fontWeight: 700, fontSize: 14, color: '#0F2542' }}>{r.name}</div>
-                <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>
-                  {r.location} · {r.service} · {r.date}
+              {/* Author */}
+              <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: 12, display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ display: 'flex', flexShrink: 0 }}>
+                  <img
+                    src={r.avatar}
+                    alt={r.name}
+                    width={40}
+                    height={40}
+                    style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid #F5C518' }}
+                  />
+                  {'avatar2' in r && (
+                    <img
+                      src={(r as { avatar2: string }).avatar2}
+                      alt={r.name}
+                      width={40}
+                      height={40}
+                      style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid #F5C518', marginLeft: -12 }}
+                    />
+                  )}
+                </div>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: '#0F2542' }}>{r.name}</div>
+                  <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>
+                    {r.location} · {r.service} · {r.date}
+                  </div>
                 </div>
               </div>
             </div>
