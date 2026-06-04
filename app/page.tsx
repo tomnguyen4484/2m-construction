@@ -2,22 +2,22 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const services = [
-  { name: 'Fence',    slug: 'fence',    icon: '🪵', desc: 'Wood, vinyl & chain-link' },
-  { name: 'Deck',     slug: 'deck',     icon: '🏗️', desc: 'Custom deck build' },
-  { name: 'Painting', slug: 'painting', icon: '🎨', desc: 'Interior & exterior' },
-  { name: 'Flooring', slug: 'flooring', icon: '🏠', desc: 'Hardwood, tile & vinyl' },
-  { name: 'Bathroom', slug: 'bathroom', icon: '🚿', desc: 'Full remodel' },
-  { name: 'Kitchen',  slug: 'kitchen',  icon: '🍳', desc: 'Renovation & cabinets' },
-  { name: 'Drywall',  slug: 'drywall',  icon: '🧱', desc: 'Repair & installation' },
-  { name: 'Roofing',  slug: 'roofing',  icon: '🏘️', desc: 'Repair & replacement' },
-  { name: 'Concrete', slug: 'concrete', icon: '⬜', desc: 'Driveways & patios' },
-  { name: 'Handyman', slug: 'handyman', icon: '🔧', desc: 'General repairs' },
+  { name: 'Fence',    slug: 'fence',    icon: '', desc: 'Wood, vinyl & chain-link' },
+  { name: 'Deck',     slug: 'deck',     icon: '', desc: 'Custom deck build' },
+  { name: 'Painting', slug: 'painting', icon: '', desc: 'Interior & exterior' },
+  { name: 'Flooring', slug: 'flooring', icon: '', desc: 'Hardwood, tile & vinyl' },
+  { name: 'Bathroom', slug: 'bathroom', icon: '', desc: 'Full remodel' },
+  { name: 'Kitchen',  slug: 'kitchen',  icon: '', desc: 'Renovation & cabinets' },
+  { name: 'Drywall',  slug: 'drywall',  icon: '', desc: 'Repair & installation' },
+  { name: 'Roofing',  slug: 'roofing',  icon: '', desc: 'Repair & replacement' },
+  { name: 'Concrete', slug: 'concrete', icon: '', desc: 'Driveways & patios' },
+  { name: 'Handyman', slug: 'handyman', icon: '', desc: 'General repairs' },
 ];
 
 const trust = [
-  { icon: '⭐', label: '5-Star Rated', sub: 'Google & BBB verified' },
-  { icon: '📍', label: 'Local Company', sub: 'Serving Huntsville since 2026' },
-  { icon: '🛡️', label: 'Licensed & Insured', sub: 'AL Contractor License' },
+  { icon: '', label: '5-Star Rated', sub: 'Google & BBB verified' },
+  { icon: '', label: 'Local Company', sub: 'Serving North Alabama' },
+  { icon: '', label: 'Licensed & Insured', sub: 'AL Contractor License' },
 ];
 
 export default function HomePage() {
@@ -38,7 +38,7 @@ export default function HomePage() {
           background: 'rgba(245,197,24,0.15)', border: '1px solid rgba(245,197,24,0.3)',
           borderRadius: '20px', padding: '4px 12px', width: 'fit-content'
         }}>
-          <span style={{ fontSize: '12px', color: '#F5C518' }}>📍 Huntsville · Madison · Athens · Decatur</span>
+          <span style={{ fontSize: '12px', color: '#F5C518' }}> Huntsville · Madison · Athens · Decatur</span>
         </div>
         <h1 style={{ color: '#FFFFFF', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 800, margin: 0, lineHeight: 1.2 }}>
           Get Your Free<br />Construction Estimate
