@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: 'https://www.2mhuntsville.com/estimate/deck' },
   title: 'Deck & Patio Cost Estimator — Huntsville, AL | 2M Construction',
   description: 'Estimate the cost of a new deck or patio in Huntsville, AL. Pressure-treated and composite options. Free quote from 2M Construction.',
   openGraph: {

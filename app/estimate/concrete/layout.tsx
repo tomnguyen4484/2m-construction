@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: 'https://www.2mhuntsville.com/estimate/concrete' },
   title: 'Concrete & Flatwork Cost Estimator — Huntsville, AL | 2M Construction',
   description: 'Get a concrete cost estimate in Huntsville, AL. Driveways, patios, walkways with rebar. Free on-site quote from 2M Construction.',
   openGraph: {

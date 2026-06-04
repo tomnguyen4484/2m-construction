@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Portfolio — 2M Construction | Huntsville, AL',
+  alternates: { canonical: 'https://www.2mhuntsville.com/portfolio' },
+  title: 'Portfolio | 2M Construction',
   description: 'View completed construction projects by 2M Construction in Huntsville, AL. Fencing, decks, roofing, remodels and more.',
   openGraph: {
     title: 'Portfolio — 2M Construction | Huntsville, AL',

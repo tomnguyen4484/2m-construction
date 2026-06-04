@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: 'https://www.2mhuntsville.com/estimate/fence' },
   title: 'Fence Installation Cost Estimator — Huntsville, AL | 2M Construction',
   description: 'Get an instant fence installation estimate for Huntsville, AL. Wood, vinyl, and chain-link options. Free on-site quote from 2M Construction.',
   openGraph: {

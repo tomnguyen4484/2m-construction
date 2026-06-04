@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: 'https://www.2mhuntsville.com/estimate/bathroom' },
   title: 'Bathroom Remodel Cost Estimator — Huntsville, AL | 2M Construction',
   description: 'Get a bathroom remodel estimate for Huntsville, AL. Tile, vanity, fixtures and more. Free on-site quote from 2M Construction.',
   openGraph: {

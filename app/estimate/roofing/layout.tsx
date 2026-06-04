@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: 'https://www.2mhuntsville.com/estimate/roofing' },
   title: 'Roofing Cost Estimator — Huntsville, AL | 2M Construction',
   description: 'Calculate roofing replacement costs in Huntsville, AL. Asphalt shingles and metal roofing. Get a free on-site quote from 2M Construction.',
   openGraph: {
