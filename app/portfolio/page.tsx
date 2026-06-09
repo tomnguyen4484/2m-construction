@@ -26,13 +26,20 @@ const BATHROOM = [
   { file: 'master-bathroom-oval-tub-gray-tile-surround-black-trim-madison-al.jpg', alt: 'Master bathroom with oval drop-in soaking tub, gray tile surround, and black trim detail — 2M Construction Madison AL', title: 'Master Bath — Oval Soaking Tub with Tile Surround, Madison, AL', location: 'Madison, AL', caption: 'Master bathroom featuring a drop-in oval soaking tub set within a custom tile platform, gray linear tile surround continuing from floor to wall, black accent trim, and hexagon mosaic shower floor visible in background.', tags: ['Master Bathroom', 'Soaking Tub', 'Tile Surround', 'Madison AL'] },
   { file: 'full-bathroom-remodel-floating-vanity-led-mirror-glass-shower-huntsville-al.jpg', alt: 'Full bathroom remodel with floating vanity, LED mirror, frameless glass shower, and white large-format floor tile — 2M Construction Huntsville AL', title: 'Full Bathroom Remodel — Floating Vanity & LED Mirror, Huntsville, AL', location: 'Huntsville, AL', caption: 'Complete bathroom remodel from floor to ceiling — large-format white porcelain floor tile, frameless sliding glass shower with hex mosaic floor, modern floating vanity with vessel sink, and backlit LED mirror.', tags: ['Full Bathroom Remodel', 'Floating Vanity', 'LED Mirror', 'Glass Shower', 'Huntsville AL'] },
   { file: 'shower-remodel-barn-door-glass-white-tile-hex-marble-floor-huntsville-al.jpg', alt: 'Shower remodel with barn-style sliding glass door, white large-format tile, marble hex floor, and recessed niche — 2M Construction Huntsville AL', title: 'Barn Door Glass Shower — White Tile & Marble Hex Floor, Huntsville, AL', location: 'Huntsville, AL', caption: 'Shower remodel featuring a barn-style frameless sliding glass door, white large-format wall tile, custom recessed niche with hex marble accent insert, marble hexagon floor tile, and rain shower with handheld system.', tags: ['Shower Remodel', 'Barn Door Glass', 'Sliding Door', 'Marble Hex', 'Huntsville AL'] },
-  { file: 'bathtub-surround-calacatta-marble-tile-built-in-niche-huntsville-al.jpg', alt: 'Bathtub surround remodel with calacatta marble porcelain tile and built-in niche — 2M Construction Huntsville AL', title: 'Calacatta Marble Bathtub Surround with Built-In Niche — Huntsville, AL', location: 'Huntsville, AL', caption: 'Full bathtub surround remodel with large-format calacatta marble porcelain tile floor to ceiling, built-in recessed niche, new soaking tub, and matching floor tile. A clean, luxurious finish that completely transforms the space.', tags: ['Bathtub Surround', 'Calacatta Marble', 'Tile Remodel', 'Huntsville AL'] },
+  { file: 'bathtub-surround-calacatta-marble-tile-built-in-niche-huntsville-al.jpg', alt: 'Bathtub surround remodel with calacatta marble porcelain tile and built-in niche — 2M Construction Huntsville AL', title: 'Calacatta Marble Bathtub Surround with Built-In Niche — Huntsville, AL', location: 'Huntsville, AL', caption: 'Full bathtub surround remodel with large-format calacatta marble porcelain tile floor to ceiling, built-in recessed niche, new soaking tub, and matching floor tile.', tags: ['Bathtub Surround', 'Calacatta Marble', 'Tile Remodel', 'Huntsville AL'] },
+];
+
+const FENCE = [
+  { file: 'cedar-wood-fence-corner-install-cap-rail-huntsville-al.jpg', alt: 'Cedar wood privacy fence corner installation with cap rail detail — 2M Construction Huntsville AL', title: 'Cedar Wood Fence — Corner Install with Cap Rail, Huntsville, AL', location: 'Huntsville, AL', caption: 'Cedar wood privacy fence showing corner post construction and cap rail detail. Tight board spacing, level top line, and clean corner finish demonstrate the craftsmanship 2M brings to every fence installation across North Alabama.', tags: ['Fence Installation', 'Wood Fence', 'Cedar', 'Corner Detail', 'Huntsville AL'] },
+  { file: 'cedar-wood-fence-installation-cap-rail-gate-huntsville-al.jpg', alt: 'Cedar wood privacy fence with cap rail and gate installed along brick home — 2M Construction Huntsville AL', title: 'Cedar Wood Privacy Fence with Cap Rail & Gate — Huntsville, AL', location: 'Huntsville, AL', caption: 'Full cedar wood privacy fence installation with flat cap rail, black hardware gate latch, and clean board-on-board construction. Fresh cedar grain, tight spacing, and level top line from end to end. Built to last and stain-ready for any finish.', tags: ['Fence Installation', 'Wood Fence', 'Cedar Fence', 'Privacy Fence', 'Huntsville AL'] },
+  { file: 'vinyl-fence-installation-white-lattice-top-huntsville-al.jpg', alt: 'White vinyl privacy fence with lattice top installed in backyard — 2M Construction Huntsville AL', title: 'White Vinyl Privacy Fence with Lattice Top — Huntsville, AL', location: 'Huntsville, AL', caption: 'Full backyard vinyl privacy fence installation featuring classic white panels with decorative lattice top detail. Clean lines, low maintenance, and built to last through North Alabama weather. Gate and corner posts finished to match throughout.', tags: ['Fence Installation', 'Vinyl Fence', 'Privacy Fence', 'Lattice Top', 'Huntsville AL'] },
 ];
 
 const TABS = [
   { id: 'flooring',  label: 'Flooring',            count: FLOORING.length,  projects: FLOORING,  category: 'Flooring' },
   { id: 'kitchen',   label: 'Kitchen Remodeling',   count: KITCHEN.length,   projects: KITCHEN,   category: 'Kitchen Remodeling' },
   { id: 'bathroom',  label: 'Bathroom Remodeling',  count: BATHROOM.length,  projects: BATHROOM,  category: 'Bathroom Remodeling' },
+  { id: 'fence',     label: 'Fence Installation',   count: FENCE.length,     projects: FENCE,     category: 'Fence Installation' },
 ];
 
 type Project = { file: string; alt: string; title: string; location: string; caption: string; tags: string[] };
@@ -64,7 +71,6 @@ export default function PortfolioPage() {
 
   return (
     <main style={{ fontFamily: 'sans-serif', color: '#1a1a1a' }}>
-
       <section style={{ background: 'linear-gradient(135deg, #0F2542 0%, #1A3A5C 100%)', color: '#fff', padding: '80px 24px', textAlign: 'center' }}>
         <p style={{ color: '#F5C518', fontWeight: 700, letterSpacing: 2, fontSize: 13, textTransform: 'uppercase', margin: '0 0 16px' }}>Our Work</p>
         <h1 style={{ fontSize: 'clamp(28px, 5vw, 46px)', fontWeight: 800, margin: '0 0 16px', lineHeight: 1.2 }}>Project Portfolio</h1>
@@ -100,7 +106,6 @@ export default function PortfolioPage() {
         <p style={{ color: '#cbd5e1', fontSize: 16, margin: '0 0 32px' }}>Get a free estimate — no obligation.</p>
         <a href="/estimate" style={{ background: '#F5C518', color: '#0F2542', padding: '14px 36px', borderRadius: 8, fontWeight: 700, fontSize: 15, textDecoration: 'none', display: 'inline-block' }}>Get Free Estimate</a>
       </section>
-
     </main>
   );
 }
