@@ -54,7 +54,7 @@ export default function HomePage() {
           }}>
             Calculate My Price →
           </Link>
-          <a href="tel:+12565551234" style={{
+          <a href="tel:+19383026795" style={{
             border: '1.5px solid rgba(255,255,255,0.3)', color: '#FFFFFF',
             padding: '13px 24px', borderRadius: '10px', fontSize: '15px',
             display: 'inline-block'

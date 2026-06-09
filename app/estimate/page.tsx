@@ -72,10 +72,10 @@ export default function EstimatePage() {
             Need an on-site assessment? We&apos;ll visit and provide an exact quote at no charge.
           </p>
           <div style={{ display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap' }}>
-            <a href="tel:+12565551234" style={{ background:'#F5C518', color:'#1A3A5C',
+            <a href="tel:+19383026795" style={{ background:'#F5C518', color:'#1A3A5C',
               fontWeight:800, fontSize:'14px', padding:'11px 24px',
               borderRadius:'8px', textDecoration:'none' }}>
-              Call (256) 555-1234
+              Call (938) 302-6795
             </a>
             <Link href="/contact" style={{ background:'transparent', color:'#F5C518',
               fontWeight:700, fontSize:'14px', padding:'11px 24px',

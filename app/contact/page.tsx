@@ -78,12 +78,12 @@ export default function ContactPage() {
 
         {/* Quick contact bar */}
         <div style={{ display: 'flex', gap: '12px', marginBottom: '32px', flexWrap: 'wrap' }}>
-          <a href="tel:+12565551234" style={{
+          <a href="tel:+19383026795" style={{
             flex: 1, minWidth: '180px', display: 'flex', alignItems: 'center', gap: '10px',
             background: '#F5C518', color: '#1A3A5C', padding: '14px 16px',
             borderRadius: '10px', textDecoration: 'none', fontWeight: 700, fontSize: '15px',
           }}>
-            📞 (256) 555-1234
+            📞 (938) 302-6795
           </a>
           <a href="mailto:info@2mhuntsville.com" style={{
             flex: 1, minWidth: '180px', display: 'flex', alignItems: 'center', gap: '10px',
@@ -173,7 +173,7 @@ export default function ContactPage() {
 
             {status === 'error' && (
               <p style={{ color: '#F87171', textAlign: 'center', marginTop: '12px', fontSize: '13px' }}>
-                Something went wrong. Please call us directly at (256) 555-1234.
+                Something went wrong. Please call us directly at (938) 302-6795.
               </p>
             )}
           </form>

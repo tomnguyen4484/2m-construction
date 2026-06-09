@@ -57,18 +57,18 @@ export default function Header() {
 
           <div style={{ display:'flex', alignItems:'center', gap:10 }}>
             {isMobile ? (
-              <a href="tel:+12565551234" style={{
+              <a href="tel:+19383026795" style={{
                 background:'#F5C518', color:'#1A3A5C', fontWeight:700,
                 width:38, height:38, borderRadius:'50%',
                 display:'flex', alignItems:'center', justifyContent:'center',
                 fontSize:16, textDecoration:'none',
               }}>📞</a>
             ) : (
-              <a href="tel:+12565551234" style={{
+              <a href="tel:+19383026795" style={{
                 background:'#F5C518', color:'#1A3A5C', fontWeight:700, fontSize:13,
                 padding:'8px 16px', borderRadius:20,
                 display:'flex', alignItems:'center', gap:6, textDecoration:'none',
-              }}>📞 (256) 555-1234</a>
+              }}>📞 (938) 302-6795</a>
             )}
             {isMobile && (
               <button onClick={() => setOpen(!open)} style={{
@@ -94,11 +94,11 @@ export default function Header() {
             }}>{l}</Link>
           ))}
           <div style={{ padding:'16px 24px' }}>
-            <a href="tel:+12565551234" style={{
+            <a href="tel:+19383026795" style={{
               display:'block', textAlign:'center',
               background:'#F5C518', color:'#0F2542',
               padding:12, borderRadius:8, fontWeight:700, fontSize:15, textDecoration:'none',
-            }}>📞 (256) 555-1234</a>
+            }}>📞 (938) 302-6795</a>
           </div>
         </div>
       )}

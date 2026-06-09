@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Construction Services in Madison, AL | 2M Construction',
-  description: '2M Construction provides licensed fencing, decking, roofing, painting, flooring & remodeling services in Madison, AL (35758). Free estimates. Call (256) 555-1234.',
+  description: '2M Construction provides licensed fencing, decking, roofing, painting, flooring & remodeling services in Madison, AL (35758). Free estimates. Call (938) 302-6795.',
   alternates: { canonical: 'https://2mhuntsville.com/service-area/madison' },
 };
 
@@ -54,8 +54,8 @@ export default function MadisonServiceArea() {
           <Link href="/estimate" style={{ background:'#F5C518', color:'#1A3A5C', fontWeight:800, padding:'12px 24px', borderRadius:'10px', fontSize:'15px' }}>
             Get Free Estimate →
           </Link>
-          <a href="tel:+12565551234" style={{ border:'1.5px solid rgba(255,255,255,0.4)', color:'#fff', padding:'12px 20px', borderRadius:'10px', fontSize:'15px' }}>
-            📞 (256) 555-1234
+          <a href="tel:+19383026795" style={{ border:'1.5px solid rgba(255,255,255,0.4)', color:'#fff', padding:'12px 20px', borderRadius:'10px', fontSize:'15px' }}>
+            📞 (938) 302-6795
           </a>
         </div>
       </div>
@@ -89,7 +89,7 @@ export default function MadisonServiceArea() {
           <Link href="/estimate" style={{ background:'#F5C518', color:'#1A3A5C', fontWeight:800, padding:'12px 28px', borderRadius:'10px', fontSize:'15px' }}>
             Get Instant Estimate
           </Link>
-          <a href="tel:+12565551234" style={{ background:'#1A3A5C', color:'#fff', fontWeight:700, padding:'12px 24px', borderRadius:'10px', fontSize:'15px' }}>
+          <a href="tel:+19383026795" style={{ background:'#1A3A5C', color:'#fff', fontWeight:700, padding:'12px 24px', borderRadius:'10px', fontSize:'15px' }}>
             📞 Call Now
           </a>
         </div>

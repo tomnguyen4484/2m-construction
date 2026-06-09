@@ -8,7 +8,7 @@ export default function Footer() {
           <div>
             <div style={{ color:'#fff', fontWeight:700, fontSize:'14px', marginBottom:'12px' }}>2M Construction</div>
             <p style={{ fontSize:'12px', lineHeight:1.7, margin:0 }}>Licensed & insured contractor serving North Alabama.</p>
-            <p style={{ fontSize:'12px', margin:'8px 0 0' }}>📞 <a href="tel:+12565551234" style={{ color:'#F5C518' }}>(256) 555-1234</a></p>
+            <p style={{ fontSize:'12px', margin:'8px 0 0' }}>📞 <a href="tel:+19383026795" style={{ color:'#F5C518' }}>(938) 302-6795</a></p>
           </div>
           <div>
             <div style={{ color:'#fff', fontWeight:700, fontSize:'13px', marginBottom:'12px' }}>Services</div>
