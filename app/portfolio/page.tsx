@@ -1,3 +1,5 @@
+'use client';
+import { useState } from 'react';
 import Image from 'next/image';
 
 const FLOORING = [
@@ -49,7 +51,7 @@ const KITCHEN = [
     alt: 'Kitchen remodel with navy blue lower cabinets, white quartz island, and marble backsplash — 2M Construction Huntsville AL',
     title: 'Navy & White Kitchen Remodel — Huntsville, AL',
     location: 'Huntsville, AL',
-    caption: 'Full kitchen remodel featuring navy blue lower cabinets, crisp white uppers, calacatta quartz countertops, and a full-height marble backsplash. Stainless steel appliances complete the bold, modern look. One of our most dramatic transformations to date.',
+    caption: 'Full kitchen remodel featuring navy blue lower cabinets, crisp white uppers, calacatta quartz countertops, and a full-height marble backsplash. Stainless steel appliances complete the bold, modern look.',
     tags: ['Kitchen Remodel', 'Cabinet Installation', 'Quartz Countertop', 'Huntsville AL'],
   },
   {
@@ -57,7 +59,7 @@ const KITCHEN = [
     alt: 'Kitchen remodel with gray shaker cabinets, white quartz island, and subway tile backsplash — 2M Construction Huntsville AL',
     title: 'Gray Shaker Kitchen with Quartz Island — Huntsville, AL',
     location: 'Huntsville, AL',
-    caption: 'Modern kitchen renovation featuring gray shaker cabinets, white quartz island with decorative legs, subway tile backsplash, and full stainless steel appliance package. Clean lines and timeless design built to impress.',
+    caption: 'Modern kitchen renovation featuring gray shaker cabinets, white quartz island with decorative legs, subway tile backsplash, and full stainless steel appliance package.',
     tags: ['Kitchen Remodel', 'Shaker Cabinets', 'Kitchen Island', 'Subway Tile', 'Huntsville AL'],
   },
   {
@@ -65,7 +67,7 @@ const KITCHEN = [
     alt: 'Open concept kitchen with white shaker cabinets, gray quartz island, and subway tile backsplash — 2M Construction Huntsville AL',
     title: 'White Shaker Open-Concept Kitchen — Huntsville, AL',
     location: 'Huntsville, AL',
-    caption: 'Open-concept kitchen renovation with floor-to-ceiling white shaker cabinets, gray quartz waterfall island with undermount sink, and classic subway tile backsplash. Hardwood flooring ties the whole space together seamlessly.',
+    caption: 'Open-concept kitchen renovation with floor-to-ceiling white shaker cabinets, gray quartz waterfall island with undermount sink, and classic subway tile backsplash.',
     tags: ['Kitchen Renovation', 'White Cabinets', 'Open Concept', 'Quartz Island', 'Huntsville AL'],
   },
   {
@@ -73,7 +75,7 @@ const KITCHEN = [
     alt: 'Kitchen remodel with navy cabinets, calacatta quartz countertops, pendant lights and hardwood flooring — 2M Construction Huntsville AL',
     title: 'Navy Kitchen Full Remodel with Pendant Lighting — Huntsville, AL',
     location: 'Huntsville, AL',
-    caption: 'Full kitchen remodel including navy base cabinets, white upper cabinets, calacatta quartz countertops, custom pendant lighting, and new hardwood flooring throughout. A complete transformation from dated to dramatic — finished in under 3 weeks.',
+    caption: 'Full kitchen remodel including navy base cabinets, white upper cabinets, calacatta quartz countertops, custom pendant lighting, and new hardwood flooring throughout. Finished in under 3 weeks.',
     tags: ['Kitchen Remodel', 'Full Renovation', 'Pendant Lighting', 'Calacatta Quartz', 'Huntsville AL'],
   },
   {
@@ -81,7 +83,7 @@ const KITCHEN = [
     alt: 'Kitchen with white raised-panel cabinets, black granite countertops, and diamond tile backsplash — 2M Construction Huntsville AL',
     title: 'Classic White & Black Granite Kitchen — Huntsville, AL',
     location: 'Huntsville, AL',
-    caption: 'Classic kitchen featuring white raised-panel cabinets, black granite countertops, and a diamond-pattern tile backsplash. A timeless combination that adds lasting value to any North Alabama home. New tile flooring installed throughout.',
+    caption: 'Classic kitchen featuring white raised-panel cabinets, black granite countertops, and a diamond-pattern tile backsplash. A timeless combination that adds lasting value to any North Alabama home.',
     tags: ['Kitchen Remodel', 'White Cabinets', 'Granite Countertop', 'Classic Design', 'Huntsville AL'],
   },
   {
@@ -89,24 +91,26 @@ const KITCHEN = [
     alt: 'Kitchen renovation with white shaker cabinets, granite countertops, and recessed lighting — 2M Construction Huntsville AL',
     title: 'White Shaker Kitchen Renovation with Recessed Lighting — Huntsville, AL',
     location: 'Huntsville, AL',
-    caption: 'Kitchen renovation featuring white shaker cabinets with crown molding, granite countertops, stainless steel appliances, and new recessed lighting throughout. A bright, functional kitchen built for everyday living.',
+    caption: 'Kitchen renovation featuring white shaker cabinets with crown molding, granite countertops, stainless steel appliances, and new recessed lighting throughout.',
     tags: ['Kitchen Renovation', 'White Shaker', 'Granite', 'Recessed Lighting', 'Huntsville AL'],
   },
 ];
 
-function CategoryBadge({ label, count }: { label: string; count: number }) {
-  return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8,
-      background: '#fff', border: '2px solid #F5C518', borderRadius: 24,
-      padding: '6px 18px', marginBottom: 8 }}>
-      <span style={{ color: '#F5C518', fontWeight: 700, fontSize: 13 }}>●</span>
-      <span style={{ fontWeight: 700, fontSize: 13, color: '#0F2542' }}>{label}</span>
-      <span style={{ fontSize: 12, color: '#94a3b8' }}>{count} projects</span>
-    </div>
-  );
-}
+const TABS = [
+  { id: 'flooring', label: 'Flooring', count: FLOORING.length, projects: FLOORING, category: 'Flooring' },
+  { id: 'kitchen', label: 'Kitchen Remodeling', count: KITCHEN.length, projects: KITCHEN, category: 'Kitchen Remodeling' },
+];
 
-function ProjectCard({ p, category }: { p: typeof FLOORING[0]; category: string }) {
+type Project = {
+  file: string;
+  alt: string;
+  title: string;
+  location: string;
+  caption: string;
+  tags: string[];
+};
+
+function ProjectCard({ p, category }: { p: Project; category: string }) {
   return (
     <article style={{
       background: '#fff', borderRadius: 12,
@@ -151,6 +155,9 @@ function ProjectCard({ p, category }: { p: typeof FLOORING[0]; category: string 
 }
 
 export default function PortfolioPage() {
+  const [activeTab, setActiveTab] = useState('flooring');
+  const current = TABS.find(t => t.id === activeTab)!;
+
   return (
     <main style={{ fontFamily: 'sans-serif', color: '#1a1a1a' }}>
 
@@ -170,37 +177,49 @@ export default function PortfolioPage() {
         </p>
       </section>
 
-      {/* Flooring Section */}
-      <section style={{ background: '#f8fafc', padding: '40px 24px 8px' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <CategoryBadge label="Flooring" count={FLOORING.length} />
-        </div>
-      </section>
-      <section style={{ background: '#f8fafc', padding: '16px 24px 48px' }}>
-        <div style={{
-          maxWidth: 1100, margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-          gap: 32,
-        }}>
-          {FLOORING.map(p => <ProjectCard key={p.file} p={p} category="Flooring" />)}
+      {/* Tabs */}
+      <section style={{ background: '#fff', borderBottom: '2px solid #f1f5f9', padding: '0 24px' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: 0 }}>
+          {TABS.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              style={{
+                padding: '18px 28px',
+                background: 'transparent',
+                border: 'none',
+                borderBottom: activeTab === tab.id ? '3px solid #F5C518' : '3px solid transparent',
+                cursor: 'pointer',
+                fontWeight: activeTab === tab.id ? 700 : 500,
+                fontSize: 14,
+                color: activeTab === tab.id ? '#0F2542' : '#64748b',
+                display: 'flex', alignItems: 'center', gap: 8,
+                transition: 'all 0.15s',
+              }}
+            >
+              {tab.label}
+              <span style={{
+                background: activeTab === tab.id ? '#F5C518' : '#f1f5f9',
+                color: activeTab === tab.id ? '#0F2542' : '#94a3b8',
+                fontSize: 11, fontWeight: 700,
+                padding: '2px 8px', borderRadius: 12,
+              }}>{tab.count}</span>
+            </button>
+          ))}
         </div>
       </section>
 
-      {/* Kitchen Section */}
-      <section style={{ background: '#f1f5f9', padding: '40px 24px 8px' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <CategoryBadge label="Kitchen Remodeling" count={KITCHEN.length} />
-        </div>
-      </section>
-      <section style={{ background: '#f1f5f9', padding: '16px 24px 64px' }}>
+      {/* Grid */}
+      <section style={{ background: '#f8fafc', padding: '40px 24px 64px' }}>
         <div style={{
           maxWidth: 1100, margin: '0 auto',
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
           gap: 32,
         }}>
-          {KITCHEN.map(p => <ProjectCard key={p.file} p={p} category="Kitchen Remodeling" />)}
+          {current.projects.map(p => (
+            <ProjectCard key={p.file} p={p} category={current.category} />
+          ))}
         </div>
       </section>
 
