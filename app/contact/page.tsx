@@ -119,7 +119,7 @@ export default function ContactPage() {
               <div>
                 <label style={label}>Phone Number</label>
                 <input style={input()} value={form.phone}
-                  onChange={e => set('phone', e.target.value)} placeholder="(256) 000-0000" />
+                  onChange={e => set('phone', e.target.value)} placeholder="(938) 000-0000" />
               </div>
             </div>
 
