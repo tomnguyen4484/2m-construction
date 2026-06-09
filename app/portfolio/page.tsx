@@ -35,11 +35,21 @@ const FENCE = [
   { file: 'vinyl-fence-installation-white-lattice-top-huntsville-al.jpg', alt: 'White vinyl privacy fence with lattice top installed in backyard — 2M Construction Huntsville AL', title: 'White Vinyl Privacy Fence with Lattice Top — Huntsville, AL', location: 'Huntsville, AL', caption: 'Full backyard vinyl privacy fence installation featuring classic white panels with decorative lattice top detail. Clean lines, low maintenance, and built to last through North Alabama weather. Gate and corner posts finished to match throughout.', tags: ['Fence Installation', 'Vinyl Fence', 'Privacy Fence', 'Lattice Top', 'Huntsville AL'] },
 ];
 
+const DECK = [
+  { file: 'large-composite-deck-dual-pergola-redwood-huntsville-al.jpg', alt: 'Large composite deck with two redwood pergolas and open sky view — 2M Construction Huntsville AL', title: 'Large Composite Deck with Dual Redwood Pergola — Huntsville, AL', location: 'Huntsville, AL', caption: 'Full backyard transformation featuring a large composite deck with two custom redwood pergolas. Clean composite decking, stained redwood timber framing, and an unobstructed open-sky view. One of our largest and most complete outdoor living builds to date.', tags: ['Deck Build', 'Composite Deck', 'Pergola', 'Outdoor Living', 'Huntsville AL'] },
+  { file: 'composite-deck-redwood-pergola-open-view-huntsville-al.jpg', alt: 'Composite deck with redwood pergola and panoramic open field view — 2M Construction Huntsville AL', title: 'Composite Deck & Redwood Pergola with Panoramic View — Huntsville, AL', location: 'Huntsville, AL', caption: 'Elevated composite deck with custom redwood pergola, wood baluster railing, and sweeping panoramic views. Premium composite decking in warm brown tone pairs beautifully with the rich redwood stain. Built for outdoor entertaining and built to last.', tags: ['Deck Build', 'Composite Deck', 'Pergola', 'Elevated Deck', 'Huntsville AL'] },
+  { file: 'redwood-pergola-deck-craftsmanship-detail-huntsville-al.jpg', alt: 'Custom redwood pergola detail with angled rafters and open hill view — 2M Construction Huntsville AL', title: 'Custom Redwood Pergola — Timber Frame Detail, Huntsville, AL', location: 'Huntsville, AL', caption: 'Close-up of custom redwood pergola showing angled rafter tails, double beam construction, and black hardware detail against an open Alabama sky. This is the craftsmanship that sets 2M apart — every joint precise, every beam level, every detail intentional.', tags: ['Pergola', 'Redwood', 'Timber Frame', 'Custom Build', 'Huntsville AL'] },
+  { file: 'composite-deck-platform-stone-facade-home-huntsville-al.jpg', alt: 'Low-profile composite deck platform with corner detail against stone facade home — 2M Construction Huntsville AL', title: 'Composite Deck Platform — Stone Facade Home, Huntsville, AL', location: 'Huntsville, AL', caption: 'Low-profile composite deck platform installed flush against a stone facade home. Clean corner mitering, consistent board spacing, and a warm brown composite that complements the natural stone exterior perfectly. A simple, elegant outdoor living upgrade.', tags: ['Deck Build', 'Composite Deck', 'Platform Deck', 'Huntsville AL'] },
+  { file: 'wood-gazebo-gable-roof-concrete-patio-madison-al.jpg', alt: 'Completed wood gazebo with gable roof and metal roofing on concrete patio — 2M Construction Madison AL', title: 'Custom Wood Gazebo with Gable Roof — Madison, AL', location: 'Madison, AL', caption: 'Custom timber frame gazebo with gable roof and corrugated metal roofing panels installed over an existing concrete patio. Heavy timber posts with decorative knee braces, fully weatherproofed and ready for year-round outdoor entertaining.', tags: ['Gazebo', 'Patio Cover', 'Timber Frame', 'Gable Roof', 'Madison AL'] },
+  { file: 'deck-framing-concrete-footings-construction-process-huntsville-al.jpg', alt: 'Deck framing with pressure treated lumber and concrete tube footings — 2M Construction Huntsville AL', title: 'Deck Framing & Foundation — Built Right from the Ground Up, Huntsville, AL', location: 'Huntsville, AL', caption: 'Pressure-treated deck framing with properly spaced joists and poured concrete tube footings — the foundation of every deck 2M builds. We don't cut corners where it matters most. Solid structure, correct spacing, built to code from day one.', tags: ['Deck Build', 'Deck Framing', 'Construction Process', 'Huntsville AL'] },
+];
+
 const TABS = [
   { id: 'flooring',  label: 'Flooring',            count: FLOORING.length,  projects: FLOORING,  category: 'Flooring' },
   { id: 'kitchen',   label: 'Kitchen Remodeling',   count: KITCHEN.length,   projects: KITCHEN,   category: 'Kitchen Remodeling' },
   { id: 'bathroom',  label: 'Bathroom Remodeling',  count: BATHROOM.length,  projects: BATHROOM,  category: 'Bathroom Remodeling' },
   { id: 'fence',     label: 'Fence Installation',   count: FENCE.length,     projects: FENCE,     category: 'Fence Installation' },
+  { id: 'deck',      label: 'Deck & Patio',         count: DECK.length,      projects: DECK,      category: 'Deck & Patio' },
 ];
 
 type Project = { file: string; alt: string; title: string; location: string; caption: string; tags: string[] };
@@ -81,7 +91,7 @@ export default function PortfolioPage() {
         <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: 0, minWidth: 'max-content' }}>
           {TABS.map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{
-              padding: '18px 28px', background: 'transparent', border: 'none',
+              padding: '18px 24px', background: 'transparent', border: 'none',
               borderBottom: activeTab === tab.id ? '3px solid #F5C518' : '3px solid transparent',
               cursor: 'pointer', fontWeight: activeTab === tab.id ? 700 : 500, fontSize: 14,
               color: activeTab === tab.id ? '#0F2542' : '#64748b',
