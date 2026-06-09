@@ -34,7 +34,7 @@ export default function AthensServiceArea() {
           "provider": {
             "@type": "LocalBusiness",
             "name": "2M Construction",
-            "telephone": "+12565551234",
+            "telephone": "+19383026795",
             "url": "https://2mhuntsville.com"
           },
           "areaServed": {

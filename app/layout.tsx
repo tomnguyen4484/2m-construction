@@ -61,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             "name": "2M Construction",
             "image": "https://2mhuntsville.com/logo.png",
             "url": "https://2mhuntsville.com",
-            "telephone": "+12565551234",
+            "telephone": "+19383026795",
             "email": "info@2mhuntsville.com",
             "address": {
               "@type": "PostalAddress",
