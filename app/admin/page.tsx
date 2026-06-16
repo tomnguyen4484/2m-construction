@@ -110,7 +110,8 @@ function TrafficTab({ token }: { token: string }) {
       + `&redirect_uri=${redirect}`
       + `&response_type=token`
       + `&scope=${encodeURIComponent(GA_SCOPE)}`;
-    window.open(url, 'ga-auth', 'width=520,height=620,left=200,top=100');
+    // Use redirect flow (avoids popup blockers)
+    window.location.href = url;
   }
 
   function savePropId() {

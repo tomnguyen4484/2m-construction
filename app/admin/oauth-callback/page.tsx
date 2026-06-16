@@ -6,9 +6,16 @@ export default function OAuthCallback() {
     const hash = window.location.hash.slice(1);
     const params = new URLSearchParams(hash);
     const accessToken = params.get('access_token');
-    if (accessToken && window.opener) {
-      window.opener.postMessage({ access_token: accessToken }, window.location.origin);
-      window.close();
+    if (accessToken) {
+      if (window.opener) {
+        // Popup flow: send token to parent and close
+        window.opener.postMessage({ access_token: accessToken }, window.location.origin);
+        window.close();
+      } else {
+        // Redirect flow: save token to sessionStorage and go back to admin
+        sessionStorage.setItem('2m_ga_token', accessToken);
+        window.location.href = '/admin';
+      }
     }
   }, []);
 
