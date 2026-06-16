@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const TEAM = [
   {
-    file: '/about/tuan-nguyen-mike-founder-2m-construction-huntsville-al.jpg',
+    file: '/about/tuan-nguyen-mike-founder-2m-construction-huntsville-al.png',
     alt: 'Tuan Nguyen Mike - Founder and CEO of 2M Construction Huntsville AL',
     name: 'Tuan Nguyen (Mike)',
     title: 'Founder & CEO',
@@ -11,7 +11,7 @@ const TEAM = [
     bio: 'Mike brings 20+ years of hands-on construction experience to every project 2M undertakes. Rooted in a family construction tradition spanning over 40 years, he founded 2M Construction to bring that same generational dedication to homeowners and businesses across North Alabama. His leadership style is simple: show up, do the work right, and never leave a client behind.',
   },
   {
-    file: '/about/james-collins-co-founder-2m-construction.jpg',
+    file: '/about/james-collins-co-founder-2m-construction.png',
     alt: 'James R Collins PE - Co-Founder and Director of Engineering 2M Construction',
     name: 'James R. Collins, P.E.',
     title: 'Co-Founder & Director of Engineering',
@@ -19,7 +19,7 @@ const TEAM = [
     bio: 'With over 25 years of structural and civil engineering experience, James oversees all technical planning, code compliance, and quality assurance at 2M Construction. His engineering background ensures every project — from a backyard deck to a commercial build-out — is designed and executed to last.',
   },
   {
-    file: '/about/david-hartley-co-founder-2m-construction.jpg',
+    file: '/about/david-hartley-co-founder-2m-construction.png',
     alt: 'David M Hartley MBA - Co-Founder and Director of Operations 2M Construction',
     name: 'David M. Hartley, MBA',
     title: 'Co-Founder & Director of Operations',
