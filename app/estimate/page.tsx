@@ -41,6 +41,30 @@ const SERVICES = [
     from: 'From $2,800',
     note: '150 sq ft deck',
   },
+  {
+    href: '/estimate/kitchen',
+    icon: '🍳',
+    title: 'Kitchen Remodel',
+    sub: 'Cosmetic · Mid-Range · Full · Luxury',
+    from: 'From $3,500',
+    note: 'Cabinet reface',
+  },
+  {
+    href: '/estimate/drywall',
+    icon: '🔲',
+    title: 'Drywall',
+    sub: 'Repair · New Install · Ceiling · Texture',
+    from: 'From $180',
+    note: 'Single patch repair',
+  },
+  {
+    href: '/estimate/concrete',
+    icon: '🚗',
+    title: 'Concrete',
+    sub: 'Driveway · Patio · Sidewalk · Slab',
+    from: 'From $630',
+    note: '90 sq ft patio',
+  },
 ];
 
 export default function EstimatePage() {
