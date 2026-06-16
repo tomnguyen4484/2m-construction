@@ -50,7 +50,7 @@ function MiniBar({ rows, metricIdx = 0 }: { rows: any[]; metricIdx?: number }) {
 
 const GA_TOKEN_KEY  = '2m_ga_token';
 const GA_PROPID_KEY = '2m_ga_propid';
-const GA_CLIENT_ID  = process.env.NEXT_PUBLIC_GA_CLIENT_ID ?? '';
+const GA_CLIENT_ID  = process.env.NEXT_PUBLIC_GA_CLIENT_ID ?? '216159194855-fcopoiint8cakj5eo1cn1v1loh1pnq5a.apps.googleusercontent.com';
 const GA_SCOPE      = 'https://www.googleapis.com/auth/analytics.readonly';
 
 // ── Traffic Tab ───────────────────────────────────────────────────────────────
