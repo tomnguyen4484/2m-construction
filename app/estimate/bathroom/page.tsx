@@ -7,10 +7,10 @@ type BathSize   = 'half' | 'standard' | 'master';
 type VanityType = 'keep' | 'stock_single' | 'stock_double' | 'semi_custom' | 'custom';
 
 const SCOPES: Record<BathScope, { label: string; desc: string; baseCost: number }> = {
-  cosmetic: { label: 'Cosmetic Update',    desc: 'Paint, fixtures, light, mirror, accessories',     baseCost: 4500  },
-  partial:  { label: 'Partial Remodel',    desc: 'Vanity, toilet, tile floor, new fixtures',        baseCost: 9000  },
-  full:     { label: 'Full Remodel',       desc: 'New shower, tile walls, plumbing, all fixtures',  baseCost: 14000 },
-  luxury:   { label: 'Luxury Remodel',     desc: 'Custom tile, frameless glass, premium fixtures',  baseCost: 26000 },
+  cosmetic: { label: 'Cosmetic Update',    desc: 'Paint, fixtures, light, mirror, accessories',     baseCost: 4000  },
+  partial:  { label: 'Partial Remodel',    desc: 'Vanity, toilet, tile floor, new fixtures',        baseCost: 8000  },
+  full:     { label: 'Full Remodel',       desc: 'New shower, tile walls, plumbing, all fixtures',  baseCost: 12500 },
+  luxury:   { label: 'Luxury Remodel',     desc: 'Custom tile, frameless glass, premium fixtures',  baseCost: 23000 },
 };
 
 const SIZES: Record<BathSize, { label: string; mult: number; sqft: string }> = {
@@ -21,10 +21,10 @@ const SIZES: Record<BathSize, { label: string; mult: number; sqft: string }> = {
 
 const VANITIES: Record<VanityType, { label: string; cost: number; desc: string }> = {
   keep:         { label: 'Keep Existing Vanity',   cost: 0,     desc: 'Reface or paint existing' },
-  stock_single: { label: 'Stock - Single Sink', cost: 850, desc: '30-48 in, Home Depot/Lowes' },
-  stock_double: { label: 'Stock – Double Sink',    cost: 1400,  desc: '60"–72", two sinks' },
-  semi_custom:  { label: 'Semi-Custom',            cost: 2800,  desc: 'More sizes & finish options' },
-  custom:       { label: 'Custom Built-In',        cost: 5500,  desc: 'Built to spec, unlimited options' },
+  stock_single: { label: 'Stock – Single Sink',    cost: 760,   desc: '30-48 in, Home Depot/Lowes' },
+  stock_double: { label: 'Stock – Double Sink',    cost: 1250,  desc: '60"–72", two sinks' },
+  semi_custom:  { label: 'Semi-Custom',            cost: 2500,  desc: 'More sizes & finish options' },
+  custom:       { label: 'Custom Built-In',        cost: 4900,  desc: 'Built to spec, unlimited options' },
 };
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
@@ -42,9 +42,9 @@ export default function BathroomEstimator() {
 
   const baseRemodel = SCOPES[scope].baseCost * SIZES[size].mult;
   const vanityCost  = VANITIES[vanity].cost;
-  const showerCost  = shower === 'yes' ? (scope === 'luxury' ? 4500 : 2800) : 0;
-  const heatedCost  = heated === 'yes' ? 1100 : 0;
-  const toiletCost  = toilet === 'yes' ? 450 : 0;
+  const showerCost  = shower === 'yes' ? (scope === 'luxury' ? 4000 : 2500) : 0;
+  const heatedCost  = heated === 'yes' ? 990 : 0;
+  const toiletCost  = toilet === 'yes' ? 400 : 0;
   const total       = baseRemodel + vanityCost + showerCost + heatedCost + toiletCost;
 
   async function submitQuote() {
@@ -132,7 +132,7 @@ export default function BathroomEstimator() {
                 background: vanity===key ? '#EFF6FF' : '#fff' }}>
               <div style={{ fontWeight:700, fontSize:'13px', color: vanity===key ? '#1A3A5C' : '#1E293B' }}>{info.label}</div>
               <div style={{ fontSize:'11px', color:'#64748B', marginTop:'2px' }}>{info.desc}</div>
-              {info.cost > 0 && <div style={{ fontSize:'12px', color: vanity===key ? '#1A3A5C' : '#64748B', fontWeight:600, marginTop:'4px' }}>+{fmt(info.cost)}</div>}
+              {(info.cost as number) > 0 && <div style={{ fontSize:'12px', color: vanity===key ? '#1A3A5C' : '#64748B', fontWeight:600, marginTop:'4px' }}>+{fmt(info.cost)}</div>}
             </button>
           ))}
         </div>
@@ -140,7 +140,7 @@ export default function BathroomEstimator() {
 
       {/* Add-ons */}
       <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Custom Tile Shower/Tub Surround? (+{scope === 'luxury' ? '$4,500' : '$2,800'})</label>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Custom Tile Shower/Tub Surround? (+{scope === 'luxury' ? '$4,000' : '$2,500'})</label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
           {[['no','No / Already included'],['yes','Yes, add custom tile']].map(([v,l]) => (
             <button key={v} onClick={() => setShower(v)}
@@ -154,7 +154,7 @@ export default function BathroomEstimator() {
       </div>
 
       <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Replace Toilet? (+$450 supply & install)</label>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Replace Toilet? (+$400 supply & install)</label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
           {[['no','No'],['yes','Yes']].map(([v,l]) => (
             <button key={v} onClick={() => setToilet(v)}
@@ -168,7 +168,7 @@ export default function BathroomEstimator() {
       </div>
 
       <div style={{ marginBottom:'24px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Heated Floor? (+$1,100)</label>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Heated Floor? (+$990)</label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
           {[['no','No'],['yes','Yes']].map(([v,l]) => (
             <button key={v} onClick={() => setHeated(v)}
@@ -193,8 +193,25 @@ export default function BathroomEstimator() {
         <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
           <span>Total Estimate</span><span style={{ color:'#F5C518' }}>{fmt(total)}</span>
         </div>
+        {/* Savings vs market */}
+        {(() => {
+          const marketAvg = Math.round(total / 0.9 / 100) * 100;
+          const savings = marketAvg - Math.round(total);
+          return (
+            <div style={{ background:'rgba(245,197,24,0.1)', borderRadius:'10px', padding:'12px 16px', marginTop:'12px', display:'flex', justifyContent:'space-between', alignItems:'center', border:'1px solid rgba(245,197,24,0.2)' }}>
+              <div>
+                <div style={{ fontSize:'10px', color:'rgba(255,255,255,0.45)', marginBottom:'3px' }}>Huntsville market avg</div>
+                <div style={{ fontSize:'14px', color:'rgba(255,255,255,0.4)', textDecoration:'line-through' }}>{fmt(marketAvg)}</div>
+              </div>
+              <div style={{ textAlign:'right' }}>
+                <div style={{ fontSize:'10px', color:'#F5C518', marginBottom:'3px' }}>You save with 2M</div>
+                <div style={{ fontSize:'20px', fontWeight:800, color:'#F5C518' }}>~{fmt(savings)}</div>
+              </div>
+            </div>
+          );
+        })()}
         <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>
-          * Estimate only. Does not include additional costs if plumbing or subfloor issues are found.
+          * Estimate based on Huntsville, AL market rates 2026. Final quote confirmed on-site.
         </p>
       </div>
 

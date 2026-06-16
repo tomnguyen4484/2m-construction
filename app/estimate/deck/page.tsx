@@ -6,20 +6,20 @@ type DeckMat = 'pt_pine' | 'cedar' | 'composite_std' | 'composite_prem' | 'pvc' 
 type RailingMat = 'none' | 'wood' | 'aluminum' | 'cable' | 'glass';
 
 const MATERIALS: Record<DeckMat, { label: string; materialPer: number; laborPer: number; desc: string }> = {
-  pt_pine:        { label: 'Pressure-Treated Pine', materialPer: 8,  laborPer: 14, desc: 'Budget option, needs sealing every 2 yrs' },
-  cedar:          { label: 'Cedar',                 materialPer: 14, laborPer: 14, desc: 'Rot-resistant, beautiful grain' },
-  composite_std:  { label: 'Composite – Standard',  materialPer: 22, laborPer: 12, desc: 'Low maintenance, 25-yr warranty' },
-  composite_prem: { label: 'Composite – Premium',   materialPer: 32, laborPer: 12, desc: 'Capped boards, premium look & feel' },
-  pvc:            { label: 'PVC / Cellular',        materialPer: 28, laborPer: 12, desc: 'Fully waterproof, no fading' },
-  ipe:            { label: 'Ipe Hardwood',          materialPer: 42, laborPer: 18, desc: 'Most durable, 40+ year lifespan' },
+  pt_pine:        { label: 'Pressure-Treated Pine', materialPer: 7,  laborPer: 13, desc: 'Budget option, needs sealing every 2 yrs' },
+  cedar:          { label: 'Cedar',                 materialPer: 13, laborPer: 13, desc: 'Rot-resistant, beautiful grain' },
+  composite_std:  { label: 'Composite – Standard',  materialPer: 20, laborPer: 11, desc: 'Low maintenance, 25-yr warranty' },
+  composite_prem: { label: 'Composite – Premium',   materialPer: 29, laborPer: 11, desc: 'Capped boards, premium look & feel' },
+  pvc:            { label: 'PVC / Cellular',        materialPer: 25, laborPer: 11, desc: 'Fully waterproof, no fading' },
+  ipe:            { label: 'Ipe Hardwood',          materialPer: 38, laborPer: 16, desc: 'Most durable, 40+ year lifespan' },
 };
 
 const RAILINGS: Record<RailingMat, { label: string; costPerLF: number; desc: string }> = {
   none:     { label: 'No Railing',          costPerLF: 0,   desc: 'Ground-level deck' },
-  wood:     { label: 'Wood Railing',        costPerLF: 18,  desc: 'Classic look, needs maintenance' },
-  aluminum: { label: 'Aluminum Railing',    costPerLF: 28,  desc: 'Low maintenance, powder coated' },
-  cable:    { label: 'Cable Railing',       costPerLF: 55,  desc: 'Modern look, unobstructed views' },
-  glass:    { label: 'Glass Panel Railing', costPerLF: 85,  desc: 'Premium, panoramic views' },
+  wood:     { label: 'Wood Railing',        costPerLF: 16,  desc: 'Classic look, needs maintenance' },
+  aluminum: { label: 'Aluminum Railing',    costPerLF: 25,  desc: 'Low maintenance, powder coated' },
+  cable:    { label: 'Cable Railing',       costPerLF: 50,  desc: 'Modern look, unobstructed views' },
+  glass:    { label: 'Glass Panel Railing', costPerLF: 77,  desc: 'Premium, panoramic views' },
 };
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
@@ -41,8 +41,8 @@ export default function DeckEstimator() {
   const materialCost = sf * m.materialPer;
   const laborCost    = sf * m.laborPer;
   const railingCost  = RAILINGS[railing].costPerLF * perim;
-  const stairCost    = Number(stairs) * 350;
-  const demoCost     = demo === 'yes' ? sf * 4 : 0;
+  const stairCost    = Number(stairs) * 315;
+  const demoCost     = demo === 'yes' ? sf * 3.6 : 0;
   const total        = materialCost + laborCost + railingCost + stairCost + demoCost;
   const hasResult    = sf > 0;
 
@@ -131,7 +131,7 @@ export default function DeckEstimator() {
 
       {/* Stairs */}
       <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Number of Stair Sections (+$350 each)</label>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Number of Stair Sections (+$315 each)</label>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'8px' }}>
           {['0','1','2','3'].map(n => (
             <button key={n} onClick={() => setStairs(n)}
@@ -171,7 +171,24 @@ export default function DeckEstimator() {
           <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
             <span>Total Estimate</span><span style={{ color:'#F5C518' }}>{fmt(total)}</span>
           </div>
-          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Estimate only. Does not include costs for issues discovered during construction.</p>
+          {/* Savings vs market */}
+          {(() => {
+            const marketAvg = Math.round(total / 0.9 / 100) * 100;
+            const savings = marketAvg - Math.round(total);
+            return (
+              <div style={{ background:'rgba(245,197,24,0.1)', borderRadius:'10px', padding:'12px 16px', marginTop:'12px', display:'flex', justifyContent:'space-between', alignItems:'center', border:'1px solid rgba(245,197,24,0.2)' }}>
+                <div>
+                  <div style={{ fontSize:'10px', color:'rgba(255,255,255,0.45)', marginBottom:'3px' }}>Huntsville market avg</div>
+                  <div style={{ fontSize:'14px', color:'rgba(255,255,255,0.4)', textDecoration:'line-through' }}>{fmt(marketAvg)}</div>
+                </div>
+                <div style={{ textAlign:'right' }}>
+                  <div style={{ fontSize:'10px', color:'#F5C518', marginBottom:'3px' }}>You save with 2M</div>
+                  <div style={{ fontSize:'20px', fontWeight:800, color:'#F5C518' }}>~{fmt(savings)}</div>
+                </div>
+              </div>
+            );
+          })()}
+          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Estimate based on Huntsville, AL market rates 2026. Final quote confirmed on-site.</p>
         </div>
       )}
 

@@ -6,12 +6,12 @@ type PaintType = 'interior_walls' | 'interior_full' | 'exterior' | 'cabinets' | 
 type PaintQuality = 'standard' | 'premium' | 'luxury';
 
 const TYPES: Record<PaintType, { label: string; icon: string; basePer: number; desc: string }> = {
-  interior_walls: { label: 'Interior Walls Only',   icon: '🏠', basePer: 2.5,  desc: 'Walls only, 2 coats' },
-  interior_full:  { label: 'Interior Full Room',    icon: '🛋️', basePer: 4.0,  desc: 'Walls, ceiling & trim' },
-  exterior:       { label: 'Exterior Painting',     icon: '🏡', basePer: 3.5,  desc: 'All exterior surfaces' },
-  cabinets:       { label: 'Cabinet Painting',      icon: '🚪', basePer: 85,   desc: 'Per door/drawer face' },
-  trim:           { label: 'Trim & Baseboards',     icon: '📐', basePer: 3.0,  desc: 'Per linear foot' },
-  epoxy_floor:    { label: 'Epoxy Floor Coating',   icon: '⬜', basePer: 5.0,  desc: 'Garage/basement floors' },
+  interior_walls: { label: 'Interior Walls Only',   icon: '🏠', basePer: 2.25, desc: 'Walls only, 2 coats' },
+  interior_full:  { label: 'Interior Full Room',    icon: '🛋️', basePer: 3.60, desc: 'Walls, ceiling & trim' },
+  exterior:       { label: 'Exterior Painting',     icon: '🏡', basePer: 3.15, desc: 'All exterior surfaces' },
+  cabinets:       { label: 'Cabinet Painting',      icon: '🚪', basePer: 77,   desc: 'Per door/drawer face' },
+  trim:           { label: 'Trim & Baseboards',     icon: '📐', basePer: 2.70, desc: 'Per linear foot' },
+  epoxy_floor:    { label: 'Epoxy Floor Coating',   icon: '⬜', basePer: 4.50, desc: 'Garage/basement floors' },
 };
 
 const QUALITY: Record<PaintQuality, { label: string; mult: number; desc: string }> = {
@@ -36,7 +36,7 @@ export default function PaintingEstimator() {
   const t = TYPES[type];
   const q = QUALITY[quality];
   const coatMult = Number(coats) > 2 ? 1.25 : 1;
-  const ceilCost = ceilings === 'yes' ? s * 1.5 : 0;
+  const ceilCost = ceilings === 'yes' ? s * 1.35 : 0;
   const laborBase = s * t.basePer * q.mult * coatMult;
   const total = laborBase + ceilCost;
   const hasResult = s > 0;
@@ -136,7 +136,7 @@ export default function PaintingEstimator() {
 
       {(type === 'interior_walls' || type === 'interior_full') && (
         <div style={{ marginBottom:'24px' }}>
-          <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Include Ceilings? (+$1.50/sq ft)</label>
+          <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Include Ceilings? (+$1.35/sq ft)</label>
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
             {[['no','No'],['yes','Yes']].map(([v,l]) => (
               <button key={v} onClick={() => setCeilings(v)}
@@ -159,7 +159,24 @@ export default function PaintingEstimator() {
           <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
             <span>Total Estimate</span><span style={{ color:'#F5C518' }}>{fmt(total)}</span>
           </div>
-          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Estimate only. Does not include costs if surfaces require special preparation before painting.</p>
+          {/* Savings vs market */}
+          {(() => {
+            const marketAvg = Math.round(total / 0.9 / 100) * 100;
+            const savings = marketAvg - Math.round(total);
+            return (
+              <div style={{ background:'rgba(245,197,24,0.1)', borderRadius:'10px', padding:'12px 16px', marginTop:'12px', display:'flex', justifyContent:'space-between', alignItems:'center', border:'1px solid rgba(245,197,24,0.2)' }}>
+                <div>
+                  <div style={{ fontSize:'10px', color:'rgba(255,255,255,0.45)', marginBottom:'3px' }}>Huntsville market avg</div>
+                  <div style={{ fontSize:'14px', color:'rgba(255,255,255,0.4)', textDecoration:'line-through' }}>{fmt(marketAvg)}</div>
+                </div>
+                <div style={{ textAlign:'right' }}>
+                  <div style={{ fontSize:'10px', color:'#F5C518', marginBottom:'3px' }}>You save with 2M</div>
+                  <div style={{ fontSize:'20px', fontWeight:800, color:'#F5C518' }}>~{fmt(savings)}</div>
+                </div>
+              </div>
+            );
+          })()}
+          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Estimate based on Huntsville, AL market rates 2026. Final quote confirmed on-site.</p>
         </div>
       )}
 

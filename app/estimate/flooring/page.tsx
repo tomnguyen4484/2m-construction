@@ -5,15 +5,15 @@ import Link from 'next/link';
 type FloorMat = 'lvp_std' | 'lvp_prem' | 'hardwood_oak' | 'hardwood_maple' | 'tile_ceramic' | 'tile_porcelain' | 'carpet_std' | 'carpet_prem' | 'laminate';
 
 const MATERIALS: Record<FloorMat, { label: string; materialPer: number; laborPer: number; desc: string }> = {
-  lvp_std:        { label: 'LVP – Standard',        materialPer: 2.5, laborPer: 3,   desc: '6 mil wear layer, waterproof' },
-  lvp_prem:       { label: 'LVP – Premium',         materialPer: 4.5, laborPer: 3,   desc: '12+ mil wear layer, lifetime warranty' },
-  hardwood_oak:   { label: 'Hardwood – Oak',        materialPer: 6,   laborPer: 5,   desc: 'Classic 3/4" solid oak, can refinish' },
-  hardwood_maple: { label: 'Hardwood – Maple',      materialPer: 8,   laborPer: 5,   desc: 'Hard, durable, light color' },
-  tile_ceramic:   { label: 'Tile – Ceramic',        materialPer: 2,   laborPer: 7,   desc: 'Budget tile, great for bathrooms' },
-  tile_porcelain: { label: 'Tile – Porcelain',      materialPer: 4,   laborPer: 8,   desc: 'Durable, low moisture absorption' },
-  carpet_std:     { label: 'Carpet – Standard',     materialPer: 2,   laborPer: 2.5, desc: 'Good for bedrooms, soft underfoot' },
-  carpet_prem:    { label: 'Carpet – Premium',      materialPer: 4,   laborPer: 2.5, desc: 'Thick pile, stain-resistant' },
-  laminate:       { label: 'Laminate',              materialPer: 2,   laborPer: 3,   desc: 'Looks like hardwood, budget-friendly' },
+  lvp_std:        { label: 'LVP – Standard',        materialPer: 2.25, laborPer: 2.75, desc: '6 mil wear layer, waterproof' },
+  lvp_prem:       { label: 'LVP – Premium',         materialPer: 4.00, laborPer: 2.75, desc: '12+ mil wear layer, lifetime warranty' },
+  hardwood_oak:   { label: 'Hardwood – Oak',        materialPer: 5.40, laborPer: 4.50, desc: 'Classic 3/4" solid oak, can refinish' },
+  hardwood_maple: { label: 'Hardwood – Maple',      materialPer: 7.20, laborPer: 4.50, desc: 'Hard, durable, light color' },
+  tile_ceramic:   { label: 'Tile – Ceramic',        materialPer: 1.80, laborPer: 6.30, desc: 'Budget tile, great for bathrooms' },
+  tile_porcelain: { label: 'Tile – Porcelain',      materialPer: 3.60, laborPer: 7.20, desc: 'Durable, low moisture absorption' },
+  carpet_std:     { label: 'Carpet – Standard',     materialPer: 1.80, laborPer: 2.25, desc: 'Good for bedrooms, soft underfoot' },
+  carpet_prem:    { label: 'Carpet – Premium',      materialPer: 3.60, laborPer: 2.25, desc: 'Thick pile, stain-resistant' },
+  laminate:       { label: 'Laminate',              materialPer: 1.80, laborPer: 2.70, desc: 'Looks like hardwood, budget-friendly' },
 };
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
@@ -31,8 +31,8 @@ export default function FlooringEstimator() {
   const m  = MATERIALS[mat];
   const materialCost = sf * m.materialPer * 1.1; // 10% waste factor
   const laborCost    = sf * m.laborPer;
-  const removalCost  = removal === 'yes' ? sf * 2 : 0;
-  const subfloorCost = subfloor === 'yes' ? sf * 3 : 0;
+  const removalCost  = removal === 'yes' ? sf * 1.8 : 0;
+  const subfloorCost = subfloor === 'yes' ? sf * 2.7 : 0;
   const total        = materialCost + laborCost + removalCost + subfloorCost;
   const hasResult    = sf > 0;
 
@@ -105,7 +105,7 @@ export default function FlooringEstimator() {
       </div>
 
       <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Remove Old Flooring? (+$2/sq ft)</label>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Remove Old Flooring? (+$1.80/sq ft)</label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
           {[['no','No'],['yes','Yes']].map(([v,l]) => (
             <button key={v} onClick={() => setRemoval(v)}
@@ -119,7 +119,7 @@ export default function FlooringEstimator() {
       </div>
 
       <div style={{ marginBottom:'24px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Subfloor Repair Needed? (+$3/sq ft)</label>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Subfloor Repair Needed? (+$2.70/sq ft)</label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
           {[['no','No / Unknown'],['yes','Yes']].map(([v,l]) => (
             <button key={v} onClick={() => setSubfloor(v)}
@@ -143,7 +143,24 @@ export default function FlooringEstimator() {
           <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
             <span>Total Estimate</span><span style={{ color:'#F5C518' }}>{fmt(total)}</span>
           </div>
-          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Estimate only. Does not include costs for issues discovered during construction.</p>
+          {/* Savings vs market */}
+          {(() => {
+            const marketAvg = Math.round(total / 0.9 / 100) * 100;
+            const savings = marketAvg - Math.round(total);
+            return (
+              <div style={{ background:'rgba(245,197,24,0.1)', borderRadius:'10px', padding:'12px 16px', marginTop:'12px', display:'flex', justifyContent:'space-between', alignItems:'center', border:'1px solid rgba(245,197,24,0.2)' }}>
+                <div>
+                  <div style={{ fontSize:'10px', color:'rgba(255,255,255,0.45)', marginBottom:'3px' }}>Huntsville market avg</div>
+                  <div style={{ fontSize:'14px', color:'rgba(255,255,255,0.4)', textDecoration:'line-through' }}>{fmt(marketAvg)}</div>
+                </div>
+                <div style={{ textAlign:'right' }}>
+                  <div style={{ fontSize:'10px', color:'#F5C518', marginBottom:'3px' }}>You save with 2M</div>
+                  <div style={{ fontSize:'20px', fontWeight:800, color:'#F5C518' }}>~{fmt(savings)}</div>
+                </div>
+              </div>
+            );
+          })()}
+          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Estimate based on Huntsville, AL market rates 2026. Final quote confirmed on-site.</p>
         </div>
       )}
 

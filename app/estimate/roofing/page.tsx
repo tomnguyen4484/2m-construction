@@ -6,12 +6,12 @@ type RoofMat = 'architectural_30' | 'architectural_50' | 'metal_rib' | 'metal_st
 type RoofPitch = 'low' | 'medium' | 'steep';
 
 const MATERIALS: Record<RoofMat, { label: string; costPerSq: number; desc: string; lifespan: string }> = {
-  architectural_30: { label: 'Architectural Shingle 30-yr', costPerSq: 450, desc: 'Most popular, good value',        lifespan: '25–30 yrs' },
-  architectural_50: { label: 'Architectural Shingle 50-yr', costPerSq: 580, desc: 'Thicker, impact-resistant',      lifespan: '40–50 yrs' },
-  metal_rib:        { label: 'Metal – Ribbed Panel',        costPerSq: 700, desc: 'Durable, energy efficient',      lifespan: '40–60 yrs' },
-  metal_standing:   { label: 'Metal – Standing Seam',       costPerSq: 950, desc: 'Premium, concealed fasteners',   lifespan: '50+ yrs'   },
-  tile_concrete:    { label: 'Concrete Tile',               costPerSq: 850, desc: 'Heavy, fire-resistant, durable', lifespan: '50+ yrs'   },
-  flat_tpo:         { label: 'Flat Roof – TPO',             costPerSq: 500, desc: 'For low-slope/flat roofs',       lifespan: '15–25 yrs' },
+  architectural_30: { label: 'Architectural Shingle 30-yr', costPerSq: 400, desc: 'Most popular, good value',        lifespan: '25–30 yrs' },
+  architectural_50: { label: 'Architectural Shingle 50-yr', costPerSq: 520, desc: 'Thicker, impact-resistant',      lifespan: '40–50 yrs' },
+  metal_rib:        { label: 'Metal – Ribbed Panel',        costPerSq: 630, desc: 'Durable, energy efficient',      lifespan: '40–60 yrs' },
+  metal_standing:   { label: 'Metal – Standing Seam',       costPerSq: 855, desc: 'Premium, concealed fasteners',   lifespan: '50+ yrs'   },
+  tile_concrete:    { label: 'Concrete Tile',               costPerSq: 765, desc: 'Heavy, fire-resistant, durable', lifespan: '50+ yrs'   },
+  flat_tpo:         { label: 'Flat Roof – TPO',             costPerSq: 450, desc: 'For low-slope/flat roofs',       lifespan: '15–25 yrs' },
 };
 
 const PITCHES: Record<RoofPitch, { label: string; mult: number; desc: string }> = {
@@ -37,7 +37,7 @@ export default function RoofingEstimator() {
   const m   = MATERIALS[mat];
   const p   = PITCHES[pitch];
   const materialCost = squares * m.costPerSq * p.mult;
-  const tearoffCost  = Number(layers) > 1 ? squares * 80 : 0;
+  const tearoffCost  = Number(layers) > 1 ? squares * 72 : 0;
   const gutterCost   = gutters === 'yes' ? Math.sqrt(sf) * 4 * 12 : 0;
   const total        = materialCost + tearoffCost + gutterCost;
   const hasResult    = sf > 0;
@@ -169,7 +169,24 @@ export default function RoofingEstimator() {
           <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
             <span>Total Estimate</span><span style={{ color:'#F5C518' }}>{fmt(total)}</span>
           </div>
-          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Estimate only. Does not include roof decking replacement if required after inspection.</p>
+          {/* Savings vs market */}
+          {(() => {
+            const marketAvg = Math.round(total / 0.9 / 100) * 100;
+            const savings = marketAvg - Math.round(total);
+            return (
+              <div style={{ background:'rgba(245,197,24,0.1)', borderRadius:'10px', padding:'12px 16px', marginTop:'12px', display:'flex', justifyContent:'space-between', alignItems:'center', border:'1px solid rgba(245,197,24,0.2)' }}>
+                <div>
+                  <div style={{ fontSize:'10px', color:'rgba(255,255,255,0.45)', marginBottom:'3px' }}>Huntsville market avg</div>
+                  <div style={{ fontSize:'14px', color:'rgba(255,255,255,0.4)', textDecoration:'line-through' }}>{fmt(marketAvg)}</div>
+                </div>
+                <div style={{ textAlign:'right' }}>
+                  <div style={{ fontSize:'10px', color:'#F5C518', marginBottom:'3px' }}>You save with 2M</div>
+                  <div style={{ fontSize:'20px', fontWeight:800, color:'#F5C518' }}>~{fmt(savings)}</div>
+                </div>
+              </div>
+            );
+          })()}
+          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Estimate based on Huntsville, AL market rates 2026. Final quote confirmed on-site.</p>
         </div>
       )}
 

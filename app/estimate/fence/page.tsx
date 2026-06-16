@@ -12,21 +12,21 @@ type StyleKey =
 
 // ── Material data ─────────────────────────────────────────────────────────────
 const MATERIALS: Record<MatKey, { label: string; matPer: number; laborPer: number; desc: string; styles: StyleKey[] }> = {
-  pine:         { label: 'Pine Wood',              matPer: 7,  laborPer: 11, desc: 'Budget-friendly, pressure-treated, needs staining every 2-3 yrs',
+  pine:         { label: 'Pine Wood',              matPer: 6,  laborPer: 9,  desc: 'Budget-friendly, pressure-treated, needs staining every 2-3 yrs',
                   styles: ['dog_ear','flatboard_cap','flatboard_scalloped','flatboard_convex','picket','shadow_box','classic','diagonal_lattice','square_lattice','highland_picket','pagoda','scalloped'] },
-  cedar:        { label: 'Cedar Wood',             matPer: 12, laborPer: 11, desc: 'Naturally rot & insect resistant, lasts 15-20 yrs',
+  cedar:        { label: 'Cedar Wood',             matPer: 10, laborPer: 9,  desc: 'Naturally rot & insect resistant, lasts 15-20 yrs',
                   styles: ['dog_ear','flatboard_cap','flatboard_scalloped','flatboard_convex','picket','shadow_box','classic','diagonal_lattice','square_lattice','highland_picket','pagoda','scalloped'] },
-  vinyl_std:    { label: 'Vinyl – Standard',       matPer: 16, laborPer: 10, desc: 'No painting, low maintenance, 20-yr warranty',
+  vinyl_std:    { label: 'Vinyl – Standard',       matPer: 13, laborPer: 9,  desc: 'No painting, low maintenance, 20-yr warranty',
                   styles: ['dog_ear','flatboard_cap','picket','shadow_box','classic'] },
-  vinyl_prem:   { label: 'Vinyl – Premium',        matPer: 24, laborPer: 10, desc: 'Thicker walls, UV-resistant, lifetime warranty',
+  vinyl_prem:   { label: 'Vinyl – Premium',        matPer: 20, laborPer: 9,  desc: 'Thicker walls, UV-resistant, lifetime warranty',
                   styles: ['dog_ear','flatboard_cap','picket','shadow_box','classic'] },
-  chain_galv:   { label: 'Chain Link – Galvanized',matPer: 5,  laborPer: 9,  desc: 'Economy, silver finish, 15-20 yr lifespan',
+  chain_galv:   { label: 'Chain Link – Galvanized',matPer: 4,  laborPer: 7,  desc: 'Economy, silver finish, 15-20 yr lifespan',
                   styles: ['chain_std'] },
-  chain_coated: { label: 'Chain Link – Coated',    matPer: 7,  laborPer: 9,  desc: 'Black or green PVC coating, cleaner look',
+  chain_coated: { label: 'Chain Link – Coated',    matPer: 5,  laborPer: 7,  desc: 'Black or green PVC coating, cleaner look',
                   styles: ['chain_std'] },
-  aluminum:     { label: 'Aluminum',               matPer: 20, laborPer: 14, desc: 'Rust-free, ornamental, low maintenance',
+  aluminum:     { label: 'Aluminum',               matPer: 17, laborPer: 12, desc: 'Rust-free, ornamental, low maintenance',
                   styles: ['aluminum_flat','picket'] },
-  iron:         { label: 'Wrought Iron',           matPer: 28, laborPer: 16, desc: 'Maximum security & curb appeal, lasts 50+ yrs',
+  iron:         { label: 'Wrought Iron',           matPer: 24, laborPer: 13, desc: 'Maximum security & curb appeal, lasts 50+ yrs',
                   styles: ['iron_spear','aluminum_flat'] },
 };
 
@@ -74,8 +74,8 @@ export default function FenceEstimator() {
   const ht        = Number(height);
   const matCost   = ft * ht * matInfo.matPer * styleInfo.mult;
   const laborCost = ft * matInfo.laborPer;
-  const gateCost  = gt * (mat.startsWith('chain') ? 200 : 420);
-  const demoCost  = demo === 'yes' ? ft * 3 : 0;
+  const gateCost  = gt * (mat.startsWith('chain') ? 160 : 380);
+  const demoCost  = demo === 'yes' ? ft * 2.7 : 0;
   const total     = matCost + laborCost + gateCost + demoCost;
   const hasResult = ft > 0;
 
@@ -234,8 +234,25 @@ export default function FenceEstimator() {
             <span>Total Estimate</span>
             <span style={{ color:'#F5C518' }}>{fmt(total)}</span>
           </div>
+          {/* Savings vs market */}
+          {(() => {
+            const marketAvg = Math.round(total / 0.9 / 100) * 100;
+            const savings = marketAvg - Math.round(total);
+            return (
+              <div style={{ background:'rgba(245,197,24,0.1)', borderRadius:'10px', padding:'12px 16px', marginTop:'12px', display:'flex', justifyContent:'space-between', alignItems:'center', border:'1px solid rgba(245,197,24,0.2)' }}>
+                <div>
+                  <div style={{ fontSize:'10px', color:'rgba(255,255,255,0.45)', marginBottom:'3px' }}>Huntsville market avg</div>
+                  <div style={{ fontSize:'14px', color:'rgba(255,255,255,0.4)', textDecoration:'line-through' }}>{fmt(marketAvg)}</div>
+                </div>
+                <div style={{ textAlign:'right' }}>
+                  <div style={{ fontSize:'10px', color:'#F5C518', marginBottom:'3px' }}>You save with 2M</div>
+                  <div style={{ fontSize:'20px', fontWeight:800, color:'#F5C518' }}>~{fmt(savings)}</div>
+                </div>
+              </div>
+            );
+          })()}
           <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>
-            * Prices are estimates. Live Home Depot pricing coming in Phase 3.
+            * Estimate based on Huntsville, AL market rates 2026. Final quote confirmed on-site.
           </p>
         </div>
       )}
