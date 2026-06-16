@@ -163,7 +163,7 @@ function TrafficTab({ token }: { token: string }) {
             Đăng nhập Google Analytics
           </button>
           <p style={{ color: '#475569', fontSize: 12, margin: '16px 0 0' }}>
-            Cần thêm <code style={{ color: '#F5C518' }}>NEXT_PUBLIC_GA_CLIENT_ID</code> vào Vercel env vars.
+            Đăng nhập bằng tài khoản Google có quyền truy cập GA4 property của bạn.
           </p>
         </div>
       </div>
