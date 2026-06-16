@@ -411,18 +411,16 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {tab !== 'traffic' && (
-                <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <button onClick={handleSave} disabled={saving} style={{
-                    background: '#F5C518', color: '#0F2542', fontWeight: 700,
-                    padding: '10px 24px', borderRadius: '8px', border: 'none',
-                    cursor: saving ? 'not-allowed' : 'pointer', fontSize: '14px',
-                  }}>
-                    {saving ? 'Đang lưu...' : 'Lưu thay đổi'}
-                  </button>
-                  {saveMsg && <span style={{ color: saveMsg.includes('✅') ? '#4ADE80' : '#F87171', fontSize: '13px' }}>{saveMsg}</span>}
-                </div>
-              )}
+              <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <button onClick={handleSave} disabled={saving} style={{
+                  background: '#F5C518', color: '#0F2542', fontWeight: 700,
+                  padding: '10px 24px', borderRadius: '8px', border: 'none',
+                  cursor: saving ? 'not-allowed' : 'pointer', fontSize: '14px',
+                }}>
+                  {saving ? 'Đang lưu...' : 'Lưu thay đổi'}
+                </button>
+                {saveMsg && <span style={{ color: saveMsg.includes('✅') ? '#4ADE80' : '#F87171', fontSize: '13px' }}>{saveMsg}</span>}
+              </div>
             </div>
           )
         )}
