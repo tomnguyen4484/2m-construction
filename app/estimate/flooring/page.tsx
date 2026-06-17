@@ -2,46 +2,36 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-type FloorMat = 'lvp_std' | 'lvp_prem' | 'hardwood_oak' | 'hardwood_maple' | 'tile_ceramic' | 'tile_porcelain' | 'carpet_std' | 'carpet_prem' | 'laminate';
+type FloorMat = 'lvp_std' | 'hardwood_oak' | 'tile_ceramic';
 
-const MATERIALS: Record<FloorMat, { label: string; materialPer: number; laborPer: number; desc: string }> = {
-  lvp_std:        { label: 'LVP – Standard',        materialPer: 2.25, laborPer: 2.75, desc: '6 mil wear layer, waterproof' },
-  lvp_prem:       { label: 'LVP – Premium',         materialPer: 4.00, laborPer: 2.75, desc: '12+ mil wear layer, lifetime warranty' },
-  hardwood_oak:   { label: 'Hardwood – Oak',        materialPer: 5.40, laborPer: 4.50, desc: 'Classic 3/4" solid oak, can refinish' },
-  hardwood_maple: { label: 'Hardwood – Maple',      materialPer: 7.20, laborPer: 4.50, desc: 'Hard, durable, light color' },
-  tile_ceramic:   { label: 'Tile – Ceramic',        materialPer: 1.80, laborPer: 6.30, desc: 'Budget tile, great for bathrooms' },
-  tile_porcelain: { label: 'Tile – Porcelain',      materialPer: 3.60, laborPer: 7.20, desc: 'Durable, low moisture absorption' },
-  carpet_std:     { label: 'Carpet – Standard',     materialPer: 1.80, laborPer: 2.25, desc: 'Good for bedrooms, soft underfoot' },
-  carpet_prem:    { label: 'Carpet – Premium',      materialPer: 3.60, laborPer: 2.25, desc: 'Thick pile, stain-resistant' },
-  laminate:       { label: 'Laminate',              materialPer: 1.80, laborPer: 2.70, desc: 'Looks like hardwood, budget-friendly' },
+const MATERIALS: Record<FloorMat, { label: string; icon: string; materialPer: number; laborPer: number; desc: string }> = {
+  lvp_std:      { label: 'LVP – Standard',   icon: '🟫', materialPer: 2.25, laborPer: 2.75, desc: '6 mil wear layer, waterproof, easy maintenance' },
+  hardwood_oak: { label: 'Hardwood – Oak',   icon: '🌳', materialPer: 5.40, laborPer: 4.50, desc: 'Classic 3/4" solid oak, can be refinished' },
+  tile_ceramic: { label: 'Tile – Ceramic',   icon: '⬜', materialPer: 1.80, laborPer: 6.30, desc: 'Durable, water-resistant, great for bathrooms & kitchens' },
 };
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
 
 export default function FlooringEstimator() {
-  const [mat, setMat]         = useState<FloorMat>('lvp_std');
-  const [sqft, setSqft]       = useState('');
-  const [removal, setRemoval] = useState('no');
-  const [subfloor, setSubfloor] = useState('no');
+  const [mat, setMat]           = useState<FloorMat>('lvp_std');
+  const [sqft, setSqft]         = useState('');
   const [showContact, setShowContact] = useState(false);
-  const [form, setForm]       = useState({ name: '', phone: '', email: '' });
-  const [sent, setSent]       = useState(false);
+  const [form, setForm]         = useState({ name: '', phone: '', email: '', note: '' });
+  const [sent, setSent]         = useState(false);
 
-  const sf = Number(sqft) || 0;
-  const m  = MATERIALS[mat];
-  const materialCost = sf * m.materialPer * 1.1; // 10% waste factor
-  const laborCost    = sf * m.laborPer;
-  const removalCost  = removal === 'yes' ? sf * 1.8 : 0;
-  const subfloorCost = subfloor === 'yes' ? sf * 2.7 : 0;
-  const total        = materialCost + laborCost + removalCost + subfloorCost;
-  const hasResult    = sf > 0;
+  const sf          = Number(sqft) || 0;
+  const m           = MATERIALS[mat];
+  const materialCost= sf * m.materialPer * 1.1; // 10% waste factor
+  const laborCost   = sf * m.laborPer;
+  const total       = materialCost + laborCost;
+  const hasResult   = sf > 0;
 
   async function submitQuote() {
     if (!form.name || !form.phone) return;
     try {
       await fetch('/api/contact', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, service: 'Flooring', estimate: fmt(total) }),
+        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, service: 'Flooring', estimate: fmt(total), note: form.note }),
       });
       setSent(true);
     } catch { setSent(true); }
@@ -57,92 +47,99 @@ export default function FlooringEstimator() {
   );
 
   return (
-    <div style={{ maxWidth:'680px', margin:'0 auto', padding:'20px 16px' }}>
-      <Link href="/estimate" style={{ fontSize:'13px', color:'#64748B', marginBottom:'16px', display:'block' }}>← All Services</Link>
-      <h1 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', margin:'0 0 4px' }}>🏠 Flooring Estimator</h1>
+    <div style={{ maxWidth:'680px', margin:'0 auto', padding:'20px 16px 40px' }}>
+      <Link href="/estimate" style={{ fontSize:'13px', color:'#64748B', marginBottom:'16px', display:'block' }}>
+        ← All Services
+      </Link>
+      <h1 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', margin:'0 0 4px' }}>
+        🏠 Flooring Estimator
+      </h1>
 
-      <div style={{ background:'#FFF9E6', border:'1px solid #F5C518', borderRadius:'10px', padding:'10px 14px', marginBottom:'24px', display:'flex', gap:'8px' }}>
+      {/* Disclaimer */}
+      <div style={{ background:'#FFFBEB', border:'1px solid #F5C518', borderRadius:'10px', padding:'10px 14px', marginBottom:'20px', display:'flex', gap:'8px' }}>
         <span>⚠️</span>
         <div>
-          <p style={{ fontSize:'12px', color:'#92400E', margin:0, fontWeight:600 }}>Estimated Prices — Not Live Data</p>
-          <p style={{ fontSize:'12px', color:'#92400E', margin:'2px 0 0' }}>Market estimates for Huntsville, AL. Material price includes 10% waste factor.</p>
+          <p style={{ fontSize:'12px', color:'#92400E', margin:0, fontWeight:700 }}>Estimated Prices — Not Live Data</p>
+          <p style={{ fontSize:'12px', color:'#92400E', margin:'2px 0 0', lineHeight:1.5 }}>
+            Market estimates for Huntsville, AL · 2026. Material price includes 10% waste factor. Final quote confirmed on-site.
+          </p>
         </div>
       </div>
 
-      {/* Home Depot material pricing badge */}
-      <div style={{ display:'flex', alignItems:'center', gap:'6px', background:'#FFF7ED', border:'1px solid #FDBA74', borderRadius:'8px', padding:'8px 12px', marginBottom:'24px' }}>
-        <span style={{ fontSize:'13px' }}>📦</span>
-        <span style={{ fontSize:'11px', color:'#9A3412', fontWeight:600 }}>Material prices sourced from</span>
-        <a href="https://www.homedepot.com" target="_blank" rel="noopener noreferrer"
-          style={{ fontSize:'11px', color:'#EA580C', fontWeight:700, textDecoration:'none' }}>
-          The Home Depot
-        </a>
-        <span style={{ fontSize:'10px', color:'#9A3412' }}>· Huntsville, AL · Updated quarterly</span>
+      {/* Spec badge */}
+      <div style={{ background:'#EFF6FF', border:'1px solid #BFDBFE', borderRadius:'10px', padding:'12px 16px', marginBottom:'24px' }}>
+        <p style={{ fontSize:'12px', color:'#1E40AF', fontWeight:700, margin:'0 0 6px' }}>📋 Included in all estimates</p>
+        <div style={{ display:'flex', gap:'20px', flexWrap:'wrap' }}>
+          <span style={{ fontSize:'13px', color:'#1D4ED8' }}>📦 Material + 10% waste buffer</span>
+          <span style={{ fontSize:'13px', color:'#1D4ED8' }}>🔨 Labor & installation</span>
+          <span style={{ fontSize:'13px', color:'#1D4ED8' }}>🧹 Basic clean-up</span>
+        </div>
       </div>
 
-      <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'10px' }}>Flooring Material</label>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
+      {/* Material selection */}
+      <div style={{ marginBottom:'24px' }}>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'10px' }}>
+          Flooring Material
+        </label>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr', gap:'8px' }}>
           {(Object.entries(MATERIALS) as [FloorMat, typeof MATERIALS[FloorMat]][]).map(([key, info]) => (
             <button key={key} onClick={() => setMat(key)}
-              style={{ padding:'12px', borderRadius:'10px', textAlign:'left', cursor:'pointer',
+              style={{ padding:'14px 16px', borderRadius:'10px', textAlign:'left', cursor:'pointer',
                 border: mat===key ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
-                background: mat===key ? '#EFF6FF' : '#fff' }}>
-              <div style={{ fontWeight:700, fontSize:'13px', color: mat===key ? '#1A3A5C' : '#1E293B' }}>{info.label}</div>
-              <div style={{ fontSize:'11px', color:'#64748B', marginTop:'2px' }}>{info.desc}</div>
-              <div style={{ fontSize:'12px', color: mat===key ? '#1A3A5C' : '#64748B', fontWeight:600, marginTop:'4px' }}>~{fmt(info.materialPer + info.laborPer)}/sq ft installed</div>
+                background: mat===key ? '#EFF6FF' : '#fff',
+                display:'flex', alignItems:'center', gap:'14px' }}>
+              <span style={{ fontSize:'26px' }}>{info.icon}</span>
+              <div style={{ flex:1 }}>
+                <div style={{ fontWeight:700, fontSize:'14px', color: mat===key ? '#1A3A5C' : '#1E293B' }}>{info.label}</div>
+                <div style={{ fontSize:'11px', color:'#64748B', marginTop:'2px' }}>{info.desc}</div>
+              </div>
+              <div style={{ textAlign:'right', flexShrink:0 }}>
+                <div style={{ fontSize:'13px', color: mat===key ? '#1A3A5C' : '#94A3B8', fontWeight:700 }}>
+                  ~{fmt(info.materialPer + info.laborPer)}/sq ft
+                </div>
+                <div style={{ fontSize:'10px', color:'#94A3B8' }}>installed</div>
+              </div>
             </button>
           ))}
         </div>
       </div>
 
-      <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Area (square feet)</label>
-        <input type="number" inputMode="numeric" value={sqft} onChange={e => setSqft(e.target.value)}
+      {/* Area input */}
+      <div style={{ marginBottom:'28px' }}>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
+          Area (square feet)
+        </label>
+        <input
+          type="number" inputMode="numeric" value={sqft}
+          onChange={e => setSqft(e.target.value)}
           style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', outline:'none', boxSizing:'border-box' as const }}
-          placeholder="e.g. 800" />
-        <p style={{ fontSize:'11px', color:'#94A3B8', margin:'4px 0 0' }}>Average home: 1,200–2,000 sq ft · Single room: 150–300 sq ft</p>
+          placeholder="e.g. 800"
+        />
+        <p style={{ fontSize:'11px', color:'#94A3B8', margin:'4px 0 0' }}>
+          Average home: 1,200–2,000 sq ft · Single room: 150–300 sq ft
+        </p>
       </div>
 
-      <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Remove Old Flooring? (+$1.80/sq ft)</label>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
-          {[['no','No'],['yes','Yes']].map(([v,l]) => (
-            <button key={v} onClick={() => setRemoval(v)}
-              style={{ padding:'11px', borderRadius:'10px', fontSize:'14px', fontWeight:600, cursor:'pointer',
-                border: removal===v ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
-                background: removal===v ? '#EFF6FF' : '#fff', color: removal===v ? '#1A3A5C' : '#64748B' }}>
-              {l}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div style={{ marginBottom:'24px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Subfloor Repair Needed? (+$2.70/sq ft)</label>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
-          {[['no','No / Unknown'],['yes','Yes']].map(([v,l]) => (
-            <button key={v} onClick={() => setSubfloor(v)}
-              style={{ padding:'11px', borderRadius:'10px', fontSize:'14px', fontWeight:600, cursor:'pointer',
-                border: subfloor===v ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
-                background: subfloor===v ? '#EFF6FF' : '#fff', color: subfloor===v ? '#1A3A5C' : '#64748B' }}>
-              {l}
-            </button>
-          ))}
-        </div>
-      </div>
-
+      {/* Result */}
       {hasResult && (
         <div style={{ background:'linear-gradient(135deg,#1A3A5C,#0F2542)', borderRadius:'16px', padding:'24px', marginBottom:'20px', color:'#fff' }}>
-          <h2 style={{ fontWeight:800, fontSize:'18px', margin:'0 0 16px' }}>Estimate Breakdown</h2>
-          <div style={{ fontSize:'12px', color:'rgba(255,255,255,0.5)', marginBottom:'14px' }}>{MATERIALS[mat].label} · {sqft} sq ft</div>
-          <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}><span style={{ color:'rgba(255,255,255,0.7)' }}>Materials (w/ 10% waste)</span><span>{fmt(materialCost)}</span></div>
-          <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}><span style={{ color:'rgba(255,255,255,0.7)' }}>Labor / Installation</span><span>{fmt(laborCost)}</span></div>
-          {removal === 'yes' && <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}><span style={{ color:'rgba(255,255,255,0.7)' }}>Old Floor Removal</span><span>{fmt(removalCost)}</span></div>}
-          {subfloor === 'yes' && <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}><span style={{ color:'rgba(255,255,255,0.7)' }}>Subfloor Repair</span><span>{fmt(subfloorCost)}</span></div>}
-          <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
-            <span>Total Estimate</span><span style={{ color:'#F5C518' }}>{fmt(total)}</span>
+          <h2 style={{ fontWeight:800, fontSize:'18px', margin:'0 0 8px' }}>Estimate Breakdown</h2>
+          <p style={{ fontSize:'12px', color:'rgba(255,255,255,0.5)', margin:'0 0 16px' }}>
+            {MATERIALS[mat].label} · {sqft} sq ft
+          </p>
+          <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}>
+            <span style={{ color:'rgba(255,255,255,0.7)' }}>Materials (w/ 10% waste)</span>
+            <span>{fmt(materialCost)}</span>
           </div>
+          <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}>
+            <span style={{ color:'rgba(255,255,255,0.7)' }}>Labor / Installation</span>
+            <span>{fmt(laborCost)}</span>
+          </div>
+          <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
+            <span>Total Estimate</span>
+            <span style={{ color:'#F5C518' }}>{fmt(total)}</span>
+          </div>
+
           {/* Savings vs market */}
           {(() => {
             const marketAvg = Math.round(total / 0.9 / 100) * 100;
@@ -160,7 +157,10 @@ export default function FlooringEstimator() {
               </div>
             );
           })()}
-          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Estimate based on Huntsville, AL market rates 2026. Final quote confirmed on-site.</p>
+
+          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>
+            * Estimate based on Huntsville, AL market rates 2026. Old floor removal & subfloor repair quoted separately on-site.
+          </p>
         </div>
       )}
 
@@ -175,11 +175,17 @@ export default function FlooringEstimator() {
         <div style={{ background:'#fff', border:'1px solid #E2E8F0', borderRadius:'16px', padding:'20px', marginBottom:'16px' }}>
           <h3 style={{ fontWeight:700, color:'#1E293B', margin:'0 0 16px' }}>Your Contact Info</h3>
           <input value={form.name} onChange={e => setForm({...form, name:e.target.value})}
-            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }} placeholder="Full name *" />
+            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }}
+            placeholder="Full name *" />
           <input type="tel" value={form.phone} onChange={e => setForm({...form, phone:e.target.value})}
-            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }} placeholder="Phone number *" />
+            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }}
+            placeholder="Phone number *" />
           <input type="email" value={form.email} onChange={e => setForm({...form, email:e.target.value})}
-            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }} placeholder="Email (optional)" />
+            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }}
+            placeholder="Email (optional)" />
+          <textarea value={form.note} onChange={e => setForm({...form, note:e.target.value})} rows={3}
+            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const, resize:'none' as const }}
+            placeholder="Any additional details..." />
           <button onClick={submitQuote}
             style={{ width:'100%', background:'#F5C518', color:'#1A3A5C', fontWeight:800, fontSize:'16px', padding:'14px', borderRadius:'12px', border:'none', cursor:'pointer' }}>
             Submit Request

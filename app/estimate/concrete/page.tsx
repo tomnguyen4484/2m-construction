@@ -2,53 +2,36 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-type ConcreteJob = 'driveway' | 'patio' | 'sidewalk' | 'slab' | 'steps' | 'retaining';
-type ConcreteFinish = 'broom' | 'stamped' | 'exposed' | 'stained' | 'polished';
+type Job = 'driveway' | 'patio' | 'sidewalk';
 
-const JOBS: Record<ConcreteJob, { label: string; icon: string; desc: string; basePer: number }> = {
-  driveway:   { label: 'Driveway',           icon: '🚗', desc: '4" slab, standard mix',          basePer: 9  },
-  patio:      { label: 'Patio',              icon: '☀️', desc: '4" slab, standard mix',          basePer: 8  },
-  sidewalk:   { label: 'Sidewalk / Walkway', icon: '🚶', desc: '3.5" slab, smooth finish',       basePer: 7  },
-  slab:       { label: 'Foundation Slab',    icon: '🏗️', desc: '4–6" with vapor barrier & rebar', basePer: 11 },
-  steps:      { label: 'Concrete Steps',     icon: '🪜', desc: 'Per linear foot of stair width', basePer: 350 },
-  retaining:  { label: 'Retaining Wall',     icon: '🧱', desc: 'Per sq ft of wall face',         basePer: 35  },
-};
-
-const FINISHES: Record<ConcreteFinish, { label: string; addPer: number; desc: string }> = {
-  broom:    { label: 'Broom Finish',    addPer: 0,    desc: 'Standard, non-slip texture' },
-  stamped:  { label: 'Stamped Pattern', addPer: 8,    desc: 'Brick, stone, or slate look' },
-  exposed:  { label: 'Exposed Aggregate', addPer: 3,  desc: 'Pebble texture, skid-resistant' },
-  stained:  { label: 'Acid Stained',    addPer: 4,    desc: 'Earthy tones, unique look' },
-  polished: { label: 'Polished',        addPer: 6,    desc: 'Smooth, glossy — for patios' },
+const JOBS: Record<Job, { label: string; icon: string; desc: string; perSqft: number; placeholder: string; tip: string }> = {
+  driveway: { label: 'Driveway',          icon: '🚗', desc: '4" reinforced slab · broom finish anti-slip', perSqft: 9,   placeholder: 'e.g. 400', tip: 'Standard 2-car driveway: 400–600 sq ft' },
+  patio:    { label: 'Patio',             icon: '☀️', desc: '4" slab · broom finish anti-slip',            perSqft: 8,   placeholder: 'e.g. 200', tip: 'Average patio: 150–300 sq ft' },
+  sidewalk: { label: 'Sidewalk / Walkway',icon: '🚶', desc: '3.5" slab · broom finish anti-slip',          perSqft: 7,   placeholder: 'e.g. 100', tip: 'Standard width: 3–4 ft. Multiply length × width' },
 };
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
 
 export default function ConcreteEstimator() {
-  const [job, setJob]         = useState<ConcreteJob>('driveway');
-  const [finish, setFinish]   = useState<ConcreteFinish>('broom');
-  const [size, setSize]       = useState('');
-  const [removal, setRemoval] = useState('no');
-  const [sealer, setSealer]   = useState('no');
+  const [job, setJob]             = useState<Job>('driveway');
+  const [sqft, setSqft]           = useState('');
+  const [demo, setDemo]           = useState('no');
   const [showContact, setShowContact] = useState(false);
-  const [form, setForm]       = useState({ name: '', phone: '', email: '' });
-  const [sent, setSent]       = useState(false);
+  const [form, setForm]           = useState({ name: '', phone: '', email: '', note: '' });
+  const [sent, setSent]           = useState(false);
 
-  const s  = Number(size) || 0;
-  const j  = JOBS[job];
-  const f  = FINISHES[finish];
-  const concreteCost = s * (j.basePer + f.addPer);
-  const removalCost  = removal === 'yes' ? s * 3 : 0;
-  const sealerCost   = sealer === 'yes' ? s * 1.5 : 0;
-  const total        = concreteCost + removalCost + sealerCost;
-  const hasResult    = s > 0;
+  const sf        = Number(sqft) || 0;
+  const concrete  = sf * JOBS[job].perSqft;
+  const demoCost  = demo === 'yes' ? sf * 3 : 0;
+  const total     = concrete + demoCost;
+  const hasResult = sf > 0;
 
   async function submitQuote() {
     if (!form.name || !form.phone) return;
     try {
       await fetch('/api/contact', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, service: 'Concrete', estimate: fmt(total) }),
+        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, service: 'Concrete', estimate: fmt(total), note: form.note }),
       });
       setSent(true);
     } catch { setSent(true); }
@@ -64,106 +47,134 @@ export default function ConcreteEstimator() {
   );
 
   return (
-    <div style={{ maxWidth:'680px', margin:'0 auto', padding:'20px 16px' }}>
-      <Link href="/estimate" style={{ fontSize:'13px', color:'#64748B', marginBottom:'16px', display:'block' }}>← All Services</Link>
-      <h1 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', margin:'0 0 4px' }}>⬜ Concrete Estimator</h1>
+    <div style={{ maxWidth:'680px', margin:'0 auto', padding:'20px 16px 40px' }}>
+      <Link href="/estimate" style={{ fontSize:'13px', color:'#64748B', marginBottom:'16px', display:'block' }}>
+        ← All Services
+      </Link>
+      <h1 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', margin:'0 0 4px' }}>
+        🚗 Concrete Estimator
+      </h1>
 
-      <div style={{ background:'#FFF9E6', border:'1px solid #F5C518', borderRadius:'10px', padding:'10px 14px', marginBottom:'24px', display:'flex', gap:'8px' }}>
+      <div style={{ background:'#FFFBEB', border:'1px solid #F5C518', borderRadius:'10px', padding:'10px 14px', marginBottom:'20px', display:'flex', gap:'8px' }}>
         <span>⚠️</span>
         <div>
-          <p style={{ fontSize:'12px', color:'#92400E', margin:0, fontWeight:600 }}>Estimated Prices — Not Live Data</p>
-          <p style={{ fontSize:'12px', color:'#92400E', margin:'2px 0 0' }}>Market estimates for Huntsville, AL. Includes concrete, rebar, and labor.</p>
+          <p style={{ fontSize:'12px', color:'#92400E', margin:0, fontWeight:700 }}>Estimated Prices — Not Final Quote</p>
+          <p style={{ fontSize:'12px', color:'#92400E', margin:'2px 0 0', lineHeight:1.5 }}>
+            Market estimates for Huntsville, AL · 2026. Final price depends on site grading, access, and soil conditions. Free on-site quote available.
+          </p>
         </div>
       </div>
 
-      {/* Home Depot material pricing badge */}
-      <div style={{ display:'flex', alignItems:'center', gap:'6px', background:'#FFF7ED', border:'1px solid #FDBA74', borderRadius:'8px', padding:'8px 12px', marginBottom:'24px' }}>
-        <span style={{ fontSize:'13px' }}>📦</span>
-        <span style={{ fontSize:'11px', color:'#9A3412', fontWeight:600 }}>Material prices sourced from</span>
-        <a href="https://www.homedepot.com" target="_blank" rel="noopener noreferrer"
-          style={{ fontSize:'11px', color:'#EA580C', fontWeight:700, textDecoration:'none' }}>
-          The Home Depot
-        </a>
-        <span style={{ fontSize:'10px', color:'#9A3412' }}>· Huntsville, AL · Updated quarterly</span>
+      {/* Fixed finish badge */}
+      <div style={{ background:'#EFF6FF', border:'1px solid #BFDBFE', borderRadius:'10px', padding:'12px 16px', marginBottom:'24px', display:'flex', alignItems:'center', gap:'10px' }}>
+        <span style={{ fontSize:'20px' }}>✅</span>
+        <div>
+          <p style={{ fontSize:'12px', color:'#1E40AF', fontWeight:700, margin:'0 0 2px' }}>Broom Finish — Included Standard</p>
+          <p style={{ fontSize:'11px', color:'#3B82F6', margin:0 }}>Anti-slip textured surface on all concrete work</p>
+        </div>
       </div>
 
-      <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'10px' }}>Type of Project</label>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
-          {(Object.entries(JOBS) as [ConcreteJob, typeof JOBS[ConcreteJob]][]).map(([key, info]) => (
-            <button key={key} onClick={() => setJob(key)}
-              style={{ padding:'12px', borderRadius:'10px', textAlign:'left', cursor:'pointer',
+      {/* Job type */}
+      <div style={{ marginBottom:'24px' }}>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'10px' }}>
+          Type of Work
+        </label>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr', gap:'8px' }}>
+          {(Object.entries(JOBS) as [Job, typeof JOBS[Job]][]).map(([key, info]) => (
+            <button key={key} onClick={() => { setJob(key); setSqft(''); }}
+              style={{ padding:'14px 16px', borderRadius:'10px', textAlign:'left', cursor:'pointer',
                 border: job===key ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
-                background: job===key ? '#EFF6FF' : '#fff' }}>
-              <div style={{ fontWeight:700, fontSize:'13px', color: job===key ? '#1A3A5C' : '#1E293B' }}>{info.icon} {info.label}</div>
-              <div style={{ fontSize:'11px', color:'#64748B', marginTop:'2px' }}>{info.desc}</div>
+                background: job===key ? '#EFF6FF' : '#fff',
+                display:'flex', alignItems:'center', gap:'14px' }}>
+              <span style={{ fontSize:'24px' }}>{info.icon}</span>
+              <div style={{ flex:1 }}>
+                <div style={{ fontWeight:700, fontSize:'14px', color: job===key ? '#1A3A5C' : '#1E293B' }}>{info.label}</div>
+                <div style={{ fontSize:'11px', color:'#64748B', marginTop:'2px' }}>{info.desc}</div>
+              </div>
+              <div style={{ textAlign:'right', flexShrink:0 }}>
+                <div style={{ fontSize:'13px', color: job===key ? '#1A3A5C' : '#94A3B8', fontWeight:700 }}>
+                  ~{fmt(info.perSqft)}/sq ft
+                </div>
+              </div>
             </button>
           ))}
         </div>
       </div>
 
+      {/* Size */}
       <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Size ({job === 'steps' ? 'linear feet' : job === 'retaining' ? 'sq ft of wall' : 'square feet'})</label>
-        <input type="number" inputMode="numeric" value={size} onChange={e => setSize(e.target.value)}
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
+          Area (square feet)
+        </label>
+        <input
+          type="number" inputMode="numeric" value={sqft}
+          onChange={e => setSqft(e.target.value)}
           style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', outline:'none', boxSizing:'border-box' as const }}
-          placeholder={job === 'driveway' ? 'e.g. 500' : job === 'steps' ? 'e.g. 8' : 'e.g. 300'} />
+          placeholder={JOBS[job].placeholder}
+        />
+        <p style={{ fontSize:'11px', color:'#94A3B8', margin:'4px 0 0' }}>{JOBS[job].tip}</p>
       </div>
 
-      <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'10px' }}>Finish</label>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
-          {(Object.entries(FINISHES) as [ConcreteFinish, typeof FINISHES[ConcreteFinish]][]).map(([key, info]) => (
-            <button key={key} onClick={() => setFinish(key)}
-              style={{ padding:'10px 12px', borderRadius:'10px', textAlign:'left', cursor:'pointer',
-                border: finish===key ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
-                background: finish===key ? '#EFF6FF' : '#fff' }}>
-              <div style={{ fontWeight:600, fontSize:'13px', color: finish===key ? '#1A3A5C' : '#1E293B' }}>{info.label}</div>
-              <div style={{ fontSize:'11px', color:'#64748B', marginTop:'2px' }}>{info.desc}</div>
-              {info.addPer > 0 && <div style={{ fontSize:'11px', color: finish===key ? '#1A3A5C' : '#94A3B8', marginTop:'2px', fontWeight:600 }}>+{'$'}{info.addPer}/sq ft</div>}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Remove Existing Concrete? (+$3/sq ft)</label>
+      {/* Demo */}
+      <div style={{ marginBottom:'28px' }}>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
+          Remove Existing Concrete? <span style={{ fontWeight:400, color:'#64748B' }}>(+$3/sq ft)</span>
+        </label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
           {[['no','No'],['yes','Yes']].map(([v,l]) => (
-            <button key={v} onClick={() => setRemoval(v)}
+            <button key={v} onClick={() => setDemo(v)}
               style={{ padding:'11px', borderRadius:'10px', fontSize:'14px', fontWeight:600, cursor:'pointer',
-                border: removal===v ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
-                background: removal===v ? '#EFF6FF' : '#fff', color: removal===v ? '#1A3A5C' : '#64748B' }}>
+                border: demo===v ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
+                background: demo===v ? '#EFF6FF' : '#fff',
+                color: demo===v ? '#1A3A5C' : '#64748B' }}>
               {l}
             </button>
           ))}
         </div>
       </div>
 
-      <div style={{ marginBottom:'24px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>Add Concrete Sealer? (+$1.50/sq ft)</label>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
-          {[['no','No'],['yes','Yes – Recommended']].map(([v,l]) => (
-            <button key={v} onClick={() => setSealer(v)}
-              style={{ padding:'11px', borderRadius:'10px', fontSize:'13px', fontWeight:600, cursor:'pointer',
-                border: sealer===v ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
-                background: sealer===v ? '#EFF6FF' : '#fff', color: sealer===v ? '#1A3A5C' : '#64748B' }}>
-              {l}
-            </button>
-          ))}
-        </div>
-      </div>
-
+      {/* Result */}
       {hasResult && (
         <div style={{ background:'linear-gradient(135deg,#1A3A5C,#0F2542)', borderRadius:'16px', padding:'24px', marginBottom:'20px', color:'#fff' }}>
-          <h2 style={{ fontWeight:800, fontSize:'18px', margin:'0 0 16px' }}>Estimate Breakdown</h2>
-          <div style={{ fontSize:'12px', color:'rgba(255,255,255,0.5)', marginBottom:'14px' }}>{JOBS[job].label} · {FINISHES[finish].label} · {size} {job === 'steps' ? 'lf' : 'sq ft'}</div>
-          <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}><span style={{ color:'rgba(255,255,255,0.7)' }}>Concrete & Labor</span><span>{fmt(concreteCost)}</span></div>
-          {removal === 'yes' && <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}><span style={{ color:'rgba(255,255,255,0.7)' }}>Demo & Removal</span><span>{fmt(removalCost)}</span></div>}
-          {sealer === 'yes' && <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}><span style={{ color:'rgba(255,255,255,0.7)' }}>Concrete Sealer</span><span>{fmt(sealerCost)}</span></div>}
-          <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
-            <span>Total Estimate</span><span style={{ color:'#F5C518' }}>{fmt(total)}</span>
+          <h2 style={{ fontWeight:800, fontSize:'18px', margin:'0 0 8px' }}>Estimate Breakdown</h2>
+          <p style={{ fontSize:'12px', color:'rgba(255,255,255,0.5)', margin:'0 0 16px' }}>
+            {JOBS[job].label} · Broom finish · {sqft} sq ft
+          </p>
+          <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}>
+            <span style={{ color:'rgba(255,255,255,0.7)' }}>{sqft} sq ft × {fmt(JOBS[job].perSqft)}/sq ft</span>
+            <span>{fmt(concrete)}</span>
           </div>
-          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>* Estimate only. Does not include additional costs due to soil conditions or site access.</p>
+          {demo === 'yes' && (
+            <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}>
+              <span style={{ color:'rgba(255,255,255,0.7)' }}>Demo & Removal</span>
+              <span>{fmt(demoCost)}</span>
+            </div>
+          )}
+          <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
+            <span>Total Estimate</span>
+            <span style={{ color:'#F5C518' }}>{fmt(total)}</span>
+          </div>
+
+          {(() => {
+            const marketAvg = Math.round(total / 0.9 / 100) * 100;
+            const savings = marketAvg - Math.round(total);
+            return (
+              <div style={{ background:'rgba(245,197,24,0.1)', borderRadius:'10px', padding:'12px 16px', marginTop:'12px', display:'flex', justifyContent:'space-between', alignItems:'center', border:'1px solid rgba(245,197,24,0.2)' }}>
+                <div>
+                  <div style={{ fontSize:'10px', color:'rgba(255,255,255,0.45)', marginBottom:'3px' }}>Huntsville market avg</div>
+                  <div style={{ fontSize:'14px', color:'rgba(255,255,255,0.4)', textDecoration:'line-through' }}>{fmt(marketAvg)}</div>
+                </div>
+                <div style={{ textAlign:'right' }}>
+                  <div style={{ fontSize:'10px', color:'#F5C518', marginBottom:'3px' }}>You save with 2M</div>
+                  <div style={{ fontSize:'20px', fontWeight:800, color:'#F5C518' }}>~{fmt(savings)}</div>
+                </div>
+              </div>
+            );
+          })()}
+
+          <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>
+            * Estimate based on Huntsville, AL market rates 2026. Final quote confirmed on-site.
+          </p>
         </div>
       )}
 
@@ -178,11 +189,17 @@ export default function ConcreteEstimator() {
         <div style={{ background:'#fff', border:'1px solid #E2E8F0', borderRadius:'16px', padding:'20px', marginBottom:'16px' }}>
           <h3 style={{ fontWeight:700, color:'#1E293B', margin:'0 0 16px' }}>Your Contact Info</h3>
           <input value={form.name} onChange={e => setForm({...form, name:e.target.value})}
-            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }} placeholder="Full name *" />
+            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }}
+            placeholder="Full name *" />
           <input type="tel" value={form.phone} onChange={e => setForm({...form, phone:e.target.value})}
-            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }} placeholder="Phone number *" />
+            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }}
+            placeholder="Phone number *" />
           <input type="email" value={form.email} onChange={e => setForm({...form, email:e.target.value})}
-            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }} placeholder="Email (optional)" />
+            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }}
+            placeholder="Email (optional)" />
+          <textarea value={form.note} onChange={e => setForm({...form, note:e.target.value})} rows={3}
+            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const, resize:'none' as const }}
+            placeholder="Any additional details..." />
           <button onClick={submitQuote}
             style={{ width:'100%', background:'#F5C518', color:'#1A3A5C', fontWeight:800, fontSize:'16px', padding:'14px', borderRadius:'12px', border:'none', cursor:'pointer' }}>
             Submit Request

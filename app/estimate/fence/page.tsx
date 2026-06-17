@@ -2,82 +2,52 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-type MatKey = 'pine' | 'cedar' | 'vinyl_std' | 'vinyl_prem' | 'chain_galv' | 'chain_coated' | 'aluminum' | 'iron';
-type StyleKey =
-  | 'dog_ear' | 'flatboard_cap' | 'flatboard_scalloped' | 'flatboard_convex'
-  | 'picket' | 'shadow_box' | 'classic' | 'diagonal_lattice'
-  | 'square_lattice' | 'highland_picket' | 'pagoda' | 'scalloped'
-  | 'chain_std' | 'aluminum_flat' | 'iron_spear';
+// Fixed: Pine Dog-ear 6ft
+const MAT_PER   = 6;   // $/sq ft material
+const LABOR_PER = 9;   // $/linear ft labor
+const HEIGHT    = 6;   // ft
+const GATE_COST = 500; // $ per gate
+const DEMO_PER  = 2.7; // $/linear ft demo
 
-// ── Material data ─────────────────────────────────────────────────────────────
-const MATERIALS: Record<MatKey, { label: string; matPer: number; laborPer: number; desc: string; styles: StyleKey[] }> = {
-  pine:         { label: 'Pine Wood',              matPer: 6,  laborPer: 9,  desc: 'Budget-friendly, pressure-treated, needs staining every 2-3 yrs',
-                  styles: ['dog_ear','flatboard_cap','flatboard_scalloped','flatboard_convex','picket','shadow_box','classic','diagonal_lattice','square_lattice','highland_picket','pagoda','scalloped'] },
-  cedar:        { label: 'Cedar Wood',             matPer: 10, laborPer: 9,  desc: 'Naturally rot & insect resistant, lasts 15-20 yrs',
-                  styles: ['dog_ear','flatboard_cap','flatboard_scalloped','flatboard_convex','picket','shadow_box','classic','diagonal_lattice','square_lattice','highland_picket','pagoda','scalloped'] },
-  vinyl_std:    { label: 'Vinyl – Standard',       matPer: 13, laborPer: 9,  desc: 'No painting, low maintenance, 20-yr warranty',
-                  styles: ['dog_ear','flatboard_cap','picket','shadow_box','classic'] },
-  vinyl_prem:   { label: 'Vinyl – Premium',        matPer: 20, laborPer: 9,  desc: 'Thicker walls, UV-resistant, lifetime warranty',
-                  styles: ['dog_ear','flatboard_cap','picket','shadow_box','classic'] },
-  chain_galv:   { label: 'Chain Link – Galvanized',matPer: 4,  laborPer: 7,  desc: 'Economy, silver finish, 15-20 yr lifespan',
-                  styles: ['chain_std'] },
-  chain_coated: { label: 'Chain Link – Coated',    matPer: 5,  laborPer: 7,  desc: 'Black or green PVC coating, cleaner look',
-                  styles: ['chain_std'] },
-  aluminum:     { label: 'Aluminum',               matPer: 17, laborPer: 12, desc: 'Rust-free, ornamental, low maintenance',
-                  styles: ['aluminum_flat','picket'] },
-  iron:         { label: 'Wrought Iron',           matPer: 24, laborPer: 13, desc: 'Maximum security & curb appeal, lasts 50+ yrs',
-                  styles: ['iron_spear','aluminum_flat'] },
-};
-
-// ── Style data ────────────────────────────────────────────────────────────────
-const STYLES: Record<StyleKey, { label: string; mult: number; note: string }> = {
-  dog_ear:           { label: 'Dog Ear',                    mult: 1.0,  note: 'Most popular privacy fence — flat top with cut corners' },
-  flatboard_cap:     { label: 'Flatboard with Cap',         mult: 1.05, note: 'Clean flat top with protective cap board' },
-  flatboard_scalloped:{ label:'Flatboard Scalloped',        mult: 1.0,  note: 'Curved scalloped bottom edge, elegant look' },
-  flatboard_convex:  { label: 'Flatboard Convex',           mult: 1.0,  note: 'Arched top profile, decorative' },
-  picket:            { label: 'Picket',                     mult: 0.75, note: 'Classic open picket fence, semi-privacy' },
-  shadow_box:        { label: 'Shadow Box',                 mult: 1.1,  note: 'Alternating boards on both sides, wind-resistant' },
-  classic:           { label: 'Classic / Board on Board',   mult: 1.05, note: 'Overlapping boards, full privacy' },
-  diagonal_lattice:  { label: 'Board + Diagonal Lattice Top',mult:1.15, note: 'Privacy bottom + decorative diagonal lattice top' },
-  square_lattice:    { label: 'Board + Square Lattice Top', mult: 1.15, note: 'Privacy bottom + square lattice top pattern' },
-  highland_picket:   { label: 'Board + Highland Picket Top',mult: 1.1,  note: 'Privacy bottom + pointed picket top accent' },
-  pagoda:            { label: 'Pagoda Board with Cap',      mult: 1.2,  note: 'Asian-inspired curved pagoda top, premium look' },
-  scalloped:         { label: 'Scalloped',                  mult: 1.0,  note: 'Wave-pattern top edge, decorative appeal' },
-  chain_std:         { label: 'Standard Chain Link',        mult: 1.0,  note: 'Standard woven wire mesh panel' },
-  aluminum_flat:     { label: 'Flat Top Aluminum',          mult: 1.0,  note: 'Clean modern lines, rust-proof' },
-  iron_spear:        { label: 'Spear Top Wrought Iron',     mult: 1.1,  note: 'Classic pointed spear tops, maximum security' },
-};
+const OTHER_TYPES = [
+  { label: 'Cedar Wood',              icon: '🌲' },
+  { label: 'Vinyl – Standard',        icon: '🤍' },
+  { label: 'Vinyl – Premium',         icon: '⬜' },
+  { label: 'Chain Link – Galvanized', icon: '🔗' },
+  { label: 'Chain Link – Coated',     icon: '⛓️' },
+  { label: 'Aluminum',                icon: '🔩' },
+  { label: 'Wrought Iron',            icon: '⚫' },
+];
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
 
 export default function FenceEstimator() {
-  const [mat, setMat]       = useState<MatKey>('cedar');
-  const [style, setStyle]   = useState<StyleKey>('dog_ear');
-  const [length, setLength] = useState('');
-  const [height, setHeight] = useState('6');
-  const [gates, setGates]   = useState('1');
-  const [demo, setDemo]     = useState('no');
+  const [length, setLength]       = useState('');
+  const [gates, setGates]         = useState('1');
+  const [demo, setDemo]           = useState('no');
   const [showContact, setShowContact] = useState(false);
-  const [form, setForm]     = useState({ name: '', phone: '', email: '', note: '' });
-  const [sent, setSent]     = useState(false);
+  const [form, setForm]           = useState({ name: '', phone: '', email: '', note: '' });
+  const [sent, setSent]           = useState(false);
 
-  const matInfo    = MATERIALS[mat];
-  const styleInfo  = STYLES[style];
-  const availStyles = matInfo.styles;
+  const ft       = Number(length) || 0;
+  const gt       = Number(gates)  || 0;
+  const matCost  = ft * HEIGHT * MAT_PER;
+  const laborCost= ft * LABOR_PER;
+  const gateCost = gt * GATE_COST;
+  const demoCost = demo === 'yes' ? ft * DEMO_PER : 0;
+  const total    = matCost + laborCost + gateCost + demoCost;
+  const hasResult= ft > 0;
 
-  // Auto-switch style if current not available for selected material
-  const activeStyle: StyleKey = availStyles.includes(style) ? style : availStyles[0];
-
-  const ft        = Number(length) || 0;
-  const gt        = Number(gates)  || 0;
-  const ht        = Number(height);
-  const matCost   = ft * ht * matInfo.matPer * styleInfo.mult;
-  const laborCost = ft * matInfo.laborPer;
-  const gateCost  = gt * (mat.startsWith('chain') ? 160 : 380);
-  const demoCost  = demo === 'yes' ? ft * 2.7 : 0;
-  const total     = matCost + laborCost + gateCost + demoCost;
-  const hasResult = ft > 0;
+  async function submitQuote() {
+    if (!form.name || !form.phone) return;
+    try {
+      await fetch('/api/contact', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, service: 'Fence Installation', estimate: fmt(total), note: form.note }),
+      });
+      setSent(true);
+    } catch { setSent(true); }
+  }
 
   if (sent) return (
     <div style={{ maxWidth:'680px', margin:'0 auto', padding:'60px 16px', textAlign:'center' }}>
@@ -94,108 +64,71 @@ export default function FenceEstimator() {
         ← All Services
       </Link>
       <h1 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', margin:'0 0 4px' }}>
-        🪵 Fence Estimator
+        🪵 Fence Installation Estimator
       </h1>
 
       {/* Disclaimer */}
-      <div style={{ background:'#FFFBEB', border:'1px solid #F5C518', borderRadius:'10px', padding:'10px 14px', marginBottom:'28px', display:'flex', gap:'8px' }}>
+      <div style={{ background:'#FFFBEB', border:'1px solid #F5C518', borderRadius:'10px', padding:'10px 14px', marginBottom:'20px', display:'flex', gap:'8px' }}>
         <span>⚠️</span>
         <div>
           <p style={{ fontSize:'12px', color:'#92400E', margin:0, fontWeight:700 }}>Estimated Prices — Not Live Data</p>
-          <p style={{ fontSize:'12px', color:'#92400E', margin:'2px 0 0' }}>
-            Market estimates for Huntsville, AL area. Material prices sourced directly from Home Depot Huntsville, AL. Final quote confirmed on-site.
+          <p style={{ fontSize:'12px', color:'#92400E', margin:'2px 0 0', lineHeight:1.5 }}>
+            Market estimates for Huntsville, AL area. Material prices sourced from Home Depot Huntsville, AL.
+            Final quote confirmed on-site. <strong>Stain/paint not included.</strong>
           </p>
         </div>
       </div>
 
-      {/* Home Depot material pricing badge */}
-      <div style={{ display:'flex', alignItems:'center', gap:'6px', background:'#FFF7ED', border:'1px solid #FDBA74', borderRadius:'8px', padding:'8px 12px', marginBottom:'24px' }}>
-        <span style={{ fontSize:'13px' }}>📦</span>
-        <span style={{ fontSize:'11px', color:'#9A3412', fontWeight:600 }}>Material prices sourced from</span>
-        <a href="https://www.homedepot.com" target="_blank" rel="noopener noreferrer"
-          style={{ fontSize:'11px', color:'#EA580C', fontWeight:700, textDecoration:'none' }}>
-          The Home Depot
-        </a>
-        <span style={{ fontSize:'10px', color:'#9A3412' }}>· Huntsville, AL · Updated quarterly</span>
-      </div>
-      {/* STEP 1: Material */}
-      <div style={{ marginBottom:'28px' }}>
-        <div style={{ fontSize:'11px', fontWeight:700, color:'#1A3A5C', letterSpacing:'0.8px', marginBottom:'8px' }}>STEP 1 — MATERIAL</div>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
-          {(Object.entries(MATERIALS) as [MatKey, typeof MATERIALS[MatKey]][]).map(([key, info]) => (
-            <button key={key} onClick={() => { setMat(key); if (!info.styles.includes(activeStyle)) setStyle(info.styles[0]); }}
-              style={{
-                padding:'12px', borderRadius:'10px', textAlign:'left', cursor:'pointer',
-                border: mat===key ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
-                background: mat===key ? '#EFF6FF' : '#fff',
-              }}>
-              <div style={{ fontWeight:700, fontSize:'13px', color: mat===key ? '#1A3A5C' : '#1E293B' }}>{info.label}</div>
-              <div style={{ fontSize:'11px', color:'#64748B', marginTop:'2px', lineHeight:1.4 }}>{info.desc}</div>
-              <div style={{ fontSize:'12px', color: mat===key ? '#1A3A5C' : '#94A3B8', fontWeight:600, marginTop:'6px' }}>
-                ~{fmt(info.matPer)}/lin ft
-              </div>
-            </button>
-          ))}
+      {/* Spec badge */}
+      <div style={{ background:'#EFF6FF', border:'1px solid #BFDBFE', borderRadius:'10px', padding:'12px 16px', marginBottom:'24px' }}>
+        <p style={{ fontSize:'12px', color:'#1E40AF', fontWeight:700, margin:'0 0 6px' }}>📋 Fence Spec (Instant Estimate)</p>
+        <div style={{ display:'flex', gap:'20px', flexWrap:'wrap' }}>
+          <span style={{ fontSize:'13px', color:'#1D4ED8' }}>🌲 Pine Wood</span>
+          <span style={{ fontSize:'13px', color:'#1D4ED8' }}>📐 Dog-ear Style</span>
+          <span style={{ fontSize:'13px', color:'#1D4ED8' }}>📏 6 ft height</span>
+          <span style={{ fontSize:'13px', color:'#1D4ED8' }}>🚪 $500 / gate</span>
         </div>
       </div>
 
-      {/* STEP 2: Style */}
-      <div style={{ marginBottom:'28px' }}>
-        <div style={{ fontSize:'11px', fontWeight:700, color:'#1A3A5C', letterSpacing:'0.8px', marginBottom:'8px' }}>STEP 2 — FENCE STYLE</div>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
-          {availStyles.map((key) => {
-            const info = STYLES[key];
-            return (
-              <button key={key} onClick={() => setStyle(key)}
-                style={{
-                  padding:'10px 12px', borderRadius:'10px', textAlign:'left', cursor:'pointer',
-                  border: activeStyle===key ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
-                  background: activeStyle===key ? '#EFF6FF' : '#fff',
-                }}>
-                <div style={{ fontWeight:600, fontSize:'13px', color: activeStyle===key ? '#1A3A5C' : '#1E293B' }}>{info.label}</div>
-                <div style={{ fontSize:'11px', color:'#64748B', marginTop:'2px', lineHeight:1.4 }}>{info.note}</div>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* STEP 3: Dimensions */}
-      <div style={{ fontSize:'11px', fontWeight:700, color:'#1A3A5C', letterSpacing:'0.8px', marginBottom:'16px' }}>STEP 3 — DIMENSIONS</div>
-
+      {/* Length input */}
       <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:600, color:'#374151', marginBottom:'8px' }}>Total Length (linear feet)</label>
-        <input type="number" inputMode="numeric" value={length} onChange={e => setLength(e.target.value)}
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
+          Total Fence Length (linear feet)
+        </label>
+        <input
+          type="number" inputMode="numeric" value={length}
+          onChange={e => setLength(e.target.value)}
           style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', outline:'none', boxSizing:'border-box' as const }}
-          placeholder="e.g. 150" />
+          placeholder="e.g. 150"
+        />
+        <p style={{ fontSize:'11px', color:'#94A3B8', margin:'4px 0 0' }}>Tip: walk the perimeter and measure each side</p>
       </div>
 
+      {/* Gates */}
       <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:600, color:'#374151', marginBottom:'8px' }}>Height</label>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
+          Number of Gates <span style={{ fontWeight:400, color:'#64748B' }}>(+$500 each)</span>
+        </label>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'8px' }}>
-          {['4','5','6','8'].map(h => (
-            <button key={h} onClick={() => setHeight(h)}
-              style={{ padding:'11px 8px', borderRadius:'10px', fontSize:'14px', fontWeight:600, cursor:'pointer',
-                border: height===h ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
-                background: height===h ? '#EFF6FF' : '#fff',
-                color: height===h ? '#1A3A5C' : '#64748B' }}>
-              {h} ft
+          {['0','1','2','3'].map(n => (
+            <button key={n} onClick={() => setGates(n)}
+              style={{ padding:'11px', borderRadius:'10px', fontSize:'15px', fontWeight:700, cursor:'pointer',
+                border: gates===n ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
+                background: gates===n ? '#EFF6FF' : '#fff',
+                color: gates===n ? '#1A3A5C' : '#64748B' }}>
+              {n}
             </button>
           ))}
         </div>
       </div>
 
-      <div style={{ marginBottom:'20px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:600, color:'#374151', marginBottom:'8px' }}>Number of Gates</label>
-        <input type="number" inputMode="numeric" value={gates} onChange={e => setGates(e.target.value)}
-          style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', outline:'none', boxSizing:'border-box' as const }}
-          placeholder="0" />
-      </div>
-
+      {/* Demo */}
       <div style={{ marginBottom:'28px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:600, color:'#374151', marginBottom:'8px' }}>Remove Existing Fence?</label>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
+          Remove Existing Fence? <span style={{ fontWeight:400, color:'#64748B' }}>(+$2.70/ft)</span>
+        </label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
-          {[['no','No'],['yes','Yes (+$3/ft)']].map(([v,l]) => (
+          {[['no','No'],['yes','Yes']].map(([v,l]) => (
             <button key={v} onClick={() => setDemo(v)}
               style={{ padding:'11px', borderRadius:'10px', fontSize:'14px', fontWeight:600, cursor:'pointer',
                 border: demo===v ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
@@ -212,7 +145,7 @@ export default function FenceEstimator() {
         <div style={{ background:'linear-gradient(135deg,#1A3A5C,#0F2542)', borderRadius:'16px', padding:'24px', marginBottom:'20px', color:'#fff' }}>
           <h2 style={{ fontWeight:800, fontSize:'18px', margin:'0 0 8px' }}>Estimate Breakdown</h2>
           <p style={{ fontSize:'12px', color:'rgba(255,255,255,0.5)', margin:'0 0 16px' }}>
-            {MATERIALS[mat].label} · {STYLES[activeStyle].label} · {length} ft · {height} ft tall
+            Pine Dog-ear · 6 ft · {length} linear ft
           </p>
           <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}>
             <span style={{ color:'rgba(255,255,255,0.7)' }}>Materials</span><span>{fmt(matCost)}</span>
@@ -222,7 +155,7 @@ export default function FenceEstimator() {
           </div>
           {gt > 0 && (
             <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}>
-              <span style={{ color:'rgba(255,255,255,0.7)' }}>Gates ({gates}x)</span><span>{fmt(gateCost)}</span>
+              <span style={{ color:'rgba(255,255,255,0.7)' }}>Gates ({gt}× $500)</span><span>{fmt(gateCost)}</span>
             </div>
           )}
           {demo === 'yes' && (
@@ -234,6 +167,7 @@ export default function FenceEstimator() {
             <span>Total Estimate</span>
             <span style={{ color:'#F5C518' }}>{fmt(total)}</span>
           </div>
+
           {/* Savings vs market */}
           {(() => {
             const marketAvg = Math.round(total / 0.9 / 100) * 100;
@@ -251,8 +185,9 @@ export default function FenceEstimator() {
               </div>
             );
           })()}
+
           <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>
-            * Estimate based on Huntsville, AL market rates 2026. Final quote confirmed on-site.
+            * Estimate based on Huntsville, AL market rates 2026. Stain/paint not included. Final quote confirmed on-site.
           </p>
         </div>
       )}
@@ -279,7 +214,7 @@ export default function FenceEstimator() {
           <textarea value={form.note} onChange={e => setForm({...form, note:e.target.value})} rows={3}
             style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const, resize:'none' as const }}
             placeholder="Any additional details..." />
-          <button onClick={() => setSent(true)}
+          <button onClick={submitQuote}
             style={{ width:'100%', background:'#F5C518', color:'#1A3A5C', fontWeight:800, fontSize:'16px', padding:'14px', borderRadius:'12px', border:'none', cursor:'pointer' }}>
             Submit Request
           </button>
@@ -287,9 +222,32 @@ export default function FenceEstimator() {
       )}
 
       <a href="tel:+19383026795"
-        style={{ display:'block', width:'100%', textAlign:'center', border:'2px solid #1A3A5C', color:'#1A3A5C', fontWeight:700, fontSize:'15px', padding:'13px', borderRadius:'12px', boxSizing:'border-box' as const }}>
+        style={{ display:'block', width:'100%', textAlign:'center', border:'2px solid #1A3A5C', color:'#1A3A5C', fontWeight:700, fontSize:'15px', padding:'13px', borderRadius:'12px', boxSizing:'border-box' as const, marginBottom:'28px' }}>
         📞 Call for Exact Quote
       </a>
+
+      {/* Other fence types */}
+      <div style={{ background:'#F8FAFC', border:'1px solid #E2E8F0', borderRadius:'14px', padding:'20px' }}>
+        <p style={{ fontSize:'13px', fontWeight:700, color:'#374151', margin:'0 0 6px' }}>
+          🔍 Need a different fence type?
+        </p>
+        <p style={{ fontSize:'12px', color:'#64748B', margin:'0 0 14px', lineHeight:1.5 }}>
+          The following materials require an on-site visit for accurate pricing. Contact us directly for a free custom quote.
+        </p>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px', marginBottom:'14px' }}>
+          {OTHER_TYPES.map(t => (
+            <div key={t.label} style={{ background:'#fff', border:'1px solid #E2E8F0', borderRadius:'8px', padding:'10px 12px', display:'flex', alignItems:'center', gap:'8px' }}>
+              <span style={{ fontSize:'16px' }}>{t.icon}</span>
+              <span style={{ fontSize:'12px', color:'#475569', fontWeight:600 }}>{t.label}</span>
+            </div>
+          ))}
+        </div>
+        <a href="tel:+19383026795"
+          style={{ display:'block', textAlign:'center', background:'#1A3A5C', color:'#fff', fontWeight:700, fontSize:'14px', padding:'12px', borderRadius:'10px', textDecoration:'none' }}>
+          📞 Call (938) 302-6795 for Custom Quote
+        </a>
+      </div>
+
     </div>
   );
 }
