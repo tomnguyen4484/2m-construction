@@ -6,8 +6,8 @@ type Scope = 'repair' | 'room' | 'full';
 
 const SCOPES: Record<Scope, { label: string; icon: string; desc: string; unit: string; placeholder: string; perUnit: number; unitLabel: string }> = {
   repair: { label: 'Small Repair',   icon: '🔧', desc: 'Holes, cracks, water damage patches', unit: 'sqft', placeholder: 'e.g. 10', perUnit: 12,  unitLabel: 'sq ft of damage' },
-  room:   { label: 'New Room',       icon: '🚪', desc: 'Single room — new drywall, tape, mud, texture', unit: 'sqft', placeholder: 'e.g. 400', perUnit: 3.5, unitLabel: 'sq ft of wall area' },
-  full:   { label: 'Full House',     icon: '🏠', desc: 'Entire home — all walls and ceilings', unit: 'sqft', placeholder: 'e.g. 1800', perUnit: 2.8, unitLabel: 'sq ft of living area' },
+  room:   { label: 'New Room',       icon: '🚪', desc: 'Single room — new drywall, tape, mud, texture', unit: 'sqft', placeholder: 'e.g. 400', perUnit: 3.0, unitLabel: 'sq ft of wall area' },
+  full:   { label: 'Full House',     icon: '🏠', desc: 'Entire home — all walls and ceilings', unit: 'sqft', placeholder: 'e.g. 1800', perUnit: 2.5, unitLabel: 'sq ft of living area' },
 };
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }

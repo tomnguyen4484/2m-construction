@@ -12,11 +12,11 @@ const MATERIALS: Record<Material, { label: string; icon: string; perSqft: number
 
 const RAILINGS: Record<Railing, { label: string; perLft: number }> = {
   none:  { label: 'No Railing',    perLft: 0  },
-  wood:  { label: 'Wood Railing',  perLft: 16 },
-  cable: { label: 'Cable Railing', perLft: 50 },
+  wood:  { label: 'Wood Railing',  perLft: 22 },
+  cable: { label: 'Cable Railing', perLft: 90 },
 };
 
-const STAIR_COST = 315;
+const STAIR_COST = 550;
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
 

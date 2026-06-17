@@ -203,7 +203,7 @@ export default function RoofingEstimator() {
           <input value={form.name} onChange={e => setForm({...form, name:e.target.value})}
             style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }} placeholder="Full name *" />
           <input type="tel" value={form.phone} onChange={e => setForm({...form, phone:e.target.value})}
-            style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }} placeholder="Phone number *" />
+            style={{ width:'100%', border:'1.5pxborder:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }} placeholder="Phone number *" />
           <input type="email" value={form.email} onChange={e => setForm({...form, email:e.target.value})}
             style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', marginBottom:'10px', boxSizing:'border-box' as const }} placeholder="Email (optional)" />
           <button onClick={submitQuote}

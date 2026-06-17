@@ -2,12 +2,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-// Fixed: Pine Dog-ear 6ft
-const MAT_PER   = 6;   // $/sq ft material
-const LABOR_PER = 9;   // $/linear ft labor
-const HEIGHT    = 6;   // ft
-const GATE_COST = 500; // $ per gate
-const DEMO_PER  = 2.7; // $/linear ft demo
+// Pine Dog-ear 6ft — per LINEAR FOOT pricing (not per sqft)
+const MAT_PER_LFT = 11;  // $/lft all materials (pickets + posts + rails + hardware)
+const LABOR_PER   = 10;  // $/lft labor & installation
+const GATE_COST   = 450; // $ per gate
+const DEMO_PER    = 2.5; // $/lft demolition
 
 const OTHER_TYPES = [
   { label: 'Cedar Wood',              icon: '🌲' },
@@ -22,21 +21,21 @@ const OTHER_TYPES = [
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
 
 export default function FenceEstimator() {
-  const [length, setLength]       = useState('');
-  const [gates, setGates]         = useState('1');
-  const [demo, setDemo]           = useState('no');
+  const [length, setLength]           = useState('');
+  const [gates, setGates]             = useState('1');
+  const [demo, setDemo]               = useState('no');
   const [showContact, setShowContact] = useState(false);
-  const [form, setForm]           = useState({ name: '', phone: '', email: '', note: '' });
-  const [sent, setSent]           = useState(false);
+  const [form, setForm]               = useState({ name: '', phone: '', email: '', note: '' });
+  const [sent, setSent]               = useState(false);
 
-  const ft       = Number(length) || 0;
-  const gt       = Number(gates)  || 0;
-  const matCost  = ft * HEIGHT * MAT_PER;
-  const laborCost= ft * LABOR_PER;
-  const gateCost = gt * GATE_COST;
-  const demoCost = demo === 'yes' ? ft * DEMO_PER : 0;
-  const total    = matCost + laborCost + gateCost + demoCost;
-  const hasResult= ft > 0;
+  const ft        = Number(length) || 0;
+  const gt        = Number(gates)  || 0;
+  const matCost   = ft * MAT_PER_LFT;
+  const laborCost = ft * LABOR_PER;
+  const gateCost  = gt * GATE_COST;
+  const demoCost  = demo === 'yes' ? ft * DEMO_PER : 0;
+  const total     = matCost + laborCost + gateCost + demoCost;
+  const hasResult = ft > 0;
 
   async function submitQuote() {
     if (!form.name || !form.phone) return;
@@ -73,8 +72,7 @@ export default function FenceEstimator() {
         <div>
           <p style={{ fontSize:'12px', color:'#92400E', margin:0, fontWeight:700 }}>Estimated Prices — Not Live Data</p>
           <p style={{ fontSize:'12px', color:'#92400E', margin:'2px 0 0', lineHeight:1.5 }}>
-            Market estimates for Huntsville, AL area. Material prices sourced from Home Depot Huntsville, AL.
-            Final quote confirmed on-site. <strong>Stain/paint not included.</strong>
+            Market estimates for Huntsville, AL area. Final quote confirmed on-site. <strong>Stain/paint not included.</strong>
           </p>
         </div>
       </div>
@@ -86,7 +84,7 @@ export default function FenceEstimator() {
           <span style={{ fontSize:'13px', color:'#1D4ED8' }}>🌲 Pine Wood</span>
           <span style={{ fontSize:'13px', color:'#1D4ED8' }}>📐 Dog-ear Style</span>
           <span style={{ fontSize:'13px', color:'#1D4ED8' }}>📏 6 ft height</span>
-          <span style={{ fontSize:'13px', color:'#1D4ED8' }}>🚪 $500 / gate</span>
+          <span style={{ fontSize:'13px', color:'#1D4ED8' }}>🚪 $450 / gate</span>
         </div>
       </div>
 
@@ -107,7 +105,7 @@ export default function FenceEstimator() {
       {/* Gates */}
       <div style={{ marginBottom:'20px' }}>
         <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
-          Number of Gates <span style={{ fontWeight:400, color:'#64748B' }}>(+$500 each)</span>
+          Number of Gates <span style={{ fontWeight:400, color:'#64748B' }}>(+$450 each)</span>
         </label>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'8px' }}>
           {['0','1','2','3'].map(n => (
@@ -125,7 +123,7 @@ export default function FenceEstimator() {
       {/* Demo */}
       <div style={{ marginBottom:'28px' }}>
         <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
-          Remove Existing Fence? <span style={{ fontWeight:400, color:'#64748B' }}>(+$2.70/ft)</span>
+          Remove Existing Fence? <span style={{ fontWeight:400, color:'#64748B' }}>(+$2.50/ft)</span>
         </label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
           {[['no','No'],['yes','Yes']].map(([v,l]) => (
@@ -148,14 +146,14 @@ export default function FenceEstimator() {
             Pine Dog-ear · 6 ft · {length} linear ft
           </p>
           <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}>
-            <span style={{ color:'rgba(255,255,255,0.7)' }}>Materials</span><span>{fmt(matCost)}</span>
+            <span style={{ color:'rgba(255,255,255,0.7)' }}>Materials (pickets, posts, rails)</span><span>{fmt(matCost)}</span>
           </div>
           <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}>
             <span style={{ color:'rgba(255,255,255,0.7)' }}>Labor & Installation</span><span>{fmt(laborCost)}</span>
           </div>
           {gt > 0 && (
             <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}>
-              <span style={{ color:'rgba(255,255,255,0.7)' }}>Gates ({gt}× $500)</span><span>{fmt(gateCost)}</span>
+              <span style={{ color:'rgba(255,255,255,0.7)' }}>Gates ({gt}× $450)</span><span>{fmt(gateCost)}</span>
             </div>
           )}
           {demo === 'yes' && (
@@ -168,9 +166,8 @@ export default function FenceEstimator() {
             <span style={{ color:'#F5C518' }}>{fmt(total)}</span>
           </div>
 
-          {/* Savings vs market */}
           {(() => {
-            const marketAvg = Math.round(total / 0.9 / 100) * 100;
+            const marketAvg = Math.round(total / 0.88 / 100) * 100;
             const savings = marketAvg - Math.round(total);
             return (
               <div style={{ background:'rgba(245,197,24,0.1)', borderRadius:'10px', padding:'12px 16px', marginTop:'12px', display:'flex', justifyContent:'space-between', alignItems:'center', border:'1px solid rgba(245,197,24,0.2)' }}>

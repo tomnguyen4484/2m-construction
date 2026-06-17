@@ -4,11 +4,14 @@ import Link from 'next/link';
 
 type Job = 'driveway' | 'patio' | 'sidewalk';
 
+// Huntsville, AL market rates 2026 — plain concrete, broom finish
 const JOBS: Record<Job, { label: string; icon: string; desc: string; perSqft: number; placeholder: string; tip: string }> = {
-  driveway: { label: 'Driveway',          icon: '🚗', desc: '4" reinforced slab · broom finish anti-slip', perSqft: 9,   placeholder: 'e.g. 400', tip: 'Standard 2-car driveway: 400–600 sq ft' },
-  patio:    { label: 'Patio',             icon: '☀️', desc: '4" slab · broom finish anti-slip',            perSqft: 8,   placeholder: 'e.g. 200', tip: 'Average patio: 150–300 sq ft' },
-  sidewalk: { label: 'Sidewalk / Walkway',icon: '🚶', desc: '3.5" slab · broom finish anti-slip',          perSqft: 7,   placeholder: 'e.g. 100', tip: 'Standard width: 3–4 ft. Multiply length × width' },
+  driveway: { label: 'Driveway',           icon: '🚗', desc: '4" reinforced slab · broom finish anti-slip', perSqft: 7,   placeholder: 'e.g. 400', tip: 'Standard 2-car driveway: 400–600 sq ft' },
+  patio:    { label: 'Patio',              icon: '☀️', desc: '4" slab · broom finish anti-slip',            perSqft: 6.5, placeholder: 'e.g. 200', tip: 'Average patio: 150–300 sq ft' },
+  sidewalk: { label: 'Sidewalk / Walkway', icon: '🚶', desc: '3.5" slab · broom finish anti-slip',          perSqft: 6,   placeholder: 'e.g. 100', tip: 'Standard width: 3–4 ft. Multiply length × width' },
 };
+
+const DEMO_PER = 2; // $/sqft demolition
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
 
@@ -22,7 +25,7 @@ export default function ConcreteEstimator() {
 
   const sf        = Number(sqft) || 0;
   const concrete  = sf * JOBS[job].perSqft;
-  const demoCost  = demo === 'yes' ? sf * 3 : 0;
+  const demoCost  = demo === 'yes' ? sf * DEMO_PER : 0;
   const total     = concrete + demoCost;
   const hasResult = sf > 0;
 
@@ -31,7 +34,7 @@ export default function ConcreteEstimator() {
     try {
       await fetch('/api/contact', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, service: 'Concrete', estimate: fmt(total), note: form.note }),
+        body: JSON.stringify({ name: form.name, phone: form.phone, email: form.email, service: 'Concrete – ' + JOBS[job].label, estimate: fmt(total), note: form.note }),
       });
       setSent(true);
     } catch { setSent(true); }
@@ -55,53 +58,50 @@ export default function ConcreteEstimator() {
         🚗 Concrete Estimator
       </h1>
 
+      {/* Disclaimer */}
       <div style={{ background:'#FFFBEB', border:'1px solid #F5C518', borderRadius:'10px', padding:'10px 14px', marginBottom:'20px', display:'flex', gap:'8px' }}>
         <span>⚠️</span>
         <div>
           <p style={{ fontSize:'12px', color:'#92400E', margin:0, fontWeight:700 }}>Estimated Prices — Not Final Quote</p>
           <p style={{ fontSize:'12px', color:'#92400E', margin:'2px 0 0', lineHeight:1.5 }}>
-            Market estimates for Huntsville, AL · 2026. Final price depends on site grading, access, and soil conditions. Free on-site quote available.
+            Market estimates for Huntsville, AL · 2026. Actual cost varies by site access, soil conditions, and reinforcement needs. Final quote confirmed on-site.
           </p>
         </div>
       </div>
 
-      {/* Fixed finish badge */}
-      <div style={{ background:'#EFF6FF', border:'1px solid #BFDBFE', borderRadius:'10px', padding:'12px 16px', marginBottom:'24px', display:'flex', alignItems:'center', gap:'10px' }}>
-        <span style={{ fontSize:'20px' }}>✅</span>
+      {/* Finish badge */}
+      <div style={{ background:'#F0FDF4', border:'1px solid #BBF7D0', borderRadius:'10px', padding:'10px 16px', marginBottom:'20px', display:'flex', gap:'10px', alignItems:'center' }}>
+        <span style={{ fontSize:'18px' }}>✅</span>
         <div>
-          <p style={{ fontSize:'12px', color:'#1E40AF', fontWeight:700, margin:'0 0 2px' }}>Broom Finish — Included Standard</p>
-          <p style={{ fontSize:'11px', color:'#3B82F6', margin:0 }}>Anti-slip textured surface on all concrete work</p>
+          <p style={{ fontSize:'12px', color:'#166534', fontWeight:700, margin:0 }}>Broom Finish — Included Standard</p>
+          <p style={{ fontSize:'12px', color:'#15803D', margin:'2px 0 0' }}>Anti-slip textured surface · No extra charge</p>
         </div>
       </div>
 
       {/* Job type */}
-      <div style={{ marginBottom:'24px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'10px' }}>
-          Type of Work
+      <div style={{ marginBottom:'20px' }}>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
+          What type of concrete work?
         </label>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr', gap:'8px' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'8px' }}>
           {(Object.entries(JOBS) as [Job, typeof JOBS[Job]][]).map(([key, info]) => (
-            <button key={key} onClick={() => { setJob(key); setSqft(''); }}
-              style={{ padding:'14px 16px', borderRadius:'10px', textAlign:'left', cursor:'pointer',
+            <button key={key} onClick={() => setJob(key)}
+              style={{ padding:'14px 8px', borderRadius:'10px', fontSize:'13px', fontWeight:700, cursor:'pointer', textAlign:'center',
                 border: job===key ? '2px solid #1A3A5C' : '1.5px solid #E2E8F0',
                 background: job===key ? '#EFF6FF' : '#fff',
-                display:'flex', alignItems:'center', gap:'14px' }}>
-              <span style={{ fontSize:'24px' }}>{info.icon}</span>
-              <div style={{ flex:1 }}>
-                <div style={{ fontWeight:700, fontSize:'14px', color: job===key ? '#1A3A5C' : '#1E293B' }}>{info.label}</div>
-                <div style={{ fontSize:'11px', color:'#64748B', marginTop:'2px' }}>{info.desc}</div>
-              </div>
-              <div style={{ textAlign:'right', flexShrink:0 }}>
-                <div style={{ fontSize:'13px', color: job===key ? '#1A3A5C' : '#94A3B8', fontWeight:700 }}>
-                  ~{fmt(info.perSqft)}/sq ft
-                </div>
-              </div>
+                color: job===key ? '#1A3A5C' : '#64748B' }}>
+              <div style={{ fontSize:'22px', marginBottom:'4px' }}>{info.icon}</div>
+              {info.label}
+              <div style={{ fontSize:'11px', marginTop:'4px', color: job===key ? '#3B82F6' : '#94A3B8' }}>~{fmt(info.perSqft)}/sq ft</div>
             </button>
           ))}
         </div>
+        <p style={{ fontSize:'11px', color:'#64748B', margin:'8px 0 0', background:'#F8FAFC', padding:'8px 12px', borderRadius:'8px' }}>
+          💡 {JOBS[job].tip}
+        </p>
       </div>
 
-      {/* Size */}
+      {/* Area input */}
       <div style={{ marginBottom:'20px' }}>
         <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
           Area (square feet)
@@ -112,13 +112,12 @@ export default function ConcreteEstimator() {
           style={{ width:'100%', border:'1.5px solid #E2E8F0', borderRadius:'10px', padding:'12px 16px', fontSize:'16px', outline:'none', boxSizing:'border-box' as const }}
           placeholder={JOBS[job].placeholder}
         />
-        <p style={{ fontSize:'11px', color:'#94A3B8', margin:'4px 0 0' }}>{JOBS[job].tip}</p>
       </div>
 
       {/* Demo */}
       <div style={{ marginBottom:'28px' }}>
         <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
-          Remove Existing Concrete? <span style={{ fontWeight:400, color:'#64748B' }}>(+$3/sq ft)</span>
+          Remove Existing Concrete? <span style={{ fontWeight:400, color:'#64748B' }}>(+$2/sq ft)</span>
         </label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
           {[['no','No'],['yes','Yes']].map(([v,l]) => (
@@ -138,16 +137,14 @@ export default function ConcreteEstimator() {
         <div style={{ background:'linear-gradient(135deg,#1A3A5C,#0F2542)', borderRadius:'16px', padding:'24px', marginBottom:'20px', color:'#fff' }}>
           <h2 style={{ fontWeight:800, fontSize:'18px', margin:'0 0 8px' }}>Estimate Breakdown</h2>
           <p style={{ fontSize:'12px', color:'rgba(255,255,255,0.5)', margin:'0 0 16px' }}>
-            {JOBS[job].label} · Broom finish · {sqft} sq ft
+            {JOBS[job].label} · {JOBS[job].desc}
           </p>
           <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}>
-            <span style={{ color:'rgba(255,255,255,0.7)' }}>{sqft} sq ft × {fmt(JOBS[job].perSqft)}/sq ft</span>
-            <span>{fmt(concrete)}</span>
+            <span style={{ color:'rgba(255,255,255,0.7)' }}>{sqft} sq ft × {fmt(JOBS[job].perSqft)}/sq ft</span><span>{fmt(concrete)}</span>
           </div>
           {demo === 'yes' && (
             <div style={{ display:'flex', justifyContent:'space-between', fontSize:'14px', marginBottom:'10px' }}>
-              <span style={{ color:'rgba(255,255,255,0.7)' }}>Demo & Removal</span>
-              <span>{fmt(demoCost)}</span>
+              <span style={{ color:'rgba(255,255,255,0.7)' }}>Demo & Removal</span><span>{fmt(demoCost)}</span>
             </div>
           )}
           <div style={{ display:'flex', justifyContent:'space-between', fontWeight:800, fontSize:'18px', borderTop:'1px solid rgba(255,255,255,0.2)', paddingTop:'12px', marginTop:'4px' }}>
@@ -156,7 +153,7 @@ export default function ConcreteEstimator() {
           </div>
 
           {(() => {
-            const marketAvg = Math.round(total / 0.9 / 100) * 100;
+            const marketAvg = Math.round(total / 0.88 / 100) * 100;
             const savings = marketAvg - Math.round(total);
             return (
               <div style={{ background:'rgba(245,197,24,0.1)', borderRadius:'10px', padding:'12px 16px', marginTop:'12px', display:'flex', justifyContent:'space-between', alignItems:'center', border:'1px solid rgba(245,197,24,0.2)' }}>
@@ -173,7 +170,7 @@ export default function ConcreteEstimator() {
           })()}
 
           <p style={{ fontSize:'11px', color:'rgba(255,255,255,0.4)', margin:'12px 0 0' }}>
-            * Estimate based on Huntsville, AL market rates 2026. Final quote confirmed on-site.
+            * Estimate based on Huntsville, AL market rates 2026. Decorative/stamped concrete quoted separately. Final quote confirmed on-site.
           </p>
         </div>
       )}

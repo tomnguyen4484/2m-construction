@@ -5,8 +5,8 @@ import Link from 'next/link';
 type PaintType = 'interior_walls' | 'exterior' | 'epoxy_floor';
 
 const TYPES: Record<PaintType, { label: string; icon: string; basePer: number; desc: string; placeholder: string }> = {
-  interior_walls: { label: 'Interior Walls',     icon: '🏠', basePer: 2.25, desc: 'Walls only · Standard paint · 2 coats', placeholder: 'e.g. 1200' },
-  exterior:       { label: 'Exterior Painting',   icon: '🏡', basePer: 3.15, desc: 'All exterior surfaces · 2 coats',         placeholder: 'e.g. 2000' },
+  interior_walls: { label: 'Interior Walls',     icon: '🏠', basePer: 2.50, desc: 'Walls only · Standard paint · 2 coats', placeholder: 'e.g. 1200' },
+  exterior:       { label: 'Exterior Painting',   icon: '🏡', basePer: 3.50, desc: 'All exterior surfaces · 2 coats',         placeholder: 'e.g. 2000' },
   epoxy_floor:    { label: 'Epoxy Floor Coating', icon: '⬜', basePer: 4.50, desc: 'Garage / basement floors · 2 coats',       placeholder: 'e.g. 500'  },
 };
 

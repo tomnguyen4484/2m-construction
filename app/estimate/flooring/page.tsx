@@ -7,7 +7,7 @@ type FloorMat = 'lvp_std' | 'hardwood_oak' | 'tile_ceramic';
 const MATERIALS: Record<FloorMat, { label: string; icon: string; materialPer: number; laborPer: number; desc: string }> = {
   lvp_std:      { label: 'LVP – Standard',   icon: '🟫', materialPer: 2.25, laborPer: 2.75, desc: '6 mil wear layer, waterproof, easy maintenance' },
   hardwood_oak: { label: 'Hardwood – Oak',   icon: '🌳', materialPer: 5.40, laborPer: 4.50, desc: 'Classic 3/4" solid oak, can be refinished' },
-  tile_ceramic: { label: 'Tile – Ceramic',   icon: '⬜', materialPer: 1.80, laborPer: 6.30, desc: 'Durable, water-resistant, great for bathrooms & kitchens' },
+  tile_ceramic: { label: 'Tile – Ceramic',   icon: '⬜', materialPer: 1.60, laborPer: 5.00, desc: 'Durable, water-resistant, great for bathrooms & kitchens' },
 };
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
