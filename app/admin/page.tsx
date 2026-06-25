@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 
-type Tab = 'business' | 'prices' | 'leads' | 'traffic';
+type Tab = 'business' | 'prices' | 'leads' | 'traffic' | 'blog';
 
 const TOKEN_KEY = '2m_admin_token';
 
@@ -281,6 +281,336 @@ function TrafficTab({ token }: { token: string }) {
   );
 }
 
+// ── Blog Tab ──────────────────────────────────────────────────────────────────
+interface BlogPost {
+  id: string; title: string; slug: string; excerpt: string; content: string;
+  coverImageUrl: string; tags: string[]; metaTitle: string; metaDescription: string;
+  publishedAt: string; updatedAt: string; published: boolean;
+}
+
+const emptyPost = (): Partial<BlogPost> => ({
+  title: '', slug: '', excerpt: '', content: '', coverImageUrl: '',
+  tags: [], metaTitle: '', metaDescription: '', published: false,
+});
+
+function BlogTab({ token }: { token: string }) {
+  const [posts, setPosts]       = useState<BlogPost[]>([]);
+  const [loading, setLoading]   = useState(true);
+  const [noToken, setNoToken]   = useState(false);
+  const [view, setView]         = useState<'list' | 'edit'>('list');
+  const [form, setForm]         = useState<Partial<BlogPost>>(emptyPost());
+  const [tagInput, setTagInput] = useState('');
+  const [saving, setSaving]     = useState(false);
+  const [msg, setMsg]           = useState('');
+
+  const inpB: React.CSSProperties = {
+    width: '100%', padding: '10px 12px', borderRadius: '8px',
+    border: '1px solid #334155', background: '#0F2542', color: '#E2E8F0',
+    fontSize: '14px', boxSizing: 'border-box', outline: 'none',
+  };
+
+  useEffect(() => { loadPosts(); }, []);
+
+  async function loadPosts() {
+    setLoading(true);
+    try {
+      const r = await fetch('/api/admin/blog', { headers: { 'x-admin-token': token } });
+      const d = await r.json();
+      if (d.error === 'NO_TOKEN') { setNoToken(true); }
+      else { setPosts(d.posts ?? []); }
+    } catch { setMsg('❌ Lỗi kết nối'); }
+    setLoading(false);
+  }
+
+  function openNew() {
+    setForm(emptyPost()); setTagInput(''); setMsg(''); setView('edit');
+  }
+  function openEdit(p: BlogPost) {
+    setForm({ ...p }); setTagInput(p.tags.join(', ')); setMsg(''); setView('edit');
+  }
+
+  function autoSlug(title: string) {
+    return title.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  function handleTitle(v: string) {
+    setForm(f => ({ ...f, title: v, slug: f.id ? f.slug : autoSlug(v), metaTitle: f.metaTitle || v }));
+  }
+
+  function addTag(raw: string) {
+    const newTags = raw.split(/[,\s]+/).map(t => t.replace(/^#+/, '').trim().toLowerCase()).filter(Boolean);
+    const merged  = Array.from(new Set([...(form.tags ?? []), ...newTags]));
+    setForm(f => ({ ...f, tags: merged }));
+    setTagInput('');
+  }
+
+  function removeTag(t: string) {
+    setForm(f => ({ ...f, tags: (f.tags ?? []).filter(x => x !== t) }));
+  }
+
+  async function savePost() {
+    if (!form.title?.trim()) { setMsg('❌ Nhập tiêu đề'); return; }
+    setSaving(true); setMsg('');
+    try {
+      const r = await fetch('/api/admin/blog', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+        body: JSON.stringify({ ...form, tags: form.tags ?? [] }),
+      });
+      const d = await r.json();
+      if (d.ok) {
+        setMsg('✅ Đã lưu! Vercel sẽ deploy trong ~1-2 phút.');
+        await loadPosts();
+        setTimeout(() => setView('list'), 1500);
+      } else {
+        setMsg('❌ ' + (d.error ?? 'Lỗi lưu'));
+      }
+    } catch { setMsg('❌ Lỗi kết nối'); }
+    setSaving(false);
+  }
+
+  async function deletePost(id: string) {
+    if (!confirm('Xoá bài viết này?')) return;
+    await fetch('/api/admin/blog', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+      body: JSON.stringify({ id }),
+    });
+    await loadPosts();
+  }
+
+  async function togglePublish(p: BlogPost) {
+    await fetch('/api/admin/blog', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+      body: JSON.stringify({ ...p, published: !p.published }),
+    });
+    await loadPosts();
+  }
+
+  // ── No GitHub token ──
+  if (noToken) return (
+    <div style={{ background: '#1A3A5C', borderRadius: 12, padding: 28 }}>
+      <h2 style={{ color: '#fff', fontSize: 16, marginTop: 0 }}>📝 Blog Manager</h2>
+      <div style={{ background: '#FFFBEB', border: '1px solid #F5C518', borderRadius: 10, padding: '16px 20px' }}>
+        <p style={{ color: '#92400E', fontWeight: 700, margin: '0 0 8px' }}>⚠️ Cần cài đặt thêm 1 bước</p>
+        <p style={{ color: '#78350F', fontSize: 13, margin: '0 0 12px', lineHeight: 1.6 }}>
+          Để lưu bài viết, cần thêm biến môi trường <code style={{ background: '#FEF3C7', padding: '2px 6px', borderRadius: 4 }}>GITHUB_TOKEN</code> vào Vercel.
+        </p>
+        <ol style={{ color: '#78350F', fontSize: 13, margin: 0, paddingLeft: 20, lineHeight: 2 }}>
+          <li>Vào <strong>github.com → Settings → Developer settings → Personal access tokens → Tokens (classic)</strong></li>
+          <li>Generate new token → tick <strong>repo</strong> scope → Copy token</li>
+          <li>Vào <strong>vercel.com → Project 2m-construction → Settings → Environment Variables</strong></li>
+          <li>Thêm: <code style={{ background: '#FEF3C7', padding: '2px 4px', borderRadius: 3 }}>GITHUB_TOKEN</code> = token vừa copy</li>
+          <li>Redeploy project → quay lại trang này</li>
+        </ol>
+      </div>
+    </div>
+  );
+
+  // ── Edit form ──
+  if (view === 'edit') return (
+    <div style={{ background: '#1A3A5C', borderRadius: 12, padding: 28 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+        <button onClick={() => setView('list')} style={{ background: 'transparent', border: '1px solid #334155', color: '#94A3B8', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 13 }}>
+          ← Danh sách
+        </button>
+        <h2 style={{ color: '#fff', fontSize: 16, margin: 0 }}>{form.id ? 'Chỉnh sửa bài viết' : 'Tạo bài viết mới'}</h2>
+      </div>
+
+      <div style={{ display: 'grid', gap: 16 }}>
+        {/* Title */}
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94A3B8', marginBottom: 5 }}>Tiêu đề *</label>
+          <input value={form.title ?? ''} onChange={e => handleTitle(e.target.value)} style={inpB} placeholder="Ví dụ: Chi phí lắp hàng rào gỗ tại Huntsville 2026" />
+        </div>
+
+        {/* Slug + Published */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, alignItems: 'end' }}>
+          <div>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94A3B8', marginBottom: 5 }}>URL slug</label>
+            <input value={form.slug ?? ''} onChange={e => setForm(f => ({ ...f, slug: e.target.value }))} style={inpB} placeholder="chi-phi-hang-rao-go-huntsville" />
+          </div>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', paddingBottom: 2 }}>
+            <div onClick={() => setForm(f => ({ ...f, published: !f.published }))} style={{
+              width: 36, height: 20, borderRadius: 10, transition: 'background 0.2s', cursor: 'pointer',
+              background: form.published ? '#4ADE80' : '#334155', position: 'relative',
+            }}>
+              <div style={{ position: 'absolute', top: 2, left: form.published ? 18 : 2, width: 16, height: 16, borderRadius: '50%', background: '#fff', transition: 'left 0.2s' }} />
+            </div>
+            <span style={{ color: form.published ? '#4ADE80' : '#64748B', fontSize: 13, fontWeight: 600 }}>
+              {form.published ? 'Published' : 'Draft'}
+            </span>
+          </label>
+        </div>
+
+        {/* Excerpt */}
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94A3B8', marginBottom: 5 }}>Mô tả ngắn (hiện ở card blog)</label>
+          <textarea value={form.excerpt ?? ''} onChange={e => setForm(f => ({ ...f, excerpt: e.target.value }))} rows={2}
+            style={{ ...inpB, resize: 'vertical' as const }} placeholder="Tóm tắt ngắn gọn về bài viết..." />
+        </div>
+
+        {/* Cover image */}
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94A3B8', marginBottom: 5 }}>URL ảnh bìa</label>
+          <input value={form.coverImageUrl ?? ''} onChange={e => setForm(f => ({ ...f, coverImageUrl: e.target.value }))}
+            style={inpB} placeholder="https://... (paste link ảnh từ Google Photos, Imgur, v.v.)" />
+          {form.coverImageUrl && (
+            <img src={form.coverImageUrl} alt="preview" style={{ marginTop: 8, width: '100%', maxHeight: 180, objectFit: 'cover', borderRadius: 8, opacity: 0.85 }} />
+          )}
+        </div>
+
+        {/* Tags */}
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94A3B8', marginBottom: 5 }}>Tags / Hashtags (SEO)</label>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
+            {(form.tags ?? []).map(t => (
+              <span key={t} style={{ background: '#1E3A5F', color: '#60A5FA', fontSize: 12, padding: '4px 10px', borderRadius: 20, display: 'flex', alignItems: 'center', gap: 4 }}>
+                #{t}
+                <button onClick={() => removeTag(t)} style={{ background: 'none', border: 'none', color: '#60A5FA', cursor: 'pointer', fontSize: 14, padding: 0, lineHeight: 1 }}>×</button>
+              </span>
+            ))}
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <input value={tagInput} onChange={e => setTagInput(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addTag(tagInput); } }}
+              style={{ ...inpB, flex: 1 }} placeholder="huntsvillecontractor, deckbuilding... (Enter để thêm)" />
+            <button onClick={() => addTag(tagInput)} style={{ background: '#1E3A5F', border: '1px solid #334155', color: '#60A5FA', padding: '0 14px', borderRadius: 8, cursor: 'pointer', fontSize: 13 }}>
+              + Add
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94A3B8', marginBottom: 5 }}>Nội dung bài viết</label>
+          <div style={{ background: '#0F1F35', borderRadius: 6, padding: '6px 8px', marginBottom: 4, display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+            {[['# ', 'H1'], ['## ', 'H2'], ['### ', 'H3'], ['**', 'Bold'], ['*', 'Italic'], ['- ', 'List']].map(([fmt, label]) => (
+              <button key={label} onClick={() => {
+                const ta = document.getElementById('blog-content') as HTMLTextAreaElement;
+                if (!ta) return;
+                const start = ta.selectionStart, end = ta.selectionEnd;
+                const sel = ta.value.slice(start, end);
+                const insert = fmt === '- ' ? `\n- ${sel}` : fmt + sel + fmt;
+                const next = ta.value.slice(0, start) + insert + ta.value.slice(end);
+                setForm(f => ({ ...f, content: next }));
+              }} style={{ background: '#1E3A5F', border: '1px solid #334155', color: '#94A3B8', padding: '3px 8px', borderRadius: 4, cursor: 'pointer', fontSize: 11, fontWeight: 600 }}>
+                {label}
+              </button>
+            ))}
+            <span style={{ color: '#475569', fontSize: 11, alignSelf: 'center', marginLeft: 4 }}>Markdown: **bold**, *italic*, # Heading, - list</span>
+          </div>
+          <textarea id="blog-content" value={form.content ?? ''} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} rows={14}
+            style={{ ...inpB, resize: 'vertical' as const, fontFamily: 'monospace', fontSize: 13, lineHeight: 1.7 }}
+            placeholder="Viết nội dung bài viết ở đây...
+
+## Tiêu đề lớn
+Đoạn văn bình thường.
+
+## Chi phí ước tính
+- Pine fence 6ft: ~$21/linear ft
+- Composite deck: ~$31/sqft
+
+**Liên hệ 2M Construction** để được báo giá miễn phí!" />
+        </div>
+
+        {/* SEO section */}
+        <div style={{ background: '#0F2542', borderRadius: 10, padding: '16px 20px' }}>
+          <p style={{ color: '#F5C518', fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, margin: '0 0 14px' }}>🔍 SEO Settings</p>
+          <div style={{ display: 'grid', gap: 12 }}>
+            <div>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94A3B8', marginBottom: 5 }}>Meta Title (Google title — ~60 ký tự)</label>
+              <input value={form.metaTitle ?? ''} onChange={e => setForm(f => ({ ...f, metaTitle: e.target.value }))} style={inpB}
+                placeholder="Ví dụ: Chi Phí Lắp Hàng Rào Gỗ Huntsville AL 2026 | 2M Construction" />
+              <p style={{ color: (form.metaTitle ?? '').length > 60 ? '#F87171' : '#475569', fontSize: 11, margin: '4px 0 0' }}>
+                {(form.metaTitle ?? '').length}/60 ký tự
+              </p>
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94A3B8', marginBottom: 5 }}>Meta Description (Google snippet — ~155 ký tự)</label>
+              <textarea value={form.metaDescription ?? ''} onChange={e => setForm(f => ({ ...f, metaDescription: e.target.value }))} rows={2}
+                style={{ ...inpB, resize: 'vertical' as const }}
+                placeholder="Ví dụ: Tham khảo chi phí lắp hàng rào gỗ tại Huntsville, AL. 2M Construction báo giá miễn phí, licensed & insured." />
+              <p style={{ color: (form.metaDescription ?? '').length > 155 ? '#F87171' : '#475569', fontSize: 11, margin: '4px 0 0' }}>
+                {(form.metaDescription ?? '').length}/155 ký tự
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Save */}
+        {msg && <p style={{ color: msg.includes('✅') ? '#4ADE80' : '#F87171', fontSize: 13, margin: 0 }}>{msg}</p>}
+        <div style={{ display: 'flex', gap: 12 }}>
+          <button onClick={savePost} disabled={saving} style={{
+            background: '#F5C518', color: '#0F2542', fontWeight: 800, fontSize: 15,
+            padding: '12px 32px', borderRadius: 10, border: 'none', cursor: saving ? 'not-allowed' : 'pointer',
+            opacity: saving ? 0.7 : 1,
+          }}>
+            {saving ? 'Đang lưu...' : (form.id ? '💾 Cập nhật' : '🚀 Đăng bài')}
+          </button>
+          <button onClick={() => setView('list')} style={{ background: 'transparent', border: '1px solid #334155', color: '#94A3B8', padding: '12px 20px', borderRadius: 10, cursor: 'pointer', fontSize: 14 }}>
+            Huỷ
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // ── Post list ──
+  return (
+    <div style={{ background: '#1A3A5C', borderRadius: 12, padding: 24 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+        <h2 style={{ color: '#fff', fontSize: 16, margin: 0 }}>📝 Blog — {posts.length} bài viết</h2>
+        <button onClick={openNew} style={{ background: '#F5C518', color: '#0F2542', fontWeight: 700, padding: '8px 20px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13 }}>
+          + Tạo bài mới
+        </button>
+      </div>
+
+      {loading ? (
+        <p style={{ color: '#94A3B8' }}>Đang tải...</p>
+      ) : posts.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+          <p style={{ fontSize: 40, margin: '0 0 12px' }}>📄</p>
+          <p style={{ color: '#64748B', fontSize: 14 }}>Chưa có bài viết nào. Tạo bài đầu tiên!</p>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {posts.map(p => (
+            <div key={p.id} style={{ background: '#0F2542', borderRadius: 10, padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 14 }}>
+              {p.coverImageUrl && <img src={p.coverImageUrl} alt="" style={{ width: 60, height: 45, objectFit: 'cover', borderRadius: 6, flexShrink: 0 }} />}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ color: '#fff', fontWeight: 700, fontSize: 14, margin: '0 0 4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.title}</p>
+                <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <span style={{ background: p.published ? '#14532d' : '#1E3A5F', color: p.published ? '#4ADE80' : '#64748B', fontSize: 11, padding: '2px 8px', borderRadius: 10, fontWeight: 600 }}>
+                    {p.published ? '● Published' : '○ Draft'}
+                  </span>
+                  {p.tags.slice(0, 3).map(t => (
+                    <span key={t} style={{ color: '#475569', fontSize: 11 }}>#{t}</span>
+                  ))}
+                  <span style={{ color: '#334155', fontSize: 11 }}>{new Date(p.updatedAt).toLocaleDateString('vi-VN')}</span>
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                <button onClick={() => togglePublish(p)} title={p.published ? 'Ẩn bài' : 'Đăng bài'} style={{ background: '#1E3A5F', border: '1px solid #334155', color: p.published ? '#F87171' : '#4ADE80', padding: '6px 10px', borderRadius: 6, cursor: 'pointer', fontSize: 13 }}>
+                  {p.published ? '⏸' : '▶'}
+                </button>
+                <button onClick={() => openEdit(p)} style={{ background: '#1E3A5F', border: '1px solid #334155', color: '#F5C518', padding: '6px 10px', borderRadius: 6, cursor: 'pointer', fontSize: 13 }}>
+                  ✏️
+                </button>
+                <button onClick={() => deletePost(p.id)} style={{ background: '#1E3A5F', border: '1px solid #334155', color: '#F87171', padding: '6px 10px', borderRadius: 6, cursor: 'pointer', fontSize: 13 }}>
+                  🗑
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function AdminPage() {
   const [password, setPassword] = useState('');
@@ -424,6 +754,7 @@ export default function AdminPage() {
   // ── Dashboard ─────────────────────────────────────────────────────────────
   const TABS: { id: Tab; label: string; icon: string }[] = [
     { id: 'traffic',  label: 'Traffic',       icon: '📊' },
+    { id: 'blog',     label: 'Blog',          icon: '📝' },
     { id: 'business', label: 'Business Info',  icon: '🏢' },
     { id: 'prices',   label: 'HD Prices',      icon: '💰' },
     { id: 'leads',    label: 'Leads',          icon: '📋' },
@@ -455,8 +786,11 @@ export default function AdminPage() {
         {/* Traffic tab */}
         {tab === 'traffic' && <TrafficTab token={token} />}
 
+        {/* Blog tab */}
+        {tab === 'blog' && <BlogTab token={token} />}
+
         {/* Other tabs */}
-        {tab !== 'traffic' && (
+        {tab !== 'traffic' && tab !== 'blog' && (
           !data ? (
             <p style={{ color: '#94A3B8' }}>Loading...</p>
           ) : (
