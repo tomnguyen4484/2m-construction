@@ -5,15 +5,15 @@ import Link from 'next/link';
 type FloorMat = 'lvp_std' | 'hardwood_oak' | 'tile_ceramic';
 
 const MATERIALS: Record<FloorMat, { label: string; icon: string; materialPer: number; laborPer: number; desc: string }> = {
+  tile_ceramic: { label: 'Tile – Ceramic',   icon: '🔲', materialPer: 1.60, laborPer: 5.00, desc: 'Durable, water-resistant — ideal for bathrooms, kitchens & entryways' },
   lvp_std:      { label: 'LVP – Standard',   icon: '🟫', materialPer: 2.25, laborPer: 2.75, desc: '6 mil wear layer, waterproof, easy maintenance' },
   hardwood_oak: { label: 'Hardwood – Oak',   icon: '🌳', materialPer: 5.40, laborPer: 4.50, desc: 'Classic 3/4" solid oak, can be refinished' },
-  tile_ceramic: { label: 'Tile – Ceramic',   icon: '⬜', materialPer: 1.60, laborPer: 5.00, desc: 'Durable, water-resistant, great for bathrooms & kitchens' },
 };
 
 function fmt(n: number) { return '$' + Math.round(n).toLocaleString(); }
 
 export default function FlooringEstimator() {
-  const [mat, setMat]           = useState<FloorMat>('lvp_std');
+  const [mat, setMat]           = useState<FloorMat>('tile_ceramic');
   const [sqft, setSqft]         = useState('');
   const [showContact, setShowContact] = useState(false);
   const [form, setForm]         = useState({ name: '', phone: '', email: '', note: '' });
@@ -40,19 +40,19 @@ export default function FlooringEstimator() {
   if (sent) return (
     <div style={{ maxWidth:'680px', margin:'0 auto', padding:'60px 16px', textAlign:'center' }}>
       <div style={{ fontSize:'56px', marginBottom:'16px' }}>✅</div>
-      <h2 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', marginBottom:'8px' }}>Request Sent!</h2>
-      <p style={{ color:'#64748B', marginBottom:'24px' }}>We will call you back within 24 hours.</p>
-      <Link href="/" style={{ color:'#1A3A5C', fontWeight:700 }}>← Back to Home</Link>
+      <h2 style={{ fontWeight:800, fontSize:'22px', color:'#FFFFFF', marginBottom:'8px' }}>Request Sent!</h2>
+      <p style={{ color:'#94A3B8', marginBottom:'24px' }}>We will call you back within 24 hours.</p>
+      <Link href="/" style={{ color:'#F5C518', fontWeight:700 }}>← Back to Home</Link>
     </div>
   );
 
   return (
     <div style={{ maxWidth:'680px', margin:'0 auto', padding:'20px 16px 40px' }}>
-      <Link href="/estimate" style={{ fontSize:'13px', color:'#64748B', marginBottom:'16px', display:'block' }}>
+      <Link href="/estimate" style={{ fontSize:'13px', color:'#94A3B8', fontWeight:600, marginBottom:'16px', display:'block' }}>
         ← All Services
       </Link>
-      <h1 style={{ fontWeight:800, fontSize:'22px', color:'#1E293B', margin:'0 0 4px' }}>
-        🏠 Flooring Estimator
+      <h1 style={{ fontWeight:800, fontSize:'22px', color:'#FFFFFF', margin:'0 0 4px' }}>
+        🔲 Flooring & Tile Installation Estimator
       </h1>
 
       {/* Disclaimer */}
@@ -78,7 +78,7 @@ export default function FlooringEstimator() {
 
       {/* Material selection */}
       <div style={{ marginBottom:'24px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'10px' }}>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#CBD5E1', marginBottom:'10px' }}>
           Flooring Material
         </label>
         <div style={{ display:'grid', gridTemplateColumns:'1fr', gap:'8px' }}>
@@ -106,7 +106,7 @@ export default function FlooringEstimator() {
 
       {/* Area input */}
       <div style={{ marginBottom:'28px' }}>
-        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#374151', marginBottom:'8px' }}>
+        <label style={{ display:'block', fontSize:'13px', fontWeight:700, color:'#CBD5E1', marginBottom:'8px' }}>
           Area (square feet)
         </label>
         <input

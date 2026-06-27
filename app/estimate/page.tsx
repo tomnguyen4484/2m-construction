@@ -2,6 +2,14 @@ import Link from 'next/link';
 
 const SERVICES = [
   {
+    href: '/estimate/flooring',
+    icon: '🪟',
+    title: 'Flooring & Tile Installation',
+    sub: 'Tile · LVP · Hardwood · Carpet',
+    from: 'From $750',
+    note: '150 sq ft room',
+  },
+  {
     href: '/estimate/fence',
     icon: '🪵',
     title: 'Fence Installation',
@@ -16,14 +24,6 @@ const SERVICES = [
     sub: 'Interior · Exterior · Cabinets',
     from: 'From $850',
     note: 'Single room',
-  },
-  {
-    href: '/estimate/flooring',
-    icon: '🏠',
-    title: 'Flooring',
-    sub: 'LVP · Hardwood · Tile · Carpet',
-    from: 'From $750',
-    note: '150 sq ft room',
   },
   {
     href: '/estimate/bathroom',

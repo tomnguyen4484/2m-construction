@@ -2,10 +2,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const services = [
+  { name: 'Flooring & Tile', slug: 'flooring', icon: '', desc: 'Tile, LVP, hardwood & carpet' },
   { name: 'Fence',    slug: 'fence',    icon: '', desc: 'Wood, vinyl & chain-link' },
   { name: 'Deck',     slug: 'deck',     icon: '', desc: 'Custom deck build' },
   { name: 'Painting', slug: 'painting', icon: '', desc: 'Interior & exterior' },
-  { name: 'Flooring', slug: 'flooring', icon: '', desc: 'Hardwood, tile & vinyl' },
   { name: 'Bathroom', slug: 'bathroom', icon: '', desc: 'Full remodel' },
   { name: 'Kitchen',  slug: 'kitchen',  icon: '', desc: 'Renovation & cabinets' },
   { name: 'Drywall',  slug: 'drywall',  icon: '', desc: 'Repair & installation' },

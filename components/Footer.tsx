@@ -20,7 +20,13 @@ export default function Footer() {
           </div>
           <div>
             <div style={{ color:'#fff', fontWeight:700, fontSize:'13px', marginBottom:'12px' }}>Service Areas</div>
-            {[['huntsville','Huntsville'],['madison','Madison'],['athens','Athens'],['decatur','Decatur'],['harvest','Harvest'],['hampton-cove','Hampton Cove']].map(([slug,name]) => (
+            {[
+              ['huntsville','Huntsville'],['madison','Madison'],['athens','Athens'],
+              ['decatur','Decatur'],['harvest','Harvest'],['hampton-cove','Hampton Cove'],
+              ['scottsboro','Scottsboro'],['guntersville','Guntersville'],['albertville','Albertville'],
+              ['boaz','Boaz'],['fort-payne','Fort Payne'],['gadsden','Gadsden'],
+              ['cullman','Cullman'],['florence','Florence'],
+            ].map(([slug,name]) => (
               <div key={slug} style={{ marginBottom:'6px' }}>
                 <Link href={'/service-area/'+slug} style={{ color:'#94A3B8', fontSize:'12px' }}>{name}, AL</Link>
               </div>
@@ -37,7 +43,7 @@ export default function Footer() {
         </div>
         <div style={{ borderTop:'1px solid rgba(255,255,255,0.1)', paddingTop:'16px', display:'flex', justifyContent:'space-between', flexWrap:'wrap', gap:'8px' }}>
           <p style={{ fontSize:'11px', margin:0 }}>© {new Date().getFullYear()} 2M Construction LLC. All rights reserved.</p>
-          <p style={{ fontSize:'11px', margin:0 }}>Huntsville · Madison · Athens · Decatur, Alabama</p>
+          <p style={{ fontSize:'11px', margin:0 }}>Huntsville · Scottsboro · Guntersville · Gadsden · Cullman · Florence, Alabama</p>
         </div>
       </div>
     </footer>
