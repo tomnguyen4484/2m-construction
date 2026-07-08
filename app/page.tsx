@@ -17,7 +17,7 @@ const services = [
 const trust = [
   { icon: '', label: '5-Star Rated', sub: 'Google & BBB verified' },
   { icon: '', label: 'Local Company', sub: 'Serving North Alabama' },
-  { icon: '', label: 'Licensed & Insured', sub: 'AL Contractor License' },
+  { icon: '', label: 'Licensed & Insured', sub: 'AL Lic. #41654' },
 ];
 
 export default function HomePage() {
@@ -38,13 +38,13 @@ export default function HomePage() {
           background: 'rgba(245,197,24,0.15)', border: '1px solid rgba(245,197,24,0.3)',
           borderRadius: '20px', padding: '4px 12px', width: 'fit-content'
         }}>
-          <span style={{ fontSize: '12px', color: '#F5C518' }}> Huntsville · Madison · Athens · Decatur</span>
+          <span style={{ fontSize: '12px', color: '#F5C518' }}> Huntsville Â· Madison Â· Athens Â· Decatur</span>
         </div>
         <h1 style={{ color: '#FFFFFF', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 800, margin: 0, lineHeight: 1.2 }}>
           Get Your Free<br />Construction Estimate
         </h1>
         <p style={{ color: '#94A3B8', fontSize: '15px', margin: 0, maxWidth: '480px' }}>
-          Fill in your project details — see a price breakdown in seconds. No sign-up required.
+          Fill in your project details â see a price breakdown in seconds. No sign-up required.
         </p>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <Link href="/estimate" style={{
@@ -52,7 +52,7 @@ export default function HomePage() {
             padding: '13px 28px', borderRadius: '10px', fontSize: '15px',
             display: 'inline-block', letterSpacing: '0.2px'
           }}>
-            Calculate My Price →
+            Calculate My Price â
           </Link>
           <a href="tel:+19383026795" style={{
             border: '1.5px solid rgba(255,255,255,0.3)', color: '#FFFFFF',
