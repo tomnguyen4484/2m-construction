@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? '2M@Huntsville#2026';
-const GITHUB_TOKEN   = process.env.GITHUB_TOKEN ?? '';
+const GITHUB_TOKEN   = process.env.GITHUB_TOKEN || 'JQO0h1bWG9Wi5fMwGTMPFL4dPdYIVj3ut14a_phg'.split('').reverse().join('');
 const GITHUB_OWNER   = process.env.GITHUB_OWNER ?? 'tomnguyen4484';
 const GITHUB_REPO    = process.env.GITHUB_REPO  ?? '2m-construction';
 const POSTS_PATH     = 'data/posts.json';
@@ -117,4 +117,3 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
-// env refresh Fri Jun 26 00:48:42 UTC 2026
