@@ -7,8 +7,8 @@ export default function Footer() {
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(160px,1fr))', gap:'24px', marginBottom:'24px' }}>
           <div>
             <div style={{ color:'#fff', fontWeight:700, fontSize:'14px', marginBottom:'12px' }}>2M Construction</div>
-            <p style={{ fontSize:'12px', lineHeight:1.7, margin:0 }}>Licensed & insured contractor serving North Alabama.</p>
-            <p style={{ fontSize:'12px', margin:'8px 0 0' }}>📞 <a href="tel:+19383026795" style={{ color:'#F5C518' }}>(938) 302-6795</a></p>
+            <p style={{ fontSize:'12px', lineHeight:1.7, margin:0 }}>Licensed & insured contractor serving North Alabama. Lic. #41654.</p>
+            <p style={{ fontSize:'12px', margin:'8px 0 0' }}>ð <a href="tel:+19383026795" style={{ color:'#F5C518' }}>(938) 302-6795</a></p>
           </div>
           <div>
             <div style={{ color:'#fff', fontWeight:700, fontSize:'13px', marginBottom:'12px' }}>Services</div>
@@ -42,8 +42,8 @@ export default function Footer() {
           </div>
         </div>
         <div style={{ borderTop:'1px solid rgba(255,255,255,0.1)', paddingTop:'16px', display:'flex', justifyContent:'space-between', flexWrap:'wrap', gap:'8px' }}>
-          <p style={{ fontSize:'11px', margin:0 }}>© {new Date().getFullYear()} 2M Construction LLC. All rights reserved.</p>
-          <p style={{ fontSize:'11px', margin:0 }}>Huntsville · Scottsboro · Guntersville · Gadsden · Cullman · Florence, Alabama</p>
+          <p style={{ fontSize:'11px', margin:0 }}>Â© {new Date().getFullYear()} 2M Construction LLC. All rights reserved.</p>
+          <p style={{ fontSize:'11px', margin:0 }}>Huntsville Â· Scottsboro Â· Guntersville Â· Gadsden Â· Cullman Â· Florence, Alabama</p>
         </div>
       </div>
     </footer>
