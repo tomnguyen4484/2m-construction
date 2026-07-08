@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": "test-post-delete-me-1783512476433",
+    "title": "Test Post - Delete Me",
+    "slug": "test-post-delete-me",
+    "excerpt": "Testing blog write access",
+    "content": "This is a test.",
+    "coverImageUrl": "",
+    "tags": [],
+    "metaTitle": "Test Post - Delete Me",
+    "metaDescription": "Testing blog write access",
+    "publishedAt": "2026-07-08T12:07:56.433Z",
+    "updatedAt": "2026-07-08T12:07:56.433Z",
+    "published": false
+  }
+]
