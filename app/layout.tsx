@@ -78,7 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             ],
             "sameAs": [],
             "priceRange": "$$",
-            "description": "Licensed and insured construction contractor serving North Alabama including Huntsville, Scottsboro, Guntersville, Gadsden, Albertville, Cullman, Florence and surrounding areas. Specializing in fencing, decks, roofing, painting, flooring, bathroom and kitchen remodels.",
+            "description": "Licensed & insured construction contractor (Lic. #41654) serving North Alabama including Huntsville, Scottsboro, Guntersville, Gadsden, Albertville, Cullman, Florence and surrounding areas. Specializing in fencing, decks, roofing, painting, flooring, bathroom and kitchen remodels.",
             "areaServed": ["Huntsville AL","Madison AL","Athens AL","Decatur AL","Harvest AL","Hampton Cove AL","Scottsboro AL","Guntersville AL","Albertville AL","Boaz AL","Fort Payne AL","Gadsden AL","Cullman AL","Florence AL"],
             "hasOfferCatalog": {
               "@type": "OfferCatalog",
