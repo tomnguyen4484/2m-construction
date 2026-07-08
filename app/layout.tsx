@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     default: '2M Construction | Contractor Huntsville, AL',
     template: '%s | 2M Construction Huntsville',
   },
-  description: 'Licensed contractor in Huntsville, AL. Specializing in fencing, decks, roofing, painting, flooring, bathroom & kitchen remodeling. Free estimates.',
+  description: 'Licensed & insured contractor in Huntsville, AL. Specializing in fencing, decks, roofing, painting, flooring, bathroom & kitchen remodeling. Free estimates.',
   keywords: ['contractor Huntsville AL', 'contractor Scottsboro AL', 'contractor Guntersville AL', 'contractor Gadsden AL', 'contractor Albertville AL', 'contractor Cullman AL', 'fence installation Huntsville', 'deck builder North Alabama', 'roofing contractor Huntsville', 'bathroom remodel Huntsville', 'kitchen remodel Huntsville', 'painting contractor Huntsville', 'flooring Huntsville AL', '2M Construction', 'North Alabama contractor'],
   authors: [{ name: '2M Construction' }],
   creator: '2M Construction',
