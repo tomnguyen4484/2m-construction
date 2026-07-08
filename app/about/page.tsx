@@ -15,16 +15,16 @@ const TEAM = [
     alt: 'James R Collins PE - Co-Founder and Director of Engineering 2M Construction',
     name: 'James R. Collins, P.E.',
     title: 'Co-Founder & Director of Engineering',
-    credentials: 'Licensed Professional Engineer (P.E.) · B.S. Civil Engineering, Auburn University · M.S. Construction Management, University of Alabama',
-    bio: 'With over 25 years of structural and civil engineering experience, James oversees all technical planning, code compliance, and quality assurance at 2M Construction. His engineering background ensures every project — from a backyard deck to a commercial build-out — is designed and executed to last.',
+    credentials: 'Licensed Professional Engineer (P.E.) Â· B.S. Civil Engineering, Auburn University Â· M.S. Construction Management, University of Alabama',
+    bio: 'With over 25 years of structural and civil engineering experience, James oversees all technical planning, code compliance, and quality assurance at 2M Construction. His engineering background ensures every project â from a backyard deck to a commercial build-out â is designed and executed to last.',
   },
   {
     file: '/about/david-hartley-co-founder-2m-construction.png',
     alt: 'David M Hartley MBA - Co-Founder and Director of Operations 2M Construction',
     name: 'David M. Hartley, MBA',
     title: 'Co-Founder & Director of Operations',
-    credentials: 'B.S. Construction Management, Tennessee Tech University · MBA, Vanderbilt University Owen Graduate School of Management',
-    bio: 'David brings 22 years of construction operations and project management expertise to 2M. He oversees estimating, scheduling, subcontractor coordination, and client communications — ensuring every project stays on time, on budget, and on spec from start to finish.',
+    credentials: 'B.S. Construction Management, Tennessee Tech University Â· MBA, Vanderbilt University Owen Graduate School of Management',
+    bio: 'David brings 22 years of construction operations and project management expertise to 2M. He oversees estimating, scheduling, subcontractor coordination, and client communications â ensuring every project stays on time, on budget, and on spec from start to finish.',
   },
 ];
 
@@ -32,7 +32,7 @@ const STATS = [
   { value: '60+', label: 'Years of Combined Leadership' },
   { value: '40+', label: 'Years Family Construction Tradition' },
   { value: '2,000+', label: 'Projects Completed' },
-  { value: '100%', label: 'Licensed & Insured' },
+  { value: '#41654', label: 'AL Contractor License' },
   { value: '7', label: 'Cities Across North Alabama' },
 ];
 
@@ -43,14 +43,14 @@ const PROMISES = [
   'Clear written contract before work begins',
   'Daily updates on project progress',
   'Clean job site at the end of every workday',
-  'Final walkthrough — you approve before we close',
+  'Final walkthrough â you approve before we close',
 ];
 
 export default function AboutPage() {
   return (
     <main style={{ fontFamily: 'sans-serif', color: '#1a1a1a' }}>
 
-      {/* ── HERO ─────────────────────────────────────────────────── */}
+      {/* ââ HERO âââââââââââââââââââââââââââââââââââââââââââââââââââ */}
       <section style={{
         background: 'linear-gradient(135deg, #0F2542 0%, #1A3A5C 100%)',
         color: '#fff', padding: '90px 24px', textAlign: 'center',
@@ -67,7 +67,7 @@ export default function AboutPage() {
         </p>
       </section>
 
-      {/* ── OUR STORY ────────────────────────────────────────────── */}
+      {/* ââ OUR STORY ââââââââââââââââââââââââââââââââââââââââââââââ */}
       <section style={{ background: '#fff', padding: '72px 24px' }}>
         <div style={{ maxWidth: 780, margin: '0 auto' }}>
           <p style={{ color: '#F5C518', fontWeight: 700, letterSpacing: 2, fontSize: 12, textTransform: 'uppercase', margin: '0 0 12px' }}>
@@ -77,10 +77,10 @@ export default function AboutPage() {
             From a Family Legacy to North Alabama&apos;s Trusted Builder
           </h2>
           {[
-            '2M Construction was founded in 2026 — but the story begins long before that.',
-            'Founder Tuan Nguyen (Mike) grew up in a family with over 40 years of history in the construction industry. From an early age, he learned the trade from the ground up — watching craftsmen work, understanding materials, and absorbing the discipline that only comes from a multi-generational building tradition. That foundation shaped everything he became as a professional.',
-            'After earning his place in the industry through decades of hands-on work, Mike joined forces with seasoned American construction veterans James R. Collins and David M. Hartley to establish 2M Construction — a company built on three pillars: technical excellence, honest communication, and genuine care for every client.',
-            'Together, the 2M leadership team and their crews of skilled engineers and tradespeople have delivered over 2,000 completed projects across residential and commercial construction — from fence installations and bathroom remodels to full kitchen renovations and large-scale builds.',
+            '2M Construction was founded in 2026 â but the story begins long before that.',
+            'Founder Tuan Nguyen (Mike) grew up in a family with over 40 years of history in the construction industry. From an early age, he learned the trade from the ground up â watching craftsmen work, understanding materials, and absorbing the discipline that only comes from a multi-generational building tradition. That foundation shaped everything he became as a professional.',
+            'After earning his place in the industry through decades of hands-on work, Mike joined forces with seasoned American construction veterans James R. Collins and David M. Hartley to establish 2M Construction â a company built on three pillars: technical excellence, honest communication, and genuine care for every client.',
+            'Together, the 2M leadership team and their crews of skilled engineers and tradespeople have delivered over 2,000 completed projects across residential and commercial construction â from fence installations and bathroom remodels to full kitchen renovations and large-scale builds.',
             'We are proud to call Huntsville home, and proud to build it better every day.',
           ].map((para, i) => (
             <p key={i} style={{ fontSize: 16, color: '#374151', lineHeight: 1.85, margin: '0 0 20px' }}>
@@ -90,7 +90,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── LEADERSHIP TEAM ──────────────────────────────────────── */}
+      {/* ââ LEADERSHIP TEAM ââââââââââââââââââââââââââââââââââââââââ */}
       <section style={{ background: '#f8fafc', padding: '72px 24px' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 52 }}>
@@ -154,7 +154,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── BY THE NUMBERS ───────────────────────────────────────── */}
+      {/* ââ BY THE NUMBERS âââââââââââââââââââââââââââââââââââââââââ */}
       <section style={{ background: '#0F2542', color: '#fff', padding: '72px 24px' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
           <p style={{ color: '#F5C518', fontWeight: 700, letterSpacing: 2, fontSize: 12, textTransform: 'uppercase', margin: '0 0 12px' }}>
@@ -182,7 +182,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── CORE VALUES ──────────────────────────────────────────── */}
+      {/* ââ CORE VALUES ââââââââââââââââââââââââââââââââââââââââââââ */}
       <section style={{ background: '#fff', padding: '72px 24px' }}>
         <div style={{ maxWidth: 860, margin: '0 auto', textAlign: 'center' }}>
           <p style={{ color: '#F5C518', fontWeight: 700, letterSpacing: 2, fontSize: 12, textTransform: 'uppercase', margin: '0 0 12px' }}>
@@ -204,7 +204,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── CLIENT PROMISES ──────────────────────────────────────── */}
+      {/* ââ CLIENT PROMISES ââââââââââââââââââââââââââââââââââââââââ */}
       <section style={{ background: '#f8fafc', padding: '72px 24px' }}>
         <div style={{ maxWidth: 700, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 40 }}>
@@ -239,7 +239,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────────────────── */}
+      {/* ââ CTA ââââââââââââââââââââââââââââââââââââââââââââââââââââ */}
       <section style={{ background: '#0F2542', color: '#fff', padding: '72px 24px', textAlign: 'center' }}>
         <h2 style={{ fontSize: 'clamp(22px, 4vw, 34px)', fontWeight: 800, margin: '0 0 16px' }}>
           Ready to Build with North Alabama&apos;s Most Trusted Team?
@@ -252,7 +252,7 @@ export default function AboutPage() {
           padding: '16px 40px', borderRadius: 8,
           fontWeight: 700, fontSize: 16, textDecoration: 'none',
           display: 'inline-block',
-        }}>Get Your Free Estimate →</a>
+        }}>Get Your Free Estimate â</a>
       </section>
 
     </main>
