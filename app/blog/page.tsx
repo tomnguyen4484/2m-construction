@@ -1,7 +1,7 @@
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Blog | 2M Construction Huntsville AL',
@@ -13,20 +13,26 @@ interface Post {
   coverImageUrl: string; tags: string[]; publishedAt: string; published: boolean;
 }
 
-function getPosts(): Post[] {
+async function getPosts(): Promise<Post[]> {
   try {
-    return JSON.parse(readFileSync(join(process.cwd(), 'data', 'posts.json'), 'utf-8'))
-      .filter((p: Post) => p.published)
-      .sort((a: Post, b: Post) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+    const res = await fetch(
+      'https://api.github.com/repos/tomnguyen4484/2m-construction/contents/data/posts.json',
+      { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    const decoded = Buffer.from(data.content, 'base64').toString('utf-8');
+    return (JSON.parse(decoded) as Post[])
+      .filter(p => p.published)
+      .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
   } catch { return []; }
 }
 
-export default function BlogPage() {
-  const posts = getPosts();
+export default async function BlogPage() {
+  const posts = await getPosts();
 
   return (
     <main style={{ minHeight: '100vh', background: '#F8FAFC' }}>
-      {/* Hero */}
       <section style={{ background: 'linear-gradient(135deg, #0F2542 0%, #1A3A5C 100%)', color: '#fff', padding: '80px 24px 60px', textAlign: 'center' }}>
         <p style={{ color: '#F5C518', fontSize: '11px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', margin: '0 0 12px' }}>
           TIPS & GUIDES
