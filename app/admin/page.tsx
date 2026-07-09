@@ -302,6 +302,8 @@ function BlogTab({ token }: { token: string }) {
   const [tagInput, setTagInput] = useState('');
   const [saving, setSaving]     = useState(false);
   const [msg, setMsg]           = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [uploadMsg, setUploadMsg] = useState('');
 
   const inpB: React.CSSProperties = {
     width: '100%', padding: '10px 12px', borderRadius: '8px',
