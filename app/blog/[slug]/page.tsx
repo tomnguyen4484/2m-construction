@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+// Simple markdown-lite renderer
 function renderContent(text: string): string {
   return text
     .replace(/^### (.+)$/gm, '<h3 style="font-size:20px;font-weight:700;color:#1E293B;margin:28px 0 12px">$1</h3>')
@@ -57,15 +58,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <main style={{ background: '#fff', minHeight: '100vh' }}>
-      {post.coverImageUrl && (
-        <div style={{ width: '100%', maxHeight: '420px', overflow: 'hidden' }}>
-          <img src={post.coverImageUrl} alt={post.title} style={{ width: '100%', objectFit: 'cover', maxHeight: '420px', display: 'block' }} />
-        </div>
-      )}
       <div style={{ maxWidth: '760px', margin: '0 auto', padding: '40px 20px 80px' }}>
         <Link href="/blog" style={{ fontSize: '13px', color: '#64748B', display: 'inline-block', marginBottom: '24px' }}>
           ← Back to Blog
         </Link>
+
+        {/* Tags */}
         {post.tags.length > 0 && (
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
             {post.tags.map(tag => (
@@ -75,16 +73,31 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             ))}
           </div>
         )}
+
         <h1 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 800, color: '#0F2542', lineHeight: 1.25, margin: '0 0 16px' }}>
           {post.title}
         </h1>
+
         <p style={{ color: '#64748B', fontSize: '14px', margin: '0 0 32px' }}>
           2M Construction · {date}
         </p>
+
+        {/* Cover image — inside article */}
+        {post.coverImageUrl && (
+          <img
+            src={post.coverImageUrl}
+            alt={post.title}
+            style={{ width: '100%', borderRadius: '12px', display: 'block', marginBottom: '32px', objectFit: 'cover', maxHeight: '460px' }}
+          />
+        )}
+
+        {/* Content */}
         <article
           style={{ fontSize: '16px', lineHeight: 1.8, color: '#374151' }}
           dangerouslySetInnerHTML={{ __html: renderContent(post.content) }}
         />
+
+        {/* CTA */}
         <div style={{ marginTop: '48px', background: '#0F2542', borderRadius: '16px', padding: '32px', textAlign: 'center' }}>
           <h3 style={{ color: '#fff', fontSize: '20px', fontWeight: 800, margin: '0 0 8px' }}>
             Ready to start your project?
