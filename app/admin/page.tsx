@@ -349,6 +349,33 @@ function BlogTab({ token }: { token: string }) {
     setForm(f => ({ ...f, tags: (f.tags ?? []).filter(x => x !== t) }));
   }
 
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { setUploadMsg('❌ Ảnh tối đa 5MB'); return; }
+    setUploading(true); setUploadMsg('Đang upload...');
+    try {
+      const base64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve((reader.result as string).split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+        body: JSON.stringify({ filename: file.name, base64, mimeType: file.type }),
+      });
+      const d = await res.json();
+      if (d.ok) { setForm(f => ({ ...f, coverImageUrl: d.url })); setUploadMsg('✅ Upload thành công!'); }
+      else { setUploadMsg('❌ ' + (d.error ?? 'Lỗi upload')); }
+    } catch { setUploadMsg('❌ Lỗi kết nối'); }
+    setUploading(false);
+    setTimeout(() => setUploadMsg(''), 4000);
+    e.target.value = '';
+  }
+
   async function savePost() {
     if (!form.title?.trim()) { setMsg('❌ Nhập tiêu đề'); return; }
     setSaving(true); setMsg('');
@@ -454,11 +481,36 @@ function BlogTab({ token }: { token: string }) {
 
         {/* Cover image */}
         <div>
-          <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94A3B8', marginBottom: 5 }}>URL ảnh bìa</label>
+          <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#94A3B8', marginBottom: 5 }}>Ảnh bìa</label>
+          <div style={{ display: 'flex', gap: 10, marginBottom: 8, alignItems: 'center' }}>
+            <label style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              background: uploading ? '#1E3A5F' : '#F5C518', color: uploading ? '#64748B' : '#0F2542',
+              padding: '8px 16px', borderRadius: 8, cursor: uploading ? 'not-allowed' : 'pointer',
+              fontSize: 13, fontWeight: 700, flexShrink: 0,
+            }}>
+              {uploading ? '⏳ Đang upload...' : '📁 Chọn ảnh'}
+              <input type="file" accept="image/*" onChange={handleImageUpload} disabled={uploading} style={{ display: 'none' }} />
+            </label>
+            <span style={{ color: '#475569', fontSize: 11 }}>JPG, PNG, WebP · tối đa 5MB</span>
+          </div>
+          {uploadMsg && <p style={{ color: uploadMsg.includes('✅') ? '#4ADE80' : '#F87171', fontSize: 12, margin: '0 0 8px' }}>{uploadMsg}</p>}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '8px 0' }}>
+            <div style={{ flex: 1, height: 1, background: '#1E3A5F' }} />
+            <span style={{ color: '#475569', fontSize: 11 }}>hoặc dán URL</span>
+            <div style={{ flex: 1, height: 1, background: '#1E3A5F' }} />
+          </div>
           <input value={form.coverImageUrl ?? ''} onChange={e => setForm(f => ({ ...f, coverImageUrl: e.target.value }))}
-            style={inpB} placeholder="https://... (paste link ảnh từ Google Photos, Imgur, v.v.)" />
+            style={inpB} placeholder="https://... (link ảnh từ Google Photos, Imgur, v.v.)" />
           {form.coverImageUrl && (
-            <img src={form.coverImageUrl} alt="preview" style={{ marginTop: 8, width: '100%', maxHeight: 180, objectFit: 'cover', borderRadius: 8, opacity: 0.85 }} />
+            <div style={{ position: 'relative', marginTop: 8 }}>
+              <img src={form.coverImageUrl} alt="preview" style={{ width: '100%', maxHeight: 200, objectFit: 'cover', borderRadius: 8, display: 'block' }} />
+              <button onClick={() => setForm(f => ({ ...f, coverImageUrl: '' }))} style={{
+                position: 'absolute', top: 6, right: 6, background: 'rgba(0,0,0,0.6)',
+                border: 'none', color: '#fff', borderRadius: '50%', width: 24, height: 24,
+                cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>×</button>
+            </div>
           )}
         </div>
 
