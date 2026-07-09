@@ -1,8 +1,8 @@
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic';
 
 interface Post {
   id: string; title: string; slug: string; excerpt: string; content: string;
@@ -10,19 +10,22 @@ interface Post {
   publishedAt: string; published: boolean;
 }
 
-function getPosts(): Post[] {
+async function getPosts(): Promise<Post[]> {
   try {
-    return JSON.parse(readFileSync(join(process.cwd(), 'data', 'posts.json'), 'utf-8'));
+    const res = await fetch(
+      'https://api.github.com/repos/tomnguyen4484/2m-construction/contents/data/posts.json',
+      { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return JSON.parse(Buffer.from(data.content, 'base64').toString('utf-8'));
   } catch { return []; }
-}
-
-export async function generateStaticParams() {
-  return getPosts().filter(p => p.published).map(p => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPosts().find(p => p.slug === slug && p.published);
+  const posts = await getPosts();
+  const post = posts.find(p => p.slug === slug && p.published);
   if (!post) return { title: 'Not Found' };
   return {
     title: post.metaTitle || post.title,
@@ -31,7 +34,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-// Simple markdown-lite renderer
 function renderContent(text: string): string {
   return text
     .replace(/^### (.+)$/gm, '<h3 style="font-size:20px;font-weight:700;color:#1E293B;margin:28px 0 12px">$1</h3>')
@@ -47,26 +49,23 @@ function renderContent(text: string): string {
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = getPosts().find(p => p.slug === slug && p.published);
+  const posts = await getPosts();
+  const post = posts.find(p => p.slug === slug && p.published);
   if (!post) notFound();
 
   const date = new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
     <main style={{ background: '#fff', minHeight: '100vh' }}>
-      {/* Hero */}
       {post.coverImageUrl && (
         <div style={{ width: '100%', maxHeight: '420px', overflow: 'hidden' }}>
           <img src={post.coverImageUrl} alt={post.title} style={{ width: '100%', objectFit: 'cover', maxHeight: '420px', display: 'block' }} />
         </div>
       )}
-
       <div style={{ maxWidth: '760px', margin: '0 auto', padding: '40px 20px 80px' }}>
         <Link href="/blog" style={{ fontSize: '13px', color: '#64748B', display: 'inline-block', marginBottom: '24px' }}>
           ← Back to Blog
         </Link>
-
-        {/* Tags */}
         {post.tags.length > 0 && (
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
             {post.tags.map(tag => (
@@ -76,22 +75,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             ))}
           </div>
         )}
-
         <h1 style={{ fontSize: 'clamp(26px, 4vw, 38px)', fontWeight: 800, color: '#0F2542', lineHeight: 1.25, margin: '0 0 16px' }}>
           {post.title}
         </h1>
-
         <p style={{ color: '#64748B', fontSize: '14px', margin: '0 0 32px' }}>
           2M Construction · {date}
         </p>
-
-        {/* Content */}
         <article
           style={{ fontSize: '16px', lineHeight: 1.8, color: '#374151' }}
           dangerouslySetInnerHTML={{ __html: renderContent(post.content) }}
         />
-
-        {/* CTA */}
         <div style={{ marginTop: '48px', background: '#0F2542', borderRadius: '16px', padding: '32px', textAlign: 'center' }}>
           <h3 style={{ color: '#fff', fontSize: '20px', fontWeight: 800, margin: '0 0 8px' }}>
             Ready to start your project?
